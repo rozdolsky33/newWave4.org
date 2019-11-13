@@ -1,0 +1,11 @@
+.main-page-cover {
+  display: flex;
+  align-items: flex-end;
+  max-height: 470px;
+  overflow: hidden;
+
+  img {
+    object-fit: fill;
+    width: 100%;
+  }
+}
