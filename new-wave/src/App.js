@@ -8,8 +8,8 @@ function App() {
     <div className="App">
       <Navbar bg="light" variant="light">
         <Navbar.Brand>
-          <a href="#">
-            <img src={logo} style={{width:80, marginTop: -7}} />
+          <a href="/#"> 
+            <img src={logo} style={{width:80, marginTop: -7}} alt=""/> 
           </a>
         </Navbar.Brand>
         <Nav className="mr-auto">
