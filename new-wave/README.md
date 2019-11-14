@@ -1,3 +1,18 @@
+## Create Docker Image with a Dockerfile
+
+Install Docker.  In the project directory run:
+
+### Dev Environment
+    $ docker build -f Dockerfile.dev . -t new-wave4
+
+    $ docker run -it -p 3000:3000 new-wave4
+   
+### Prod Environment
+    $ docker build . -t new-wave4
+    
+    $docker run -it -p 8080:80 new-wave4
+-----------------------------------------------------------------------------------------------------------------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
