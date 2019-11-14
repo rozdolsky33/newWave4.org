@@ -10,7 +10,7 @@ Install Docker.  In the project directory run:
 ### Prod Environment
     $ docker build . -t new-wave4
     
-    $docker run -it -p 8080:80 new-wave4
+    $ docker run -it -p 8080:80 new-wave4
 -----------------------------------------------------------------------------------------------------------------------------
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
