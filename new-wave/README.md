@@ -6,11 +6,17 @@ Install Docker.  In the project directory run:
     $ docker build -f Dockerfile.dev . -t new-wave4
 
     $ docker run -it -p 3000:3000 new-wave4
+
+Open http://localhost:3000 to view it in the browser.
    
 ### Prod Environment
     $ docker build . -t new-wave4
     
     $ docker run -it -p 8080:80 new-wave4
+    
+Open http://localhost:8080 to view it in the browser.
+    
+
 -----------------------------------------------------------------------------------------------------------------------------
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
