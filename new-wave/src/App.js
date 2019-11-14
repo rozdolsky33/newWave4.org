@@ -1,7 +1,11 @@
 import React from 'react';
 import {Navbar, Nav, NavDropdown, Row, Col} from 'react-bootstrap';
+import {BrowserRouter as Router , Route} from 'react-router-dom';
 import logo from './assets/NW_logo_sm.png';
-import MainPage from './pages/main/main';
+import MainPage from './pages/main';
+import BlogPage from './pages/blog';
+import AboutUsPage from './pages/aboutUs';
+import ContactsPage from './pages/contacts';
 
 function App() {
   return (
@@ -27,7 +31,12 @@ function App() {
       <Row>
         <Col md="2"></Col>
         <Col xs md="8">
-          <MainPage/>
+          <Router>
+            <Route path="/" exact={true} component={MainPage} />
+            <Route path="/blog" component={BlogPage} />
+            <Route path="/aboutUs" component={AboutUsPage} />
+            <Route path="/contacts" component={ContactsPage} />
+          </Router>
         </Col>
       </Row>
     </div>
