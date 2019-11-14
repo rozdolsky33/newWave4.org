@@ -1,14 +1,13 @@
 #stage 1
-FROM node 
+FROM node:alpine as builder
 
-RUN mkdir usr/src/app
+WORKDIR '/app'
+COPY package.json .
+RUN npm install
+COPY . .
 
-COPY . usr/src/app
+RUN npm run build
 
-WORKDIR /usr/src/app
-
-ENV PATH usr/src/app/node_modules/.bin:$PATH
-
-RUN yarn
-
-CMD ["npm", "start"]
+#stage 2
+FROM nginx
+COPY --from=builder /app/build /usr/share/nginx/html
