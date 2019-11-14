@@ -1,5 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Create Docker Image with a Dockerfile
+
+Install Docker.  In the project directory run:
+1. docker build . -t new-wave4
+
+2. docker run -it -p 3000:3000 new-wave4
+
 ## Available Scripts
 
 In the project directory, you can run:
