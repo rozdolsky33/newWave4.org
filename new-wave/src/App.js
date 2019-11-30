@@ -31,7 +31,7 @@ function App() {
           <Nav.Link href="/contacts">Контакти</Nav.Link>
         </Nav>
       </Navbar>
-      <Row>
+      <Row className="m-0">
         <Col md="2"></Col>
         <Col xs md="8">
           <Router>
