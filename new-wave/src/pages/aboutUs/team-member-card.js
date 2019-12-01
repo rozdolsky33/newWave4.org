@@ -1,11 +1,10 @@
 import React from 'react';
 import {Card} from 'react-bootstrap';
-import './main.scss';
+import './aboutUs.scss';
 
 export default class TeamMemberCard extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
   }
   render() {
     return (

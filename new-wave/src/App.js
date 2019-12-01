@@ -6,7 +6,8 @@ import MainPage from './pages/main';
 import BlogPage from './pages/blog';
 import AboutUsPage from './pages/aboutUs';
 import ContactsPage from './pages/contacts';
-import CoultureAndArtPage from './pages/projects/cultureAndArt';
+import ArticlePage from './pages/article';
+import CultureAndArtPage from './pages/projects/cultureAndArt';
 import CooperationPage from './pages/projects/cooperation';
 import StudyingPage from './pages/projects/studying';
 
@@ -24,7 +25,7 @@ function App() {
           <NavDropdown title="Проекти" id="projects-list">
             <NavDropdown.Item href="/studying">Навчальні програми</NavDropdown.Item>
             <NavDropdown.Item href="/cooperation">У співпраці</NavDropdown.Item>
-            <NavDropdown.Item href="/culture-and-art">Культура - мистецтсо</NavDropdown.Item>
+            <NavDropdown.Item href="/culture-and-art">Культура - мистецтво</NavDropdown.Item>
           </NavDropdown>
           <Nav.Link href="/blog">Блог</Nav.Link>
           <Nav.Link href="/aboutUs">Про нас</Nav.Link>
@@ -41,7 +42,8 @@ function App() {
             <Route path="/contacts" component={ContactsPage} />
             <Route path="/studying" component={StudyingPage} />
             <Route path="/cooperation" component={CooperationPage} />
-            <Route path="/culture-and-art" component={CoultureAndArtPage} />
+            <Route path="/culture-and-art" component={CultureAndArtPage} />
+            <Route path="/article/:type/:id" component={ArticlePage} />
           </Router>
         </Col>
       </Row>

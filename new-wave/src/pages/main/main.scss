@@ -3,20 +3,12 @@
   align-items: flex-end;
   max-height: 470px;
   overflow: hidden;
+  opacity: 0.6;
+  margin: 0 -33%;
+  width: 162%;
 
-  img {
-    object-fit: fill;
+  .carousel.slide {
     width: 100%;
   }
-}
 
-.team-member-card {
-  align-items: center;
-  margin-top: 4rem;
-
-  .member-img {
-    height: 8rem;
-    width: 8rem;
-    margin-top: -3rem;
-  }
 }

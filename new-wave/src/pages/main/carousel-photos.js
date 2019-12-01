@@ -9,11 +9,11 @@ export default function CarouselPhotos() {
   ];
   return (
     <>
-      <Carousel>
+      <Carousel controls={false}>
         {photos.map((photo, key) => {
           return (<Carousel.Item key={key}>
             <img
-              className="d-block w-100"
+              className="w-100"
               src={photo}
               alt={key + " slide"}
             />
