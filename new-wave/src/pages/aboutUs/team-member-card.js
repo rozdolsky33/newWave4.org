@@ -12,7 +12,7 @@ export default class TeamMemberCard extends React.Component {
         <Card.Img variant="top" src="./assets/NW_person_placeholder.png" className="member-img"/>
         <Card.Body className="text-center">
           <h5>{this.props.fullName}</h5>
-          <span className="text-secondary">{this.props.location}</span>
+          <span className="text-secondary small">{this.props.location}</span>
           <p>{this.props.position}</p>
         </Card.Body>
       </Card>
