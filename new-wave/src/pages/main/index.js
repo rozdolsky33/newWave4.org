@@ -12,13 +12,13 @@ export default function MainPage() {
       if (eventDate !== event.date) {
         eventDate = event.date;
         return (
-          <>
+          <div key={key}>
             <div className="pt-3 pb-1" >
               <span className="event-date-point"></span>
               <span className="text-secondary small">{event.date}</span>
             </div>
-            <EventCard key={key} {...event} />
-          </>);
+            <EventCard {...event} />
+          </div>);
       } else {
         return <EventCard key={key} {...event} />;
       }
