@@ -1,0 +1,17 @@
+.main-page-cover {
+  display: flex;
+  align-items: flex-end;
+  max-height: 470px;
+  overflow: hidden;
+  opacity: 0.6;
+  margin: 0 -33%;
+  width: 162%;
+
+  @media (max-width: 767px) {
+    height: 200px;
+  }
+
+  .carousel.slide {
+    width: 100%;
+  }
+}
