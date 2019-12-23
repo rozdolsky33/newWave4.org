@@ -1,5 +1,5 @@
 import React from "react";
-import events from "../../../data/events";
+import events from "../../../data/archive";
 
 export default class ArticlePage extends React.Component {
   constructor(props) {

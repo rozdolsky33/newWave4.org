@@ -16,7 +16,7 @@ export default function MainPage() {
         </div>
       </div>
       <AboutUsBlock id="about-us"/>
-      <div id="our-team" className="text-center">
+      <div id="our-team" className="text-center border-bottom mb-3 pb-3">
         <h3 className="text-primary">Наша команда</h3>
         <CardDeck className="justify-content-center">
           {teamMembers.map(teamMember => {

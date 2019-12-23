@@ -51,7 +51,7 @@ export default function ContactUsForm() {
           </InputGroup>
           <Form.Group className="p-3">
             <Button variant="primary" type="submit">
-              Submit
+              Відправити листа
             </Button>
           </Form.Group>
         </Form>

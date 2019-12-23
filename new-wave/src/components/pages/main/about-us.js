@@ -3,7 +3,7 @@ import {Row, Col} from "react-bootstrap";
 
 export default function AboutUsBlock() {
   return (
-    <Row>
+    <Row className="mt-5 mb-3 pb-3 border-bottom">
       <Col md="4" className="text-center d-flex flex-column justify-content-center align-items-center">
         <img
           src="../assets/NW_logo_sm_2.jpg"

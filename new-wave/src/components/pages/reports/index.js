@@ -1,5 +1,4 @@
 import React from "react";
-import ContactUsForm from "../../common/contact-us-form";
 
 export default function ReportsPage() {
   return (
