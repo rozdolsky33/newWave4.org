@@ -1,16 +1,18 @@
 import React from "react";
-import events from "../../../data/archive";
+import archive from "../../../data/archive";
+import articles from "../../../data/articles";
 
 export default class ArticlePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { id: 0, type: "", article: {} };
+    this.state = { article: {} , articles: {archive, articles} };
   }
-
   async componentDidMount() {
-    this.setState({id: this.props.match.params.id});
-    this.setState({type: this.props.match.params.type});
-    this.setState({article: events.find((article) => {return article.id === this.props.match.params.id})});
+    let articlesList = this.state.articles[this.props.match.params.type] || [];
+    this.setState({article: articlesList.find((article) => {
+      return article.id === this.props.match.params.id;
+    })
+    });
   }
   render() {
     return (
@@ -18,8 +20,8 @@ export default class ArticlePage extends React.Component {
         <h2 className="p-3 text-primary">{this.state.article.title}</h2>
         <p className="pt-5">{this.state.article.longDescription}</p>
         <div className="d-flex justify-content-between pt-5">
-          <span className="text-secondary">{this.state.article.author}</span>
           <span className="text-secondary">{this.state.article.date}</span>
+          <span className="text-secondary">{this.state.article.author}</span>
         </div>
       </div>
     );

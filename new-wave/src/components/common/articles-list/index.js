@@ -15,7 +15,7 @@ export default class ArticlesList extends React.Component {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start p-3">
           <Card.Img style={{maxWidth: "30%", objectFit: "contain"}} src={article.pic || "./assets/NW_article_pic.png"} />
-          <Card.Body>
+          <Card.Body className="justify-content-between flex-column d-flex">
             <Card.Title>{article.title}</Card.Title>
             <Card.Text>{article.shortDescription}</Card.Text>
             <div className="d-flex justify-content-between pb-3">
@@ -23,7 +23,7 @@ export default class ArticlesList extends React.Component {
               <span className="text-secondary small">{article.author}</span>
             </div>
             <div className="text-right">
-              <Card.Link href={"/article/events/" + this.props.id}>Читати далі</Card.Link>
+              <Card.Link href={`/article/${this.props.type}/${article.id}`}>Читати далі</Card.Link>
             </div>
           </Card.Body>
         </Card>
