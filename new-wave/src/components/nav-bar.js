@@ -3,6 +3,66 @@ import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 import logo from "../assets/NW_logo_sm.png";
 
 export default function NavBarBlock() {
+  let menuItems = [
+    {
+      description: "Головна",
+      link: "/#main"
+    },
+    {
+      description: "Проекти",
+      subItems: [
+        {
+          description: "Освітні",
+          link: "/educational"
+        },
+        {
+          description: "Культура і Мистецтво",
+          link: "/culture-and-art"
+        },
+        {
+          description: "Соціально-суспільні",
+          link: "/social"
+        },
+        {
+          description: "Публікації",
+          link: "/publications"
+        }
+      ]
+    },
+    {
+      description: "Про нас",
+      subItems: [
+        {
+          description: "Рада",
+          link: "/#our-team"
+        },
+        {
+          description: "Історія створення",
+          link: "/history"
+        },
+        {
+          description: "Звіти",
+          link: "/reports"
+        },
+        {
+          description: "Контакти",
+          link: "/#contacts"
+        }
+      ]
+    },
+    {
+      description: "Блоги",
+      link: "/blog"
+    },
+    {
+      description: "Пожертви",
+      link: "/donations"
+    },
+    {
+      description: "Архів",
+      link: "/archive"
+    }
+  ];
   return (
     <Navbar expand="sm" sticky="top" bg="light" variant="light">
       <Navbar.Brand>
@@ -10,24 +70,19 @@ export default function NavBarBlock() {
           <img src={logo} style={{width:80, marginTop: -7}} alt=""/>
         </a>
       </Navbar.Brand>
-      <Nav className="mr-auto w-100 d-flex justify-content-end">
-        <Nav.Link href="/#main">Головна</Nav.Link>
-        <NavDropdown title="Проекти" id="projects-list">
-          <NavDropdown.Item href="/educational">Освітні</NavDropdown.Item>
-          <NavDropdown.Item href="/culture-and-art">Культура і Мистецтво</NavDropdown.Item>
-          <NavDropdown.Item href="/social">Соціально-суспільні</NavDropdown.Item>
-          <NavDropdown.Item href="/publications">Публікації</NavDropdown.Item>
-        </NavDropdown>
-        <NavDropdown title="Про нас" id="projects-list">
-          <NavDropdown.Item href="/#our-team">Рада</NavDropdown.Item>
-          <NavDropdown.Item href="/history">Історія створення</NavDropdown.Item>
-          <NavDropdown.Item href="/reports">Звіти</NavDropdown.Item>
-          <NavDropdown.Item href="/#contacts">Контакти</NavDropdown.Item>
-        </NavDropdown>
-        <Nav.Link href="/blog">Блоги</Nav.Link>
-        <Nav.Link href="/donations">Пожертви</Nav.Link>
-        <Nav.Link href="/archive">Архів</Nav.Link>
-      </Nav>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+        <Nav>
+          {menuItems.map((menuItem, key) => {
+            if (!!menuItem.subItems) {
+              return (<NavDropdown title={menuItem.description} key={key}>
+                {menuItem.subItems.map((item, key) => <NavDropdown.Item key={key} href={item.link}>{item.description}</NavDropdown.Item>)}
+              </NavDropdown>);
+            }
+            return (<Nav.Link key={key} href={menuItem.link}>{menuItem.description}</Nav.Link>);
+          })}
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   );
 }

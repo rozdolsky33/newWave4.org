@@ -21,7 +21,7 @@ export default function MainPage() {
         <CardDeck className="justify-content-center">
           {teamMembers.map(teamMember => {
             return (
-              <TeamMemberCard {...teamMember}/>
+              <TeamMemberCard key={teamMember.id} {...teamMember}/>
             )
           })}
         </CardDeck>

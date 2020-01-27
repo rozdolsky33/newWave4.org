@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="App">
       <NavBarBlock />
-      <Row className="m-0">
+      <Row className="m-0 overflow-hidden">
         <Col xs md={{ span: 8, offset: 2 }}>
           <Router>
             <Route path="/" exact={true} component={MainPage} />
