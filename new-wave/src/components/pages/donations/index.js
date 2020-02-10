@@ -6,7 +6,9 @@ export default function DonationsPage() {
   return (
     <div className="text-center">
       <h2 className="p-3 text-primary">Пожертви</h2>
-      <p>Сторінка на стадії розробки</p>
+      <p className="text-center">Ukrainian New Wave is a 501(c)(3) organization.<br/>
+        Donations and gifts are deductible to the full extent<br/>
+        allowable under IRS regulations</p>
       <Form>
         <InputGroup className="mb-3">
           <Form.Check

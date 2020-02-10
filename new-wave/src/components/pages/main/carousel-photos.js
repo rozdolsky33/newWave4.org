@@ -4,8 +4,6 @@ import {Carousel} from "react-bootstrap";
 export default function CarouselPhotos() {
   let photos = [
     "./assets/NW_main_cover_1.jpg",
-    "./assets/NW_main_cover_2.jpg",
-    "./assets/NW_main_cover_3.jpg",
     "./assets/NW_main_cover_4.jpg",
     "./assets/NW_main_cover_5.jpg",
     "./assets/NW_main_cover_6.jpg",

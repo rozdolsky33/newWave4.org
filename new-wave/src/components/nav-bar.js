@@ -6,7 +6,7 @@ export default function NavBarBlock() {
   let menuItems = [
     {
       description: "Головна",
-      link: "/#main"
+      link: "/"
     },
     {
       description: "Проекти",
@@ -34,7 +34,7 @@ export default function NavBarBlock() {
       subItems: [
         {
           description: "Рада",
-          link: "/#our-team"
+          link: "/our-team"
         },
         {
           description: "Історія створення",
@@ -46,7 +46,7 @@ export default function NavBarBlock() {
         },
         {
           description: "Контакти",
-          link: "/#contacts"
+          link: "/contact-us"
         }
       ]
     },

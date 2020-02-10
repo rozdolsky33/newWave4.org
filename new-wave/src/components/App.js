@@ -12,6 +12,8 @@ import DonationsPage from "./pages/donations";
 import HistoryPage from "./pages/history";
 import ArticlePage from "./pages/article";
 import ArticlesList from "./common/articles-list";
+import OurTeamPage from "./pages/our-team";
+import ContactUsPage from "./pages/contact-us";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Router>
             <Route path="/" exact={true} component={MainPage} />
             <Route path="/reports" component={ReportsPage} />
+            <Route path="/our-team" component={OurTeamPage}/>
+            <Route path="/contact-us" component={ContactUsPage}/>
             <Route path="/history" component={HistoryPage}/>
             <Route path="/social" component={SocialPage} />
             <Route path="/educational" component={EducationalPage} />
