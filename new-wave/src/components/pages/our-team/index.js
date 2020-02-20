@@ -2,8 +2,6 @@ import React from "react";
 import {CardDeck} from "react-bootstrap";
 import teamMembers from "../../../data/teamMembers";
 import TeamMemberCard from "../../common/team-member-card";
-import ContactUsForm from "../../common/contact-us-form";
-
 
 export default function OurTeamPage() {
   return (

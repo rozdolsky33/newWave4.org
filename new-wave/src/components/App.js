@@ -14,6 +14,9 @@ import ArticlePage from "./pages/article";
 import ArticlesList from "./common/articles-list";
 import OurTeamPage from "./pages/our-team";
 import ContactUsPage from "./pages/contact-us";
+import AdminPage from "./admin";
+import LoginPage from "./login";
+import RegistrationPage from "./registration";
 
 function App() {
   return (
@@ -39,6 +42,9 @@ function App() {
               <ArticlesList type="archive" title="Архів"/>
             )}/>
             <Route path="/article/:type/:id" component={ArticlePage} />
+            <Route path="/admin" component={AdminPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/registration" component={RegistrationPage} />
           </Router>
         </Col>
       </Row>
