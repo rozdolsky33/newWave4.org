@@ -10,27 +10,32 @@ export default class LoginPage extends React.Component {
   }
   login(event) {
     event.preventDefault();
-    let url = "http://ec2-3-94-118-242.compute-1.amazonaws.com:8080/v1/api/users/login";
+    let url = "http://162.212.158.14:8080/v1/api/users/login";
+    let headers = new Headers({
+      "Access-Control-Request-Method": "POST",
+      "Access-Control-Request-Headers": "Content-Type",
+      "Content-Type": "application/json",
+      //"Authorization": `Basic ${btoa('****')}`
+    });
     let params = {
       method: "POST",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Request-Method": "GET",
-        "Access-Control-Request-Headers": "Content-Type",
-        "Content-Type": "application/json"
-      },
+      headers: headers,
       body: JSON.stringify({
         "email": this.refs.email.value,
         "password": this.refs.password.value
       })
     };
+
     fetch(url, params)
       .then(res => {
-        console.log(res);
+        console.log(res, res.headers.get("Authorization"));
+        res.headers.forEach((header, key) => {
+          console.log(key + ':' + header);
+        });
         if (!res.ok) {
           throw {message: `Some error occurred while login, errorcode - ${res.status}`}
         } else {
-          window.location.href = "/admin";
+          //this.props.history.push("/admin");
         }
       })
       .catch(err => {

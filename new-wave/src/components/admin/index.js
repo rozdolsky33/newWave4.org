@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Button} from "react-bootstrap";
+import {Table, Button, Col} from "react-bootstrap";
 import AddEditModal from "./addEditModal";
 
 export default class AdminPage extends React.Component {
@@ -16,7 +16,7 @@ export default class AdminPage extends React.Component {
     this.setState({addEditModalShown: false});
   }
   componentDidMount() {
-    let url = "http://ec2-3-94-118-242.compute-1.amazonaws.com:8080/v1/api/blog?page=0&limit=3";
+    let url = "http://162.212.158.14:8080/v2/api/blog?limit=2&page=0";
     let params = {
       method: "GET",
       headers:{
@@ -28,11 +28,14 @@ export default class AdminPage extends React.Component {
     };
     fetch(url, params)
       .then(response => response.json())
-      .then(articles => this.setState({ articles }));
+      .then(articles => {
+        this.setState({ articles });
+        console.log(articles);
+      });
   }
 
   deleteArticle(id) {
-    let url = `http://ec2-3-94-118-242.compute-1.amazonaws.com:8080/v1/api/blog/${id}`;
+    let url = `http://162.212.158.14:8080/v1/api/blog/${id}`;
     let params = {
       method: "DELETE",
       headers:{
@@ -42,12 +45,14 @@ export default class AdminPage extends React.Component {
         "Content-Type": "application/json"
       }
     };
-    fetch(url, params).then(res => {});
+    fetch(url, params).then(res => {
+      console.log(res);
+    });
   }
 
   render() {
     return (
-      <div className="text-center">
+      <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
         <h2 className="p-3 text-primary">Articles</h2>
         <Table striped bordered hover>
           <thead>
@@ -60,14 +65,7 @@ export default class AdminPage extends React.Component {
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>1</td>
-            <td>title</td>
-            <td>author</td>
-            <td>date</td>
-            <td>X</td>
-          </tr>
-          {/*{
+          {
             this.state.articles.map((article) => {
               return (
                 <tr>
@@ -79,14 +77,14 @@ export default class AdminPage extends React.Component {
                 </tr>
               )
             })
-          }*/}
+          }
           </tbody>
         </Table>
         <Button variant="primary" size="lg" className="fixed-bottom m-3" onClick={() => {this.setState({addEditModalShown: true})}}>
           +
         </Button>
         <AddEditModal shown={this.state.addEditModalShown} hideModal={() => this.hideModal()}/>
-      </div>
+      </Col>
     );
   }
 }

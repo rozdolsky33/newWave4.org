@@ -1,10 +1,10 @@
 import React from "react";
-import {Button, Form, FormControl, InputGroup} from "react-bootstrap";
+import {Button, Col, Form, FormControl, InputGroup} from "react-bootstrap";
 
 
 export default function DonationsPage() {
   return (
-    <div className="text-center">
+    <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
       <h2 className="p-3 text-primary">Пожертви</h2>
       <p className="text-center">Ukrainian New Wave is a 501(c)(3) organization.<br/>
         Donations and gifts are deductible to the full extent<br/>
@@ -76,6 +76,6 @@ export default function DonationsPage() {
           </Button>
         </Form.Group>
       </Form>
-    </div>
+    </Col>
   );
 }

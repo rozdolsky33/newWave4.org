@@ -11,7 +11,7 @@ export default class RegistrationPage extends React.Component {
   }
   register(event) {
     event.preventDefault();
-    let url = "http://ec2-3-94-118-242.compute-1.amazonaws.com:8080/v1/api/users";
+    let url = "http://162.212.158.14:8080/v1/api/users";
     let params = {
       method: "POST",
       headers: {
@@ -33,7 +33,7 @@ export default class RegistrationPage extends React.Component {
         if (!res.ok) {
           throw {message: `Some error occurred while login, errorcode - ${res.status}`}
         } else {
-          window.location.href = "/login";
+          this.props.history.push("/login");
         }
       })
       .catch(err => {

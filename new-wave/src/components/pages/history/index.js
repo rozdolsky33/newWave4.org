@@ -1,9 +1,10 @@
 import React from "react";
+import {Col} from "react-bootstrap";
 
 
 export default function HistoryPage() {
   return (
-    <div className="text-center">
+    <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
       <h2 className="p-3 text-primary">Наша історія</h2>
       <p>
       Всеамериканська громадська Організація  «Нова Українська Хвиля»  - національно-патріотична і освітньо-культурна&nbsp;
@@ -85,6 +86,6 @@ export default function HistoryPage() {
         Найбільшим здобутком 2016 року  є відкриття школи українознавства у Брукліні, Нью Йорк, у якій починали 80 учнів.&nbsp;
         У 2019 є уже 150 школярів молодших і старших класів.
       </p>
-    </div>
+    </Col>
   );
 }

@@ -1,11 +1,11 @@
 import React from "react";
-import {CardDeck} from "react-bootstrap";
+import {CardDeck, Col} from "react-bootstrap";
 import teamMembers from "../../../data/teamMembers";
 import TeamMemberCard from "../../common/team-member-card";
 
 export default function OurTeamPage() {
   return (
-    <div className="text-center">
+    <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
       <h2 className="p-3 text-primary">Наша команда</h2>
         <div className="text-center mb-3 pb-3">
             <CardDeck className="justify-content-center">
@@ -16,6 +16,6 @@ export default function OurTeamPage() {
                 })}
             </CardDeck>
         </div>
-    </div>
+    </Col>
   );
 }

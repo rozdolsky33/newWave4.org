@@ -14,7 +14,7 @@ export default function CarouselPhotos() {
   ];
   return (
     <div className="carousel-photo-block">
-      <Carousel controls={false}>
+      <Carousel controls={false} indicators={false}>
         {photos.map((photo, key) => {
           return (<Carousel.Item key={key} className="h-100">
             <div style={{backgroundImage: `url(${photo})`}} className="photo-view-background"></div>

@@ -1,6 +1,7 @@
 import React from "react";
 import {Row, Col} from "react-bootstrap";
 import {BrowserRouter as Router , Route} from "react-router-dom";
+import { createBrowserHistory } from 'history';
 import NavBarBlock from "./nav-bar";
 import MainPage from "./pages/main";
 import ReportsPage from "./pages/reports";
@@ -19,34 +20,30 @@ import LoginPage from "./login";
 import RegistrationPage from "./registration";
 
 function App() {
+  let history = createBrowserHistory();
   return (
     <div className="App">
-      <NavBarBlock />
+      <NavBarBlock history={history} />
       <Row className="m-0 overflow-hidden">
-        <Col xs md={{ span: 8, offset: 2 }}>
-          <Router>
-            <Route path="/" exact={true} component={MainPage} />
-            <Route path="/reports" component={ReportsPage} />
-            <Route path="/our-team" component={OurTeamPage}/>
-            <Route path="/contact-us" component={ContactUsPage}/>
-            <Route path="/history" component={HistoryPage}/>
-            <Route path="/social" component={SocialPage} />
-            <Route path="/educational" component={EducationalPage} />
-            <Route path="/publications" component={PublicationsPage} />
-            <Route path="/culture-and-art" component={CultureAndArtPage} />
-            <Route path="/donations" component={DonationsPage} />
-            <Route path="/blog" render={rp => (
-              <ArticlesList type="articles" title="Блоги"/>
-            )}/>
-            <Route path="/archive" render={rp => (
-              <ArticlesList type="archive" title="Архів"/>
-            )}/>
-            <Route path="/article/:type/:id" component={ArticlePage} />
-            <Route path="/admin" component={AdminPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/registration" component={RegistrationPage} />
-          </Router>
-        </Col>
+        <Router history={history}>
+          <Route path="/" exact={true} component={MainPage} />
+          <Route path="/reports" component={ReportsPage} />
+          <Route path="/our-team" component={OurTeamPage} />
+          <Route path="/contact-us" component={ContactUsPage} />
+          <Route path="/history" component={HistoryPage} />
+          <Route path="/social" component={SocialPage} />
+          <Route path="/educational" component={EducationalPage} />
+          <Route path="/publications" component={PublicationsPage} />
+          <Route path="/culture-and-art" component={CultureAndArtPage} />
+          <Route path="/donations" component={DonationsPage} />
+          <Route path="/blog" render={rp => (
+            <ArticlesList type="articles" title="Блоги"/>
+          )}/>
+          <Route path="/article/:type/:id" component={ArticlePage} />
+          <Route path="/admin" component={AdminPage} />
+          <Route path="/login" component={LoginPage} history={history} />
+          <Route path="/registration" component={RegistrationPage} history={history} />
+        </Router>
       </Row>
     </div>
   );

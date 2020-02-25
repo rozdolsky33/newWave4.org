@@ -5,14 +5,12 @@ import "./main.scss";
 
 export default function MainPage() {
   return (
-    <div>
-      <div id="main" className="d-flex align-items-end">
-        <div className="main-page-cover">
-          <CarouselPhotos/>
-        </div>
+    <Col>
+      <div className="main-page-cover">
+        <CarouselPhotos/>
       </div>
-      <Row className="mt-5 mb-3 pb-3">
-        <Col md="4" className="text-center d-flex flex-column justify-content-center align-items-center">
+      <Row className="main-description-block pb-3 pt-3 bg-white position-relative">
+        <Col xs md={{ span: 2, offset: 2 }} className="text-center d-flex flex-column justify-content-center align-items-center">
           <img
             src="../assets/NW_logo_sm_2.jpg"
             height="130"
@@ -22,7 +20,7 @@ export default function MainPage() {
             Нова Хвиля
           </h3>
         </Col>
-        <Col md="8">
+        <Col xs md="6">
           <p>
             Всеамериканська громадська Організація «Нова Українська Хвиля» - національно-патріотична і
             освітньо-культурна
@@ -36,6 +34,16 @@ export default function MainPage() {
           </p>
         </Col>
       </Row>
-    </div>
+      <Row className="main-recent-block bg-dark position-relative">
+        <Col xs md={{ span: 4, offset: 2 }} className="">
+          <h2 className="p-3 text-primary text-center">Нові проекти</h2>
+          <div className="bg-white p-5"><span>тут буде перелік нових проектів</span></div>
+        </Col>
+        <Col xs md="4" className="">
+          <h2 className="p-3 text-primary text-center">Статті з наших блогів</h2>
+          <div className="bg-white p-5"><span>тут буде перелік останніх статтей</span></div>
+        </Col>
+      </Row>
+    </Col>
   );
 }

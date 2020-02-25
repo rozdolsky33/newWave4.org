@@ -1,6 +1,7 @@
 import React from "react";
 import archive from "../../../data/archive";
 import articles from "../../../data/articles";
+import {Col} from "react-bootstrap";
 
 export default class ArticlePage extends React.Component {
   constructor(props) {
@@ -16,14 +17,14 @@ export default class ArticlePage extends React.Component {
   }
   render() {
     return (
-      <div className="text-center">
+      <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
         <h2 className="p-3 text-primary">{this.state.article.title}</h2>
         <p className="pt-5">{this.state.article.longDescription}</p>
         <div className="d-flex justify-content-between pt-5">
           <span className="text-secondary">{this.state.article.date}</span>
           <span className="text-secondary">{this.state.article.author}</span>
         </div>
-      </div>
+      </Col>
     );
   }
 }
