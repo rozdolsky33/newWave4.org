@@ -1,38 +1,56 @@
-﻿const requestArticlesType = 'REQUEST_ARTICLES';
+﻿const requestType = 'REQUEST_STARTED';
 const receiveArticlesType = 'RECEIVE_ARTICLES';
+const articleDeletedType = 'RECEIVE_ARTICLES';
 const initialState = {
+  host: 'http://162.212.158.14:8080',
+  paginationConfig: {
+    totalPages: 1,
+    totalElements: 4,
+    numberOfElements: 4,
+    size: 5,
+    number: 0
+  },
   articles: [],
   events: [],
   isLoading: false
 };
 
+const getParams = (methodType) => {
+  return {
+    method: methodType,
+    headers:{
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Request-Method': methodType,
+      'Access-Control-Request-Headers': 'Content-Type',
+      'Content-Type': 'application/json'
+    }
+  };
+};
+
 export const actionCreators = {
-  getArticles: () => async (dispatch) => {
+  getArticles: (pageNumber, pageSize) => async (dispatch) => {
+    dispatch({ type: requestType });
+    let url = `${initialState.host}/v2/api/blog/${pageNumber}/${pageSize}`;
+    let response = await fetch(url, getParams('GET'));
+    response = await response.json();
 
-    dispatch({ type: requestArticlesType});
+    dispatch({ type: receiveArticlesType, response });
+  },
+  deleteArticle: (id) => async (dispatch) => {
+    dispatch({ type: requestType });
+    let url = `${initialState.host}/v2/api/blog/${id}`;
+    const response = await fetch(url, getParams('DELETE'));
+    const resp = await response.json();
+    const articles = resp.content;
 
-
-    let url = "http://162.212.158.14:8080/v2/api/blog?limit=2&page=0";
-    let params = {
-      method: "GET",
-      headers:{
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Request-Method": "GET",
-        "Access-Control-Request-Headers": "Content-Type",
-        "Content-Type": "application/json"
-      }
-    };
-    const response = await fetch(url, params);
-    const articles = await response.json();
-
-    dispatch({ type: receiveArticlesType, articles });
+    dispatch({ type: articleDeletedType });
   }
 };
 
 export const reducer = (state, action) => {
   state = state || initialState;
 
-  if (action.type === requestArticlesType) {
+  if (action.type === requestType) {
     return {
       ...state,
       isLoading: true
@@ -42,7 +60,12 @@ export const reducer = (state, action) => {
   if (action.type === receiveArticlesType) {
     return {
       ...state,
-      articles: action.articles,
+      paginationConfig: {
+        totalPages: action.response.totalPages,
+        totalElements: action.response.totalElements,
+        numberOfElements: action.response.numberOfElements
+      },
+      articles: action.response.content,
       isLoading: false
     };
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Alert, Form} from "react-bootstrap";
+import {Button, Alert, Form, Col} from "react-bootstrap";
 
 export default class LoginPage extends React.Component {
   constructor(props) {
@@ -13,7 +13,9 @@ export default class LoginPage extends React.Component {
     let url = "http://162.212.158.14:8080/v1/api/users/login";
     let headers = new Headers({
       "Access-Control-Request-Method": "POST",
-      "Access-Control-Request-Headers": "Content-Type",
+      "Access-Control-Request-Headers": "Authorization",
+      "Access-Control-Allow-Headers": "Authorization",
+      "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json",
       //"Authorization": `Basic ${btoa('****')}`
     });
@@ -30,7 +32,7 @@ export default class LoginPage extends React.Component {
       .then(res => {
         console.log(res, res.headers.get("Authorization"));
         res.headers.forEach((header, key) => {
-          console.log(key + ':' + header);
+          console.log(key + ': ' + header);
         });
         if (!res.ok) {
           throw {message: `Some error occurred while login, errorcode - ${res.status}`}
@@ -49,7 +51,7 @@ export default class LoginPage extends React.Component {
 
   render() {
     return (
-      <div className="text-center">
+      <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
         <h2 className="p-3 text-primary">Login</h2>
         <Form onSubmit={(e) => this.login(e)} className="text-left">
           <Form.Group controlId="email">
@@ -67,7 +69,7 @@ export default class LoginPage extends React.Component {
             {this.state.errorMessage}
           </Alert>
         )}
-      </div>
+      </Col>
     );
   }
 }
