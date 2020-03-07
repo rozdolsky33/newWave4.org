@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pagination } from 'react-bootstrap';
+import { Pagination, Col } from 'react-bootstrap';
 
 export default function PaginationPanel (props) {
   let getPages = () => {
@@ -9,7 +9,7 @@ export default function PaginationPanel (props) {
         pagesList.push(<Pagination.Item active key={i}>{i+1}</Pagination.Item>);
       } else if ((i === 0 || i === props.totalPages - 1) ||
         (i < props.currentPage + 2 && i > props.currentPage - 2)) {
-        pagesList.push(<Pagination.Item key={i}>{i+1}</Pagination.Item>);
+        pagesList.push(<Pagination.Item key={i} onClick={() => props.selectPage(i)}>{i+1}</Pagination.Item>);
       } else if (i === props.currentPage + 2 || i === props.currentPage - 2) {
         pagesList.push(<Pagination.Ellipsis />);
       }

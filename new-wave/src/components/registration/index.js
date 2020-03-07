@@ -1,8 +1,10 @@
 import React from "react";
-import {Button, Alert, Form} from "react-bootstrap";
-import { useHistory } from 'react-router-dom';
+import {Button, Alert, Form, Col} from "react-bootstrap";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {actionCreators} from "../../store/Main";
 
-export default class RegistrationPage extends React.Component {
+class RegistrationPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,43 +13,12 @@ export default class RegistrationPage extends React.Component {
   }
   register(event) {
     event.preventDefault();
-    let url = "http://162.212.158.14:8080/v1/api/users";
-    let params = {
-      method: "POST",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Request-Method": "GET",
-        "Access-Control-Request-Headers": "Content-Type",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "email": this.refs.email.value,
-        "firstName": this.refs.firstName.value,
-        "lastName": this.refs.lastName.value,
-        "password": this.refs.password.value
-      })
-    };
-    fetch(url, params)
-      .then(res => {
-        console.log(res);
-        if (!res.ok) {
-          throw {message: `Some error occurred while login, errorcode - ${res.status}`}
-        } else {
-          this.props.history.push("/login");
-        }
-      })
-      .catch(err => {
-        if (!!err && !!err.message) {
-          this.setState({errorMessage: err.message});
-        } else {
-          this.setState({errorMessage: "Some error occurred while login"})
-        }
-      });
+    this.props.register(this.refs.email.value, this.refs.firstName.value, this.refs.lastName.value, this.refs.password.value);
   }
 
   render() {
     return (
-      <div className="text-center">
+      <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
         <h2 className="p-3 text-primary">Registration</h2>
         <Form onSubmit={(e) => this.register(e)} className="text-left">
           <Form.Group controlId="email">
@@ -73,7 +44,11 @@ export default class RegistrationPage extends React.Component {
             {this.state.errorMessage}
           </Alert>
         )}
-      </div>
+      </Col>
     );
   }
 }
+export default connect(
+  state => state.mainReducer,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(RegistrationPage);

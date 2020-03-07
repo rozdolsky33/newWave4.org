@@ -5,30 +5,37 @@ import { Table, Button, Col, Tab, Tabs} from 'react-bootstrap';
 import AddEditModal from './addEditModal';
 import PaginationPanel from '../common/pagination-panel';
 import { actionCreators } from '../../store/Main';
+import Row from "react-bootstrap/Row";
 
 class AdminPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeTab: 'articles',
-      addEditModalShown: false,
       currentPage: 0,
       pageSize: 10
     };
-    this.hideModal.bind(this);
+    this.selectPage = this.selectPage.bind(this);
+  }
+
+  selectPage(pageNumber) {
+    this.setState({currentPage: pageNumber});
+    this.props.getArticles(pageNumber, this.state.pageSize);
   }
 
   componentWillMount() {
     this.props.getArticles(this.state.currentPage, this.state.pageSize);
   }
 
-  hideModal () {
-    this.setState({addEditModalShown: false});
-  }
-
   render() {
     return (
-      <Col className='text-center' xs md={{ span: 8, offset: 2 }}>
+      <Col className='text-center' xs md={{ span: 10, offset: 1 }}>
+        <div className="pt-3 d-flex justify-content-end">
+          <PaginationPanel {...this.props.paginationConfig}
+                           selectPage={this.selectPage}
+                           currentPage={this.state.currentPage}
+                           pageSize={this.state.pageSize}/>
+        </div>
         <Tabs id="admin-content" activeKey={this.state.activeTab} onSelect={k => this.setState({activeTab: k})}>
           <Tab eventKey="articles" title="Articles">
             <Table striped bordered hover>
@@ -47,12 +54,14 @@ class AdminPage extends React.Component {
                   return (
                     <tr key={article.id}>
                       <td>{article.id}</td>
-                      <td>{article.title}</td>
+                      <td className="text-left">{article.title}</td>
                       <td>{article.author}</td>
                       <td>{article.createdAt}</td>
-                      <td><i onClick={() => this.deleteArticle(article.id)}>X</i></td>
-                    </tr>
-                  )
+                      <td>
+                        <Button variant="danger" size="sm" onClick={() => this.props.deleteArticle(article.id)}>
+                        X</Button>
+                      </td>
+                    </tr>);
                 })
               }
               </tbody>
@@ -73,13 +82,10 @@ class AdminPage extends React.Component {
             </Table>
           </Tab>
         </Tabs>
-        <PaginationPanel {...this.props.paginationConfig}
-                         currentPage={this.state.currentPage}
-                         pageSize={this.state.pageSize}/>
-        <Button variant='primary' size='lg' className='fixed-bottom m-3' onClick={() => {this.setState({addEditModalShown: true})}}>
+        <Button variant='primary' size='lg' className='fixed-bottom m-3' onClick={() => {this.props.toggleAddEditArticleModal(true)}}>
           +
         </Button>
-        <AddEditModal shown={this.state.addEditModalShown} hideModal={() => this.hideModal()}/>
+        <AddEditModal />
       </Col>
     );
   }

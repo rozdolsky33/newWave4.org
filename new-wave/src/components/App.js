@@ -38,8 +38,8 @@ export default class App extends React.Component {
             <Route path="/blog" component={BlogPage} />
             <Route path="/article/:type/:id" component={ArticlePage} />
             <Route path="/admin" component={AdminPage} />
-            <Route path="/login" component={LoginPage} history={this.props.history} />
-            <Route path="/registration" component={RegistrationPage} history={this.props.history} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/registration" component={RegistrationPage} />
           </Router>
         </Row>
       </div>
