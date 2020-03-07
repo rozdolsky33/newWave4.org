@@ -36,7 +36,7 @@ export default class App extends React.Component {
             <Route path="/culture-and-art" component={CultureAndArtPage} />
             <Route path="/donations" component={DonationsPage} />
             <Route path="/blog" component={BlogPage} />
-            <Route path="/article/:type/:id" component={ArticlePage} />
+            <Route path="/article/:id" component={ArticlePage} />
             <Route path="/admin" component={AdminPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />

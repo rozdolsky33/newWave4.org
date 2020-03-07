@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Card, Col } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import {actionCreators} from "../../../store/Main";
 
 class BlogPage extends React.Component {
@@ -9,27 +9,58 @@ class BlogPage extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      pageSize: 10
+      pageSize: 10,
+      step: 5
     };
+    this.handleScroll = this.handleScroll.bind(this);
   }
   componentWillMount() {
     this.props.getArticles(this.state.currentPage, this.state.pageSize);
+    window.addEventListener('scroll', this.handleScroll, true);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll() {
+    if (!this.endOfList || this.state.pageSize > this.props.articles.length) return false;
+    const top = this.endOfList.getBoundingClientRect().top - 80;
+    const isEndOfListVisible = top >= 0 && top <= window.innerHeight;
+    if (isEndOfListVisible) {
+      const newPageSize = this.state.pageSize + this.state.step;
+      this.setState({pageSize: newPageSize});
+      this.props.getArticles(this.state.currentPage, newPageSize);
+    }
+  }
+
+  getYears() {
+    const years = [];
+    this.props.articles.forEach(article => {
+      let year = article.date.slice(0, 4);
+      if (years.indexOf(year) < 0) {
+        years.push(year);
+      }
+    });
+    return years;
   }
 
   getArticlesList() {
     return this.props.articles.map((article, key) => {
       return (
-        <Card key={key} className="mb-2 d-flex flex-row justify-content-start p-3">
-          <Card.Img style={{maxWidth: "30%", objectFit: "contain"}} src={article.pic || "./assets/NW_article_pic.png"} />
-          <Card.Body className="justify-content-between flex-column d-flex">
+        <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
+          {!!article.pic ?
+            <Card.Img style={{width: "25%", objectFit: "contain"}} src={article.pic} /> :
+            <div className="bg-secondary w-25"/>
+          }
+          <Card.Body className="justify-content-between flex-column d-flex w-75">
             <Card.Title>{article.title}</Card.Title>
-            <Card.Text>{article.shortDescription}</Card.Text>
             <div className="d-flex justify-content-between pb-3">
               <span className="text-secondary small">{article.date}</span>
               <span className="text-secondary small">{article.author}</span>
             </div>
+            <Card.Text>{article.preview}</Card.Text>
             <div className="text-right">
-              <Card.Link href={`/article/${this.props.type}/${article.id}`}>Читати далі</Card.Link>
+              <Card.Link href={`/article/${article.id}`}>Читати далі</Card.Link>
             </div>
           </Card.Body>
         </Card>
@@ -39,11 +70,19 @@ class BlogPage extends React.Component {
 
   render () {
     return (
-      <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
+      <Col className="text-center">
         <h2 className="p-3 text-primary">Блог</h2>
-        <div className="pl-3 justify-content-center">
-          {this.getArticlesList()}
-        </div>
+        <Row>
+          <Col className="text-center" xs md="2">
+            {this.getYears().map(year => <p key={year}>&#9675; {year}</p>)}
+          </Col>
+          <Col className="text-center" xs md="8">
+            <div className="pl-3 justify-content-center">
+              {this.getArticlesList()}
+              <div ref={el => {this.endOfList = el;}}></div>
+            </div>
+          </Col>
+        </Row>
       </Col>
     );
   }

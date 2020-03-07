@@ -1,30 +1,35 @@
 import React from "react";
-import archive from "../../../data/archive";
-import articles from "../../../data/articles";
-import {Col} from "react-bootstrap";
+import {Card, Col} from "react-bootstrap";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {actionCreators} from "../../../store/Main";
 
-export default class ArticlePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { article: {} , articles: {archive, articles} };
-  }
-  async componentDidMount() {
-    let articlesList = this.state.articles[this.props.match.params.type] || [];
-    this.setState({article: articlesList.find((article) => {
-      return article.id === this.props.match.params.id;
-    })
-    });
+class ArticlePage extends React.Component {
+  componentDidMount() {
+    this.props.getArticle(this.props.match.params.id);
   }
   render() {
     return (
       <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
-        <h2 className="p-3 text-primary">{this.state.article.title}</h2>
-        <p className="pt-5">{this.state.article.longDescription}</p>
-        <div className="d-flex justify-content-between pt-5">
-          <span className="text-secondary">{this.state.article.date}</span>
-          <span className="text-secondary">{this.state.article.author}</span>
-        </div>
+        {!this.props.selectedArticle ||
+          <>
+            {!!this.props.selectedArticle.pic ?
+              <img style={{width: "100%", objectFit: "contain"}} src={this.props.selectedArticle.pic} /> :
+              <div className="bg-secondary w-100"><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
+            }
+            <h2 className="p-3 text-primary">{this.props.selectedArticle.title}</h2>
+            <div className="d-flex justify-content-between pt-5">
+              <span className="text-secondary">{this.props.selectedArticle.date}</span>
+              <span className="text-secondary">{this.props.selectedArticle.author}</span>
+            </div>
+            <p className="pt-5">{this.props.selectedArticle.content}</p>
+          </>
+          }
       </Col>
     );
   }
 }
+export default connect(
+  state => state.mainReducer,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(ArticlePage);

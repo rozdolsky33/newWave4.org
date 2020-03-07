@@ -5,6 +5,7 @@ const registrationPassedType = "REGISTRATION_SUCCESSFUL";
 const addArticlePassedType = "ADD_ARTICLE_SUCCESSFUL";
 const toggleAddEditArticleModalType = "TOGGLE_ADD_EDIT_ARTICLE_MODAL";
 const receiveArticlesType = "RECEIVE_ARTICLES";
+const receiveArticleType = "RECEIVE_ARTICLE";
 const articleDeletedType = "ARTICLE_DELETED";
 const initialState = {
   host: "http://162.212.158.14:8080",
@@ -18,6 +19,7 @@ const initialState = {
   articles: [],
   events: [],
   addEditModalShown: false,
+  selectedArticle: undefined,
   editArticleMode: false,
   isLoading: false,
   errorMessage: ""
@@ -82,6 +84,17 @@ export const actionCreators = {
       dispatch({ type: requestFailedType, error: response.status});
     }
   },
+  getArticle: (id) => async (dispatch) => {
+    dispatch({ type: requestType });
+    let url = `${initialState.host}/v1/api/blog/${id}`;
+    let response = await fetch(url, getParams("GET"));
+    response = await response.json();
+
+    dispatch({ type: receiveArticleType, response });
+    if (!response.ok) {
+      dispatch({ type: requestFailedType, error: response.status});
+    }
+  },
   deleteArticle: (id) => async (dispatch) => {
     dispatch({ type: requestType });
     let url = `${initialState.host}/v1/api/blog/${id}`;
@@ -128,7 +141,8 @@ export const reducer = (state, action) => {
     case requestFailedType: {
       return {
         ...state,
-        errorMessage: `Something went wrong, error code - ${action.error}`
+        errorMessage: `Something went wrong, error code - ${action.error}`,
+        isLoading: false
       };
     }
     case toggleAddEditArticleModalType: {
@@ -141,13 +155,15 @@ export const reducer = (state, action) => {
     case addArticlePassedType: {
       return {
         ...state,
-        articles: state.articles
+        articles: state.articles,
+        isLoading: false
       };
     }
     case loginPassedType: {
       return {
         ...state,
-        token: action.token
+        token: action.token,
+        isLoading: false
       };
     }
     case receiveArticlesType: {
@@ -159,6 +175,13 @@ export const reducer = (state, action) => {
           numberOfElements: action.response.numberOfElements
         },
         articles: action.response.content,
+        isLoading: false
+      };
+    }
+    case receiveArticleType: {
+      return {
+        ...state,
+        selectedArticle: action.response,
         isLoading: false
       };
     }
