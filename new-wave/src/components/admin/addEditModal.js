@@ -19,23 +19,28 @@ class AddEditModal extends React.Component {
     this.setState({ startDate: date });
   }
   
-  submitArticle(event) {
+  async submitArticle(event) {
     event.preventDefault();
     const params = {
       title: this.refs.title.value,
       author: this.refs.author.value,
       category: this.refs.category.value,
+
       preview: this.refs.preview.value,
       content: this.refs.content.value,
-      createdAt: this.state.startDate
+      date: this.state.startDate
     };
-    this.props.addArticle(params);
+    await this.props.addItem(this.props.activeItems, params);
+    this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
   }
   render() {
     return (
-      <Modal show={this.props.addEditModalShown} onHide={() => this.props.toggleAddEditArticleModal(false)}>
+      <Modal show={this.props.addEditModalShown} onHide={() => this.props.toggleAddEditModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>{this.props.editMode ? "Edit article" : "Add article"}</Modal.Title>
+          <Modal.Title>
+            {this.props.editMode ? "Edit " : "Add "}
+            {this.props.activeItems === "blog" ? "article" : "project"}
+          </Modal.Title>
         </Modal.Header>
         <Form onSubmit={(e) => this.submitArticle(e)}>
           <Modal.Body>
@@ -57,7 +62,7 @@ class AddEditModal extends React.Component {
                 <Form.Control type="text" placeholder="Article category" ref="category" />
               </Col>
             </Form.Group>
-            <Form.Group controlId="createdAt">
+            <Form.Group controlId="date">
               <Form.Label className="pr-3">Created at</Form.Label>
               <DatePicker className="form-control"
                           selected={this.state.startDate}
@@ -73,7 +78,7 @@ class AddEditModal extends React.Component {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => this.props.toggleAddEditArticleModal(false)}>Close</Button>
+            <Button variant="secondary" onClick={() => this.props.toggleAddEditModal(false)}>Close</Button>
             <Button variant="primary" type="submit">Submit</Button>
           </Modal.Footer>
         </Form>

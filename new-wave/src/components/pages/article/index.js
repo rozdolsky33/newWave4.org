@@ -6,14 +6,14 @@ import {actionCreators} from "../../../store/Main";
 
 class ArticlePage extends React.Component {
   componentDidMount() {
-    this.props.getArticle(this.props.match.params.id);
+    this.props.getItem(this.props.match.params.id);
   }
   render() {
     return (
       <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
-        {!this.props.selectedArticle ||
+        {!this.props.selectedItem ||
           <>
-            {!!this.props.selectedArticle.pic ?
+            {!!this.props.selectedItem.pic ?
               <img style={{width: "100%", objectFit: "contain"}} src={this.props.selectedArticle.pic} /> :
               <div className="bg-secondary w-100"><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
             }

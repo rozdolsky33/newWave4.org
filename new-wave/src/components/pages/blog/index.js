@@ -9,13 +9,13 @@ class BlogPage extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      pageSize: 10,
+      pageSize: 3,
       step: 5
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
   componentWillMount() {
-    this.props.getArticles(this.state.currentPage, this.state.pageSize);
+    this.props.getItemsList("blog", this.state.currentPage, this.state.pageSize);
     window.addEventListener('scroll', this.handleScroll, true);
   }
   componentWillUnmount() {
@@ -29,13 +29,13 @@ class BlogPage extends React.Component {
     if (isEndOfListVisible) {
       const newPageSize = this.state.pageSize + this.state.step;
       this.setState({pageSize: newPageSize});
-      this.props.getArticles(this.state.currentPage, newPageSize);
+      this.props.getItemsList("blog", this.state.currentPage, newPageSize);
     }
   }
 
   getYears() {
     const years = [];
-    this.props.articles.forEach(article => {
+    this.props.items.forEach(article => {
       let year = article.date.slice(0, 4);
       if (years.indexOf(year) < 0) {
         years.push(year);
@@ -45,7 +45,7 @@ class BlogPage extends React.Component {
   }
 
   getArticlesList() {
-    return this.props.articles.map((article, key) => {
+    return this.props.items.map((article, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
           {!!article.pic ?

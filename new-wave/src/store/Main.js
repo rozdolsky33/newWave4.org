@@ -2,11 +2,13 @@
 const requestFailedType = "REQUEST_FAILED";
 const loginPassedType = "LOGIN_SUCCESSFUL";
 const registrationPassedType = "REGISTRATION_SUCCESSFUL";
-const addArticlePassedType = "ADD_ARTICLE_SUCCESSFUL";
-const toggleAddEditArticleModalType = "TOGGLE_ADD_EDIT_ARTICLE_MODAL";
-const receiveArticlesType = "RECEIVE_ARTICLES";
-const receiveArticleType = "RECEIVE_ARTICLE";
-const articleDeletedType = "ARTICLE_DELETED";
+const addItemPassedType = "ADD_ITEM_SUCCESSFUL";
+const toggleAddEditModalType = "TOGGLE_ADD_EDIT_MODAL";
+const receiveItemsType = "RECEIVE_ITEMS";
+const receiveItemType = "RECEIVE_ITEM";
+const itemDeletedType = "ITEM_DELETED";
+const changeActiveItemsType = "CHANGE_ACTIVE_ITEMS";
+
 const initialState = {
   host: "http://162.212.158.14:8080",
   paginationConfig: {
@@ -16,13 +18,13 @@ const initialState = {
     size: 5,
     number: 0
   },
-  articles: [],
-  events: [],
+  items: [],
   addEditModalShown: false,
-  selectedArticle: undefined,
-  editArticleMode: false,
+  selectedItem: undefined,
+  editMode: false,
   isLoading: false,
-  errorMessage: ""
+  errorMessage: "",
+  activeItems: "blog"
 };
 
 const getParams = (methodType) => {
@@ -73,58 +75,64 @@ export const actionCreators = {
       dispatch({ type: requestFailedType, error: response.status});
     }
   },
-  getArticles: (pageNumber, pageSize) => async (dispatch) => {
+  getItemsList: (activeItems, pageNumber, pageSize) => async (dispatch) => {
     dispatch({ type: requestType });
-    let url = `${initialState.host}/v2/api/blog/${pageNumber}/${pageSize}`;
+    let url = `${initialState.host}/v2/api/${activeItems}/${pageNumber}/${pageSize}`;
     let response = await fetch(url, getParams("GET"));
-    response = await response.json();
-
-    dispatch({ type: receiveArticlesType, response });
-    if (!response.ok) {
-      dispatch({ type: requestFailedType, error: response.status});
-    }
-  },
-  getArticle: (id) => async (dispatch) => {
-    dispatch({ type: requestType });
-    let url = `${initialState.host}/v1/api/blog/${id}`;
-    let response = await fetch(url, getParams("GET"));
-    response = await response.json();
-
-    dispatch({ type: receiveArticleType, response });
-    if (!response.ok) {
-      dispatch({ type: requestFailedType, error: response.status});
-    }
-  },
-  deleteArticle: (id) => async (dispatch) => {
-    dispatch({ type: requestType });
-    let url = `${initialState.host}/v1/api/blog/${id}`;
-    const response = await fetch(url, getParams("DELETE"));
-
     if (response.ok) {
-      dispatch({ type: articleDeletedType });
+      response = await response.json();
+      dispatch({ type: receiveItemsType, response });
+    } else if (response.status === 403) {
+      window.location.href = "/login";
     } else {
       dispatch({ type: requestFailedType, error: response.status});
     }
   },
-  addArticle: (articleParams) => async (dispatch) => {
+  getItem: (id) => async (dispatch) => {
     dispatch({ type: requestType });
-    const url = `${initialState.host}/v2/api/blog`;
+    let url = `${initialState.host}/v1/api/blog/${id}`;
+    let response = await fetch(url, getParams("GET"));
+    response = await response.json();
+
+    dispatch({ type: receiveItemType, response });
+    if (!response.ok) {
+      dispatch({ type: requestFailedType, error: response.status});
+    }
+  },
+  deleteItem: (activeItems, id) => async (dispatch) => {
+    dispatch({ type: requestType });
+    let url = `${initialState.host}/v1/api/${activeItems}/${id}`;
+    const response = await fetch(url, getParams("DELETE"));
+
+    if (response.ok) {
+      dispatch({ type: itemDeletedType });
+    } else {
+      dispatch({ type: requestFailedType, error: response.status});
+    }
+  },
+  addItem: (activeItems, itemParams) => async (dispatch) => {
+    dispatch({ type: requestType });
+    const url = `${initialState.host}/v1/api/${activeItems}`;
     const params = getParams("POST");
     params.body = JSON.stringify({
-      ...articleParams,
-      date: new Date(),
+      ...itemParams,
+      active: true,
+      imageUri: "",
     });
     let response = await fetch(url, params);
 
     if (response.ok) {
-      dispatch({ type: addArticlePassedType });
-      dispatch({ type: toggleAddEditArticleModalType, shown: false });
+      dispatch({ type: addItemPassedType });
+      dispatch({ type: toggleAddEditModalType, shown: false });
     } else {
       dispatch({ type: requestFailedType, error: response.status});
     }
   },
-  toggleAddEditArticleModal: (shown, editMode) => async (dispatch) => {
-    dispatch({ type: toggleAddEditArticleModalType, shown, editMode });
+  changeActiveItems: (activeItems) => async (dispatch) => {
+    dispatch({ type: changeActiveItemsType, activeItems });
+  },
+  toggleAddEditModal: (shown, editMode) => async (dispatch) => {
+    dispatch({ type: toggleAddEditModalType, shown, editMode });
   }
 };
 
@@ -145,17 +153,16 @@ export const reducer = (state, action) => {
         isLoading: false
       };
     }
-    case toggleAddEditArticleModalType: {
+    case toggleAddEditModalType: {
       return {
         ...state,
         addEditModalShown: action.shown,
-        editArticleMode: !!action.editMode
+        editMode: !!action.editMode
       };
     }
-    case addArticlePassedType: {
+    case addItemPassedType: {
       return {
         ...state,
-        articles: state.articles,
         isLoading: false
       };
     }
@@ -166,23 +173,31 @@ export const reducer = (state, action) => {
         isLoading: false
       };
     }
-    case receiveArticlesType: {
+    case receiveItemsType: {
       return {
         ...state,
         paginationConfig: {
           totalPages: action.response.totalPages,
           totalElements: action.response.totalElements,
-          numberOfElements: action.response.numberOfElements
+          numberOfElements: action.response.numberOfElements,
+          size: action.response.size,
+          number: action.response.number
         },
-        articles: action.response.content,
+        items: action.response.content,
         isLoading: false
       };
     }
-    case receiveArticleType: {
+    case receiveItemType: {
       return {
         ...state,
-        selectedArticle: action.response,
+        selectedItem: action.response,
         isLoading: false
+      };
+    }
+    case changeActiveItemsType: {
+      return {
+        ...state,
+        activeItems: action.activeItems
       };
     }
     default: {
