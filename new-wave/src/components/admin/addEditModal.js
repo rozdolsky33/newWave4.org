@@ -9,28 +9,32 @@ import "react-datepicker/dist/react-datepicker.css";
 class AddEditModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      startDate: new Date()
+    this.state = props.editMode ? {
+      ...props.selectedItem,
+    } : {
+      date: new Date(),
+      title: "",
+      author: "",
+      category: "",
+      preview: "",
+      content: "",
     };
+    this.changeValue = this.changeValue.bind(this);
     this.changeDate = this.changeDate.bind(this);
   }
 
-  changeDate(date) {
-    this.setState({ startDate: date });
+  changeValue(event) {
+    let fieldName = event.target.name;
+    let fieldValue = event.target.value;
+    this.setState({ [fieldName]: fieldValue });
+  }
+  changeDate(newDate) {
+    this.setState({date: newDate });
   }
   
-  async submitArticle(event) {
+  async submit(event) {
     event.preventDefault();
-    const params = {
-      title: this.refs.title.value,
-      author: this.refs.author.value,
-      category: this.refs.category.value,
-
-      preview: this.refs.preview.value,
-      content: this.refs.content.value,
-      date: this.state.startDate
-    };
-    await this.props.addItem(this.props.activeItems, params);
+    await this.props.addEditItem(this.props.activeItems, this.state);
     this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
   }
   render() {
@@ -42,16 +46,19 @@ class AddEditModal extends React.Component {
             {this.props.activeItems === "blog" ? "article" : "project"}
           </Modal.Title>
         </Modal.Header>
-        <Form onSubmit={(e) => this.submitArticle(e)}>
+        <Form onSubmit={(e) => this.submit(e)}>
           <Modal.Body>
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>
-              <Form.Control type="text" placeholder="Article title" ref="title" />
+              <Form.Control type="text" placeholder="Article title"
+                            value={this.state.title}
+                            name="title" onChange={this.changeValue} />
             </Form.Group>
             <Form.Group as={Row} controlId="author">
               <Form.Label column sm="2">Author</Form.Label>
               <Col sm="10">
-                <Form.Control as="select" ref="author">
+                <Form.Control as="select" value={this.state.author}
+                              name="author" onChange={this.changeValue}>
                   <option>Myroslava Rozdolska</option>
                 </Form.Control>
               </Col>
@@ -59,7 +66,8 @@ class AddEditModal extends React.Component {
             <Form.Group as={Row} controlId="category">
               <Form.Label column sm="2">Category</Form.Label>
               <Col sm="10">
-                <Form.Control type="text" placeholder="Article category" ref="category" />
+                <Form.Control type="text" placeholder="Article category" value={this.state.category}
+                              name="category" onChange={this.changeValue} />
               </Col>
             </Form.Group>
             <Form.Group controlId="date">
@@ -70,11 +78,13 @@ class AddEditModal extends React.Component {
             </Form.Group>
             <Form.Group controlId="preview">
               <Form.Label>Preview</Form.Label>
-              <Form.Control as="textarea" rows="2" ref="preview" />
+              <Form.Control as="textarea" rows="2" value={this.state.preview}
+                            name="preview" onChange={this.changeValue} />
             </Form.Group>
             <Form.Group controlId="content">
               <Form.Label>Article</Form.Label>
-              <Form.Control as="textarea" rows="5" ref="content" />
+              <Form.Control as="textarea" rows="5" value={this.state.content}
+                            name="content" onChange={this.changeValue} />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

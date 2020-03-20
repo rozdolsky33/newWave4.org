@@ -2,7 +2,7 @@
 const requestFailedType = "REQUEST_FAILED";
 const loginPassedType = "LOGIN_SUCCESSFUL";
 const registrationPassedType = "REGISTRATION_SUCCESSFUL";
-const addItemPassedType = "ADD_ITEM_SUCCESSFUL";
+const addEditItemPassedType = "ADD_EDIT_ITEM_SUCCESSFUL";
 const toggleAddEditModalType = "TOGGLE_ADD_EDIT_MODAL";
 const receiveItemsType = "RECEIVE_ITEMS";
 const receiveItemType = "RECEIVE_ITEM";
@@ -110,7 +110,7 @@ export const actionCreators = {
       dispatch({ type: requestFailedType, error: response.status});
     }
   },
-  addItem: (activeItems, itemParams) => async (dispatch) => {
+  addEditItem: (activeItems, itemParams) => async (dispatch) => {
     dispatch({ type: requestType });
     const url = `${initialState.host}/v1/api/${activeItems}`;
     const params = getParams("POST");
@@ -122,7 +122,7 @@ export const actionCreators = {
     let response = await fetch(url, params);
 
     if (response.ok) {
-      dispatch({ type: addItemPassedType });
+      dispatch({ type: addEditItemPassedType });
       dispatch({ type: toggleAddEditModalType, shown: false });
     } else {
       dispatch({ type: requestFailedType, error: response.status});
@@ -131,8 +131,8 @@ export const actionCreators = {
   changeActiveItems: (activeItems) => async (dispatch) => {
     dispatch({ type: changeActiveItemsType, activeItems });
   },
-  toggleAddEditModal: (shown, editMode) => async (dispatch) => {
-    dispatch({ type: toggleAddEditModalType, shown, editMode });
+  toggleAddEditModal: (shown, selectedItem) => async (dispatch) => {
+    dispatch({ type: toggleAddEditModalType, shown, selectedItem });
   }
 };
 
@@ -157,10 +157,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         addEditModalShown: action.shown,
-        editMode: !!action.editMode
+        editMode: !!action.selectedItem,
+        selectedItem: !!action.selectedItem ? action.selectedItem : undefined
       };
     }
-    case addItemPassedType: {
+    case addEditItemPassedType: {
       return {
         ...state,
         isLoading: false

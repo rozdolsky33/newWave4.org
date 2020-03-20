@@ -23,7 +23,7 @@ class BlogPage extends React.Component {
   }
 
   handleScroll() {
-    if (!this.endOfList || this.state.pageSize > this.props.articles.length) return false;
+    if (!this.endOfList || this.state.pageSize > this.props.items.length) return false;
     const top = this.endOfList.getBoundingClientRect().top - 80;
     const isEndOfListVisible = top >= 0 && top <= window.innerHeight;
     if (isEndOfListVisible) {

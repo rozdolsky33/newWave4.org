@@ -67,7 +67,9 @@ class AdminPage extends React.Component {
               {
                 this.props.items.map((item) => {
                   return (
-                    <tr key={item.id} onClick={() => {this.props.toggleAddEditModal(true, true)}}>
+                    <tr key={item.id} onClick={() => {
+                      this.props.toggleAddEditModal(true, item)
+                    }}>
                       <td>{item.id}</td>
                       <td className="text-left">{item.title}</td>
                       <td>{item.author}</td>
@@ -101,7 +103,7 @@ class AdminPage extends React.Component {
                 onClick={() => {this.props.toggleAddEditModal(true)}}>
           +
         </Button>
-        <AddEditModal />
+        {this.props.addEditModalShown && <AddEditModal />}
       </Col>
     );
   }
