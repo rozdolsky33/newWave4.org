@@ -28,7 +28,42 @@ class AdminPage extends React.Component {
     this.props.getItemsList(newTab, this.state.currentPage, this.props.paginationConfig.size);
   }
 
-  async deleteItem(item) {
+  getContentTable() {
+    return (
+      <Table striped bordered hover>
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Date</th>
+        <th>X</th>
+      </tr>
+      </thead>
+      <tbody>
+      {
+        this.props.items.map((item) => {
+          return (
+            <tr key={item.id} onClick={() => {
+              this.props.toggleAddEditModal(true, item)
+            }}>
+              <td>{item.id}</td>
+              <td className="text-left">{item.title}</td>
+              <td>{item.author}</td>
+              <td>{new Date(item.date).toDateString()}</td>
+              <td>
+                <Button variant="danger" size="sm" onClick={(e) => this.deleteItem(e, item)}>
+                  X</Button>
+              </td>
+            </tr>);
+        })
+      }
+      </tbody>
+    </Table>);
+  }
+
+  async deleteItem(e, item) {
+    e.stopPropagation();
     await this.props.deleteItem(this.props.activeItems, item.id);
     this.props.getItemsList(this.props.activeItems, this.state.currentPage, this.props.paginationConfig.size);
   }
@@ -40,63 +75,27 @@ class AdminPage extends React.Component {
   render() {
     return (
       <Col className="text-center" xs md={{ span: 10, offset: 1 }}>
-        {!!this.props.errorMessage && (
-          <Alert variant="danger" className="mt-3">
-            {this.props.errorMessage}
-          </Alert>
-        )}
-        <div className="pt-3 d-flex justify-content-end">
-          <PaginationPanel {...this.props.paginationConfig}
-                           selectPage={this.selectPage}
-                           currentPage={this.state.currentPage}
-                           pageSize={this.props.paginationConfig.size}/>
-        </div>
+        <Row className="pt-3 d-flex justify-content-end">
+          <Col>
+            {!!this.props.errorMessage && (
+              <Alert variant="danger" className="mt-3">
+                {this.props.errorMessage}
+              </Alert>
+            )}
+          </Col>
+          <Col className="mt-3 d-flex justify-content-end">
+            <PaginationPanel {...this.props.paginationConfig}
+                                selectPage={this.selectPage}
+                                currentPage={this.state.currentPage}
+                                pageSize={this.props.paginationConfig.size}/>
+          </Col>
+        </Row>
         <Tabs id="admin-content" activeKey={this.props.activeItems} onSelect={this.changeActiveTab}>
           <Tab eventKey="blog" title="Articles">
-            <Table striped bordered hover>
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Date</th>
-                <th>X</th>
-              </tr>
-              </thead>
-              <tbody>
-              {
-                this.props.items.map((item) => {
-                  return (
-                    <tr key={item.id} onClick={() => {
-                      this.props.toggleAddEditModal(true, item)
-                    }}>
-                      <td>{item.id}</td>
-                      <td className="text-left">{item.title}</td>
-                      <td>{item.author}</td>
-                      <td>{item.date}</td>
-                      <td>
-                        <Button variant="danger" size="sm" onClick={() => this.deleteItem(item)}>
-                        X</Button>
-                      </td>
-                    </tr>);
-                })
-              }
-              </tbody>
-            </Table>
+            {this.getContentTable()}
           </Tab>
           <Tab eventKey="project" title="Projects">
-            <Table striped bordered hover>
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Date</th>
-                <th>X</th>
-              </tr>
-              </thead>
-              <tbody></tbody>
-            </Table>
+            {this.getContentTable()}
           </Tab>
         </Tabs>
         <Button variant="primary" size="lg" className="fixed-bottom m-3"

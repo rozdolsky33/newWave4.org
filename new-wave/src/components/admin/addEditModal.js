@@ -11,15 +11,18 @@ class AddEditModal extends React.Component {
     super(props);
     this.state = props.editMode ? {
       ...props.selectedItem,
+      date: new Date(props.selectedItem.date)
     } : {
       date: new Date(),
       title: "",
-      author: "",
+      author: "Myroslava Rozdolska",
       category: "",
       preview: "",
       content: "",
+      imageUri: "",
     };
     this.changeValue = this.changeValue.bind(this);
+    this.uploadFile = this.uploadFile.bind(this);
     this.changeDate = this.changeDate.bind(this);
   }
 
@@ -30,6 +33,10 @@ class AddEditModal extends React.Component {
   }
   changeDate(newDate) {
     this.setState({date: newDate });
+  }
+  uploadFile(e) {
+   this.setState({imageUri: e.target.files[0].name});
+   this.props.uploadImage(e.target.files[0]);
   }
   
   async submit(event) {
@@ -63,6 +70,20 @@ class AddEditModal extends React.Component {
                 </Form.Control>
               </Col>
             </Form.Group>
+            <Form.Group as={Row} controlId="pic">
+              <Form.Label column sm="2">Picture</Form.Label>
+              <Col sm="10">
+                <div className="custom-file">
+                  <input type="file" multiple={false}
+                         className="custom-file-input"
+                         id="pictureInput"
+                         onChange={this.uploadFile}/>
+                  <label className="custom-file-label" htmlFor="pictureInput">
+                    {this.state.imageUri || "Choose file"}
+                  </label>
+                </div>
+              </Col>
+            </Form.Group>
             <Form.Group as={Row} controlId="category">
               <Form.Label column sm="2">Category</Form.Label>
               <Col sm="10">
@@ -73,7 +94,7 @@ class AddEditModal extends React.Component {
             <Form.Group controlId="date">
               <Form.Label className="pr-3">Created at</Form.Label>
               <DatePicker className="form-control"
-                          selected={this.state.startDate}
+                          selected={this.state.date}
                           onChange={this.changeDate} />
             </Form.Group>
             <Form.Group controlId="preview">

@@ -9,17 +9,17 @@ class BlogPage extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      pageSize: 3,
+      pageSize: 5,
       step: 5
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
   componentWillMount() {
     this.props.getItemsList("blog", this.state.currentPage, this.state.pageSize);
-    window.addEventListener('scroll', this.handleScroll, true);
+    window.addEventListener("scroll", this.handleScroll, true);
   }
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   handleScroll() {
@@ -45,22 +45,23 @@ class BlogPage extends React.Component {
   }
 
   getArticlesList() {
-    return this.props.items.map((article, key) => {
+    return this.props.items.map((item, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
-          {!!article.pic ?
-            <Card.Img style={{width: "25%", objectFit: "contain"}} src={article.pic} /> :
+          {!!item.imageUri ?
+            <Card.Img style={{width: "25%", objectFit: "contain"}}
+                      src={this.props.host + "/v1/api/images/downloadFile/" + item.imageUri} /> :
             <div className="bg-secondary w-25"/>
           }
           <Card.Body className="justify-content-between flex-column d-flex w-75">
-            <Card.Title>{article.title}</Card.Title>
+            <Card.Title>{item.title}</Card.Title>
             <div className="d-flex justify-content-between pb-3">
-              <span className="text-secondary small">{article.date}</span>
-              <span className="text-secondary small">{article.author}</span>
+              <span className="text-secondary small">{new Date(item.date).toDateString()}</span>
+              <span className="text-secondary small">{item.author}</span>
             </div>
-            <Card.Text>{article.preview}</Card.Text>
+            <Card.Text>{item.preview}</Card.Text>
             <div className="text-right">
-              <Card.Link href={`/article/${article.id}`}>Читати далі</Card.Link>
+              <Card.Link href={`/article/${item.id}`}>Читати далі</Card.Link>
             </div>
           </Card.Body>
         </Card>

@@ -1,4 +1,5 @@
 ﻿const requestType = "REQUEST_STARTED";
+const requestListType = "REQUEST_LIST_STARTED";
 const requestFailedType = "REQUEST_FAILED";
 const loginPassedType = "LOGIN_SUCCESSFUL";
 const registrationPassedType = "REGISTRATION_SUCCESSFUL";
@@ -76,8 +77,8 @@ export const actionCreators = {
     }
   },
   getItemsList: (activeItems, pageNumber, pageSize) => async (dispatch) => {
-    dispatch({ type: requestType });
-    let url = `${initialState.host}/v2/api/${activeItems}/${pageNumber}/${pageSize}`;
+    dispatch({ type: requestListType });
+    let url = `${initialState.host}/v2/api/${activeItems}/date?pageNumber=${pageNumber}&numberOfElementsPerPage=${pageSize}`;
     let response = await fetch(url, getParams("GET"));
     if (response.ok) {
       response = await response.json();
@@ -114,11 +115,12 @@ export const actionCreators = {
     dispatch({ type: requestType });
     const url = `${initialState.host}/v1/api/${activeItems}`;
     const params = getParams("POST");
-    params.body = JSON.stringify({
+    params.body = {
       ...itemParams,
       active: true,
-      imageUri: "",
-    });
+    };
+    params.body.date = params.body.date.toGMTString();
+    params.body = JSON.stringify(params.body);
     let response = await fetch(url, params);
 
     if (response.ok) {
@@ -128,11 +130,20 @@ export const actionCreators = {
       dispatch({ type: requestFailedType, error: response.status});
     }
   },
-  changeActiveItems: (activeItems) => async (dispatch) => {
+  changeActiveItems: (activeItems) => (dispatch) => {
     dispatch({ type: changeActiveItemsType, activeItems });
   },
-  toggleAddEditModal: (shown, selectedItem) => async (dispatch) => {
+  toggleAddEditModal: (shown, selectedItem) => (dispatch) => {
     dispatch({ type: toggleAddEditModalType, shown, selectedItem });
+  },
+  uploadImage: (file) => async (dispatch) => {
+    const url = `${initialState.host}/v1/api/images/uploadFile`;
+    const params = getParams("POST");
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    delete params.headers['Content-Type'];
+    params.body = formData;
+    await fetch(url, params);
   }
 };
 
@@ -142,6 +153,14 @@ export const reducer = (state, action) => {
     case requestType: {
       return {
         ...state,
+        errorMessage: "",
+        isLoading: true
+      };
+    }
+    case requestListType: {
+      return {
+        ...state,
+        items: [],
         errorMessage: "",
         isLoading: true
       };
@@ -196,10 +215,12 @@ export const reducer = (state, action) => {
       };
     }
     case changeActiveItemsType: {
-      return {
+      let newState = {
         ...state,
-        activeItems: action.activeItems
+        activeItems: action.activeItems,
       };
+      newState.paginationConfig.number = 0;
+      return newState
     }
     default: {
       return state;

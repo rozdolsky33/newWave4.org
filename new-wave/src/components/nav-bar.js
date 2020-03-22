@@ -86,13 +86,13 @@ export default class NavBarBlock extends React.Component {
           <Nav>
             {this.state.menuItems.map((menuItem, key) => {
               if (!!menuItem.subItems) {
-                return (<NavDropdown title={menuItem.description} key={key} className={ this.isNavItemActive(menuItem) ? 'active' : ''}>
+                return (<NavDropdown title={menuItem.description} key={key} className={ this.isNavItemActive(menuItem) ? "active" : ""}>
                   {menuItem.subItems.map((item, key) => {
                     return (<NavDropdown.Item key={key} href={item.link}>{item.description}</NavDropdown.Item>);
                   })}
                 </NavDropdown>);
               }
-              return (<Nav.Link key={key} href={menuItem.link} className={ this.isNavItemActive(menuItem) ? 'active' : ''}>
+              return (<Nav.Link key={key} href={menuItem.link} className={ this.isNavItemActive(menuItem) ? "active" : ""}>
                 {menuItem.description}
               </Nav.Link>);
             })}
