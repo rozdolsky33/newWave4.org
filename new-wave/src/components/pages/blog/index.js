@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Card, Col, Row } from "react-bootstrap";
+import {Button, Card, Col, Row} from "react-bootstrap";
 import {actionCreators} from "../../../store/Main";
 
 class BlogPage extends React.Component {
@@ -49,15 +49,18 @@ class BlogPage extends React.Component {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
           {!!item.imageUri ?
-            <Card.Img style={{width: "25%", objectFit: "contain"}}
-                      src={this.props.host + "/v1/api/images/downloadFile/" + item.imageUri} /> :
+            <Card.Img style={{width: "25%", objectFit: "cover"}}
+                      src={this.props.host + "/v2/api/image/" + item.imageUri} /> :
             <div className="bg-secondary w-25"/>
           }
           <Card.Body className="justify-content-between flex-column d-flex w-75">
             <Card.Title>{item.title}</Card.Title>
             <div className="d-flex justify-content-between pb-3">
               <span className="text-secondary small">{new Date(item.date).toDateString()}</span>
-              <span className="text-secondary small">{item.author}</span>
+              <Button className="text-secondary" variant="link" size="sm"
+                      onClick={() => {window.location.href = "/blog"}}>
+                {item.author}
+              </Button>
             </div>
             <Card.Text>{item.preview}</Card.Text>
             <div className="text-right">

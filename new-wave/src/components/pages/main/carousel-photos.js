@@ -3,14 +3,7 @@ import {Carousel} from "react-bootstrap";
 
 export default function CarouselPhotos() {
   let photos = [
-    "./assets/NW_main_cover_1.jpg",
-    "./assets/NW_main_cover_4.jpg",
-    "./assets/NW_main_cover_5.jpg",
-    "./assets/NW_main_cover_6.jpg",
-    "./assets/NW_main_cover_7.jpg",
-    "./assets/NW_main_cover_8.jpg",
-    "./assets/NW_main_cover_9.jpg",
-    "./assets/NW_main_cover_10.jpg"
+    "./assets/NW_main_cover_0.jpg"
   ];
   return (
     <div className="carousel-photo-block">
