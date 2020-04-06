@@ -2,7 +2,7 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {Button, Card, Col, Row} from "react-bootstrap";
-import {actionCreators} from "../../../store/Main";
+import {actionCreators} from "../../../store/Main-actions";
 
 class BlogPage extends React.Component {
   constructor(props) {
@@ -64,7 +64,7 @@ class BlogPage extends React.Component {
             </div>
             <Card.Text>{item.preview}</Card.Text>
             <div className="text-right">
-              <Card.Link href={`/article/${item.id}`}>Читати далі</Card.Link>
+              <Card.Link href={`/item/blog/${item.id}`}>Читати далі</Card.Link>
             </div>
           </Card.Body>
         </Card>
@@ -77,10 +77,10 @@ class BlogPage extends React.Component {
       <Col className="text-center">
         <h2 className="p-3 text-primary">Блог</h2>
         <Row>
-          <Col className="text-center" xs md="2">
+          <Col className="text-center" xs="12" md="2">
             {this.getYears().map(year => <p key={year}>&#9675; {year}</p>)}
           </Col>
-          <Col className="text-center" xs md="8">
+          <Col className="text-center" xs="12" md="8">
             <div className="pl-3 justify-content-center">
               {this.getArticlesList()}
               <div ref={el => {this.endOfList = el;}}></div>

@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import {Table, Button, Col, Tab, Tabs, Alert} from "react-bootstrap";
 import AddEditModal from "./addEditModal";
 import PaginationPanel from "../common/pagination-panel";
-import { actionCreators } from "../../store/Main";
+import { actionCreators } from "../../store/Main-actions";
 import Row from "react-bootstrap/Row";
 
 class AdminPage extends React.Component {

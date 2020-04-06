@@ -3,7 +3,7 @@ import {Modal, Button, Form, Col, Row, Alert} from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import DatePicker from "react-datepicker";
-import { actionCreators } from "../../store/Main";
+import { actionCreators } from "../../store/Main-actions";
 import "react-datepicker/dist/react-datepicker.css";
 
 class AddEditModal extends React.Component {

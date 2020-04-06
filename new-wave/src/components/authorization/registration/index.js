@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Alert, Form, Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/Main";
+import {actionCreators} from "../../../store/Main-actions";
 
 class RegistrationPage extends React.Component {
   constructor(props) {

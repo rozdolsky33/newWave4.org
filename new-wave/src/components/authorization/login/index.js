@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Alert, Form, Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/Main";
+import {actionCreators} from "../../../store/Main-actions";
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -33,6 +33,10 @@ class LoginPage extends React.Component {
             {this.props.errorMessage}
           </Alert>
         )}
+        <div className="d-flex justify-content-between">
+          <Button variant="link" href="/registration">Зареєствуватися</Button>
+          <Button variant="link" onClick={this.props.sendResetPasswordRequest}>Забули пароль?</Button>
+        </div>
       </Col>
     );
   }

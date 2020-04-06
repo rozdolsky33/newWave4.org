@@ -15,8 +15,11 @@ import BlogPage from "./pages/blog";
 import OurTeamPage from "./pages/our-team";
 import ContactUsPage from "./pages/contact-us";
 import AdminPage from "./admin";
-import LoginPage from "./login";
-import RegistrationPage from "./registration";
+import LoginPage from "./authorization/login";
+import RegistrationPage from "./authorization/registration";
+import ForgotPasswordPage from "./authorization/forgot-password";
+import ResetPasswordPage from "./authorization/reset-password";
+import ResultPage from "./pages/result";
 
 export default class App extends React.Component {
   render() {
@@ -36,10 +39,16 @@ export default class App extends React.Component {
             <Route path="/culture-and-art" component={CultureAndArtPage} />
             <Route path="/donations" component={DonationsPage} />
             <Route path="/blog" component={BlogPage} />
-            <Route path="/article/:id" component={ArticlePage} />
+            <Route path="/item/:type/:id" component={ArticlePage} />
+
             <Route path="/admin" component={AdminPage} />
+
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />
+            <Route path="/forgot-password" component={ForgotPasswordPage} />
+            <Route path="/reset-password" component={ResetPasswordPage} />
+
+            <Route path="/result/:token?" component={ResultPage} />
           </Router>
         </Row>
       </div>

@@ -2,11 +2,11 @@ import React from "react";
 import {Button, Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../../store/Main";
+import {actionCreators} from "../../../store/Main-actions";
 
 class ArticlePage extends React.Component {
   componentDidMount() {
-    this.props.getItem(this.props.match.params.id);
+    this.props.getItem(this.props.match.params.type, this.props.match.params.id);
   }
   render() {
     return (

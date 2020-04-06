@@ -1,64 +1,13 @@
 import React from "react";
 import {Navbar, Nav, NavDropdown, Button} from "react-bootstrap";
 import logo from "../assets/NW_logo_sm.png";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {actionCreators} from "../store/Main-actions";
 
-export default class NavBarBlock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menuItems: [
-        {
-          description: "Головна",
-          link: "/"
-        },
-        {
-          description: "Проекти",
-          subItems: [
-            {
-              description: "Освітні",
-              link: "/educational"
-            },
-            {
-              description: "Культура і Мистецтво",
-              link: "/culture-and-art"
-            },
-            {
-              description: "Соціально-суспільні",
-              link: "/social"
-            },
-            {
-              description: "Публікації",
-              link: "/publications"
-            }
-          ]
-        },
-        {
-          description: "Про нас",
-          subItems: [
-            {
-              description: "Рада",
-              link: "/our-team"
-            },
-            {
-              description: "Історія створення",
-              link: "/history"
-            },
-            {
-              description: "Звіти",
-              link: "/reports"
-            },
-            {
-              description: "Контакти",
-              link: "/contact-us"
-            }
-          ]
-        },
-        {
-          description: "Блоги",
-          link: "/blog"
-        }
-      ]
-    };
+class NavBarBlock extends React.Component {
+  componentDidMount() {
+    this.props.getMenuItems();
   }
 
   isNavItemActive(navItem) {
@@ -73,18 +22,19 @@ export default class NavBarBlock extends React.Component {
     });
     return result;
   }
+
   render() {
     return (
-      <Navbar expand="sm" sticky="top" bg="light" variant="light">
-        <Navbar.Brand>
-          <a href="/#">
+      <Navbar expand="sm" sticky="top" bg="light" variant="light" className="d-flex">
+        <Navbar.Brand className="order-1">
+          <a href="/login">
             <img src={logo} style={{width:80, marginTop: -7}} alt=""/>
           </a>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+        <Navbar.Toggle className="order-3 order-sm-2" aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end order-3 order-sm-2">
           <Nav>
-            {this.state.menuItems.map((menuItem, key) => {
+            {this.props.menuItems.map((menuItem, key) => {
               if (!!menuItem.subItems) {
                 return (<NavDropdown title={menuItem.description} key={key} className={ this.isNavItemActive(menuItem) ? "active" : ""}>
                   {menuItem.subItems.map((item, key) => {
@@ -98,8 +48,14 @@ export default class NavBarBlock extends React.Component {
             })}
           </Nav>
         </Navbar.Collapse>
-        <Button href="/donations" className="ml-4">Donate</Button>
+        <div className="order-2 order-sm-3">
+          <Button href="/donations" className="ml-4">Donate</Button>
+        </div>
       </Navbar>
     );
   }
 }
+export default connect(
+  state => state.mainReducer,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(NavBarBlock);

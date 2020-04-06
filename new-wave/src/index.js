@@ -12,8 +12,6 @@ const history = createBrowserHistory();
 const initialState = window.initialReduxState;
 const store = configureStore(history, initialState);
 
-//ReactDOM.render(<App />, document.getElementById('root'));
-
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

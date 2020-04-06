@@ -12,7 +12,7 @@ export default class EventCard extends React.Component {
           <h5>{this.props.title}</h5>
           <p>{this.props.shortDescription} ...</p>
           <div className="text-right">
-            <Card.Link href={"/article/events/" + this.props.id}>Читати далі</Card.Link>
+            <Card.Link href={"/item/events/" + this.props.id}>Читати далі</Card.Link>
           </div>
         </Card.Body>
       </Card>
