@@ -1,8 +1,9 @@
 import React from "react";
-import {Button, Col} from "react-bootstrap";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {actionCreators} from "../../../store/Main-actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Button, Col } from "react-bootstrap";
+import { actionCreators } from "../../../store/Main-actions";
+import { history } from "../../App";
 
 class ArticlePage extends React.Component {
   componentDidMount() {
@@ -21,7 +22,7 @@ class ArticlePage extends React.Component {
             <h2 className="p-3 text-primary">{this.props.selectedItem.title}</h2>
             <div className="d-flex justify-content-between pt-5">
               <span className="text-secondary">{new Date(this.props.selectedItem.date).toDateString()}</span>
-              <Button variant="link" onClick={() => {window.location.href = "/blog"}}>
+              <Button variant="link" onClick={() => {history.push("blog")}}>
                 {this.props.selectedItem.author}
               </Button>
             </div>

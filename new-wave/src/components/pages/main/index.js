@@ -1,9 +1,42 @@
 import React from "react";
-import {Col, Row} from "react-bootstrap";
+import {Col, Row, Card} from "react-bootstrap";
 import CarouselPhotos from "./carousel-photos";
 import "./main.scss";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {actionCreators} from "../../../store/Main-actions";
 
-export default function MainPage() {
+function MainPage(props) {
+  const getRecentProjects = () => {
+    const recentProjects = [];
+    for (let i = 0; i < Math.min(3, props.projects.length); i++) {
+      recentProjects.push(getCard(props.projects[i]));
+    }
+    return recentProjects;
+  };
+  const getRecentArticles = () => {
+    const recentArticles = [];
+    for (let i = 0; i < Math.min(3, props.articles.length); i++) {
+      recentArticles.push(getCard(props.articles[i]));
+    }
+    return recentArticles;
+  };
+  const getCard = (item) => {
+    return (
+      <Card href={`/item/blog/${item.id}`}>
+        {!!item.imageUri ?
+          <Card.Img style={{height: "70px", objectFit: "cover"}}
+                    src={props.host + "/v2/api/image/" + item.imageUri} /> :
+          <div className="bg-secondary" style={{height: "50px"}}/>
+        }
+        <Card.Body>
+          <Card.Title>{item.title}</Card.Title>
+          <Card.Text className="overflow-hidden" style={{height: "70px"}}>{item.preview}</Card.Text>
+        </Card.Body>
+      </Card>
+    );
+  };
+
   return (
     <Col>
       <div className="main-page-cover">
@@ -34,16 +67,21 @@ export default function MainPage() {
           </p>
         </Col>
       </Row>
-      <Row className="main-recent-block bg-dark position-relative">
+      <Row className="position-relative">
+        <div className="main-recent-block bg-secondary position-absolute h-100 w-100"></div>
         <Col xs md={{ span: 4, offset: 2 }} className="">
-          <h2 className="p-3 text-primary text-center">Нові проекти</h2>
-          <div className="bg-white p-5"><span>тут буде перелік нових проектів</span></div>
+          <h4 className="p-3 text-primary text-center">Нові проекти</h4>
+          <div className="bg-white p-1">{getRecentProjects()}</div>
         </Col>
         <Col xs md="4" className="">
-          <h2 className="p-3 text-primary text-center">Статті з наших блогів</h2>
-          <div className="bg-white p-5"><span>тут буде перелік останніх статтей</span></div>
+          <h4 className="p-3 text-primary text-center text-nowrap">Статті з наших блогів</h4>
+          <div className="bg-white p-1">{getRecentArticles()}</div>
         </Col>
       </Row>
     </Col>
   );
 }
+export default connect(
+  state => state.mainReducer,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(MainPage);

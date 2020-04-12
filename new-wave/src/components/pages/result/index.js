@@ -11,7 +11,6 @@ class ResultPage extends React.Component {
     if (this.props.match.params.token) {
       this.props.checkToken(this.props.match.params.token);
     }
-    this.props.checkToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiUjZnTzR5TFZLZUxYTTF3Z0hvZk0yNEFwbkgxWnIiLCJleHAiOjE1ODY4ODkyODd9.QZLFiScvWCf5Fl4WLmeB-Ksv2OTjCq0QtZMxSwuijzPpqpaqHCtavE9uOFWNFmJ9luo9d3pNDmAuvnxuE175eg");
   }
   render() {
     return (
@@ -25,7 +24,7 @@ class ResultPage extends React.Component {
           <>
             <img src={successImg} style={{width:80}} alt=""/>
             <h2 className="p-3">Успіх</h2>
-            <p>{this.props.succesMessage}</p>
+            <p>{this.props.successMessage}</p>
           </>}
       </Col>
     );

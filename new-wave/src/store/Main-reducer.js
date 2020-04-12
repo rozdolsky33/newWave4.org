@@ -10,6 +10,8 @@ const initialState = {
     number: 0
   },
   items: [],
+  articles: [],
+  projects: [],
   addEditModalShown: false,
   selectedItem: undefined,
   editMode: false,
@@ -112,6 +114,7 @@ export default function reducer (state, action) {
       }, ...menuItems];
       return {
         ...state,
+        projects: activeProjects,
         menuItems
       };
     }
@@ -126,6 +129,20 @@ export default function reducer (state, action) {
           number: action.response.number
         },
         items: action.response.content,
+        isLoading: false
+      };
+    }
+    case actionType.receiveArticlesType: {
+      return {
+        ...state,
+        paginationConfig: {
+          totalPages: action.response.totalPages,
+          totalElements: action.response.totalElements,
+          numberOfElements: action.response.numberOfElements,
+          size: action.response.size,
+          number: action.response.number
+        },
+        articles: action.response.content,
         isLoading: false
       };
     }

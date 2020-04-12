@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {Button, Card, Col, Row} from "react-bootstrap";
 import {actionCreators} from "../../../store/Main-actions";
+import {history} from "../../App";
 
 class BlogPage extends React.Component {
   constructor(props) {
@@ -15,7 +16,6 @@ class BlogPage extends React.Component {
     this.handleScroll = this.handleScroll.bind(this);
   }
   componentWillMount() {
-    this.props.getItemsList("blog", this.state.currentPage, this.state.pageSize);
     window.addEventListener("scroll", this.handleScroll, true);
   }
   componentWillUnmount() {
@@ -23,19 +23,18 @@ class BlogPage extends React.Component {
   }
 
   handleScroll() {
-    if (!this.endOfList || this.state.pageSize > this.props.items.length) return false;
+    if (!this.endOfList || this.state.pageSize > this.props.articles.length) return false;
     const top = this.endOfList.getBoundingClientRect().top - 80;
     const isEndOfListVisible = top >= 0 && top <= window.innerHeight;
     if (isEndOfListVisible) {
-      const newPageSize = this.state.pageSize + this.state.step;
-      this.setState({pageSize: newPageSize});
-      this.props.getItemsList("blog", this.state.currentPage, newPageSize);
+      this.setState({currentPage: this.state.currentPage++});
+      this.props.getArticles(this.state.currentPage++, this.state.pageSize);
     }
   }
 
   getYears() {
     const years = [];
-    this.props.items.forEach(article => {
+    this.props.articles.forEach(article => {
       let year = article.date.slice(0, 4);
       if (years.indexOf(year) < 0) {
         years.push(year);
@@ -45,7 +44,7 @@ class BlogPage extends React.Component {
   }
 
   getArticlesList() {
-    return this.props.items.map((item, key) => {
+    return this.props.articles.map((item, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
           {!!item.imageUri ?
@@ -58,7 +57,7 @@ class BlogPage extends React.Component {
             <div className="d-flex justify-content-between pb-3">
               <span className="text-secondary small">{new Date(item.date).toDateString()}</span>
               <Button className="text-secondary" variant="link" size="sm"
-                      onClick={() => {window.location.href = "/blog"}}>
+                      onClick={() => {history.push("blog")}}>
                 {item.author}
               </Button>
             </div>

@@ -20,7 +20,9 @@ import RegistrationPage from "./authorization/registration";
 import ForgotPasswordPage from "./authorization/forgot-password";
 import ResetPasswordPage from "./authorization/reset-password";
 import ResultPage from "./pages/result";
+import { createBrowserHistory } from 'history';
 
+export const history = createBrowserHistory();
 export default class App extends React.Component {
   render() {
     return (
@@ -53,6 +55,5 @@ export default class App extends React.Component {
         </Row>
       </div>
     );
-
   }
 }

@@ -43,10 +43,9 @@ export const actionCreators = {
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);
     if (response.ok) {
-      dispatch({ type: actionType.requestPassedType, successMessage: "Реєстрація пройшла успішно. Перевірте свою пошту для підтвердження"});
-      window.location.href = "/result";
+      return dispatch({ type: actionType.requestPassedType, successMessage: "Реєстрація пройшла успішно. Перевірте свою пошту для підтвердження"});
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status});
+      return dispatch({ type: actionType.requestFailedType, error: response.status});
     }
   },
   checkToken: (token) => async (dispatch) => {
@@ -78,6 +77,17 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       dispatch({ type: actionType.receiveItemsType, response });
+    } else {
+      dispatch({ type: actionType.requestFailedType, error: response.status});
+    }
+  },
+  getArticles: (pageNumber, pageSize) => async (dispatch) => {
+    dispatch({ type: actionType.requestType });
+    let url = `${host}/v2/api/blog/date?pageNumber=${pageNumber}&numberOfElementsPerPage=${pageSize}`;
+    let response = await fetch(url, getParams("GET"));
+    if (response.ok) {
+      response = await response.json();
+      dispatch({ type: actionType.receiveArticlesType, response });
     } else {
       dispatch({ type: actionType.requestFailedType, error: response.status});
     }

@@ -5,6 +5,7 @@ export const requestPassedType = "REQUEST_SUCCESSFUL";
 export const addEditItemPassedType = "ADD_EDIT_ITEM_SUCCESSFUL";
 export const toggleAddEditModalType = "TOGGLE_ADD_EDIT_MODAL";
 export const receiveMenuItemsType = "RECEIVE_MENU_ITEMS";
+export const receiveArticlesType = "RECEIVE_ARTICLES";
 export const receiveItemsType = "RECEIVE_ITEMS";
 export const receiveItemType = "RECEIVE_ITEM";
 export const itemDeletedType = "ITEM_DELETED";

@@ -1,8 +1,9 @@
 import React from "react";
-import {Button, Alert, Form, Col} from "react-bootstrap";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {actionCreators} from "../../../store/Main-actions";
+import { Button, Alert, Form, Col } from "react-bootstrap";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../../store/Main-actions";
+import { history } from "../../App";
 
 class RegistrationPage extends React.Component {
   constructor(props) {
@@ -11,9 +12,10 @@ class RegistrationPage extends React.Component {
       errorMessage: undefined
     }
   }
-  register(event) {
+  async register(event) {
     event.preventDefault();
-    this.props.register(this.refs.email.value, this.refs.firstName.value, this.refs.lastName.value, this.refs.password.value);
+    await this.props.register(this.refs.email.value, this.refs.firstName.value, this.refs.lastName.value, this.refs.password.value);
+    history.push("result");
   }
 
   render() {

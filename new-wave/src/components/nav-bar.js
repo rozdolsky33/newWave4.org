@@ -8,6 +8,7 @@ import {actionCreators} from "../store/Main-actions";
 class NavBarBlock extends React.Component {
   componentDidMount() {
     this.props.getMenuItems();
+    this.props.getArticles(0, 5);
   }
 
   isNavItemActive(navItem) {
