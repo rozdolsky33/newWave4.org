@@ -41,7 +41,7 @@ class AddEditModal extends React.Component {
   
   async submit(event) {
     event.preventDefault();
-    await this.props.addEditItem(this.props.activeItems, this.state);
+    await this.props.addEditItem(this.props.activeItems, this.state, this.props.editMode);
     this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
   }
   render() {

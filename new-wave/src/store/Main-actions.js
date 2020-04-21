@@ -135,7 +135,7 @@ export const actionCreators = {
   },
   addEditItem: (activeItems, itemParams, editMode) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
-    const url = `${host}/v1/api/${activeItems}`;
+    const url = `${host}/v1/api/${activeItems}` + (editMode ? `/${itemParams.id}` : "");
     const params = getParams(editMode ? "PUT" : "POST", true);
     params.body = {
       ...itemParams,
