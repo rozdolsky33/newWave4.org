@@ -1,7 +1,7 @@
 ﻿import * as actionType from "./Main-types";
 
 const host = "http://162.212.158.14:8080";
-const getParams = (methodType) => {
+const getParams = (methodType, useAuth) => {
   const params = {
     method: methodType,
     headers: {
@@ -12,7 +12,7 @@ const getParams = (methodType) => {
     }
   };
   const token = localStorage.getItem("token");
-  if (!!token) {
+  if (!!token && !!useAuth) {
     params.headers.Authorization = token;
   }
   return params;
@@ -56,7 +56,6 @@ export const actionCreators = {
       response = await response.json();
       if (response.operationResult === "ERROR") {
         dispatch({ type: actionType.requestFailedType, errorMessage: "Дане посилання вже недійсне"});
-
       } else {
         dispatch({ type: actionType.requestPassedType, successMessage: "Підтвердження пройшло успішно" });
       }
@@ -76,7 +75,7 @@ export const actionCreators = {
     let response = await fetch(url, getParams("GET"));
     if (response.ok) {
       response = await response.json();
-      dispatch({ type: actionType.receiveItemsType, response });
+      dispatch({ type: actionType.receivedItemsType, response });
     } else {
       dispatch({ type: actionType.requestFailedType, error: response.status});
     }
@@ -87,7 +86,7 @@ export const actionCreators = {
     let response = await fetch(url, getParams("GET"));
     if (response.ok) {
       response = await response.json();
-      dispatch({ type: actionType.receiveArticlesType, response });
+      dispatch({ type: actionType.receivedArticlesType, response });
     } else {
       dispatch({ type: actionType.requestFailedType, error: response.status});
     }
@@ -98,24 +97,35 @@ export const actionCreators = {
     let response = await fetch(url, getParams("GET"));
     if (response.ok) {
       response = await response.json();
-      dispatch({ type: actionType.receiveMenuItemsType, response });
+      dispatch({ type: actionType.receivedMenuItemsType, response });
     }
   },
   getItem: (type, id) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
     let url = `${host}/${type === "project" ? "v2" : "v1"}/api/${type}/${id}`;
-    let response = await fetch(url, getParams("GET"));
-    response = await response.json();
-
-    dispatch({ type: actionType.receiveItemType, response });
+    let response = await fetch(url, getParams("GET", true));
     if (!response.ok) {
       dispatch({ type: actionType.requestFailedType, error: response.status});
+    } else {
+      response = await response.json();
+      dispatch({ type: actionType.receivedItemType, response });
+    }
+  },
+  getBlogDates: () => async (dispatch) => {
+    dispatch({ type: actionType.requestType });
+    let url = `${host}/v2/api/blog/date/postIfExit`;
+    let response = await fetch(url, getParams("GET"));
+    if (!response.ok) {
+      dispatch({ type: actionType.requestFailedType, error: response.status});
+    } else {
+      response = await response.json();
+      dispatch({ type: actionType.receivedBlogDates, response });
     }
   },
   deleteItem: (activeItems, id) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
     let url = `${host}/v1/api/${activeItems}/${id}`;
-    const response = await fetch(url, getParams("DELETE"));
+    const response = await fetch(url, getParams("DELETE", true));
 
     if (response.ok) {
       dispatch({ type: actionType.itemDeletedType });
@@ -126,7 +136,7 @@ export const actionCreators = {
   addEditItem: (activeItems, itemParams) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
     const url = `${host}/v1/api/${activeItems}`;
-    const params = getParams("POST");
+    const params = getParams("POST", true);
     params.body = {
       ...itemParams,
       active: true,
@@ -150,7 +160,7 @@ export const actionCreators = {
   },
   uploadImage: (file) => async (dispatch) => {
     const url = `${host}/v1/api/images/uploadFile`;
-    const params = getParams("POST");
+    const params = getParams("POST", true);
     const formData = new FormData();
     formData.append('file', file, file.name);
     delete params.headers['Content-Type'];

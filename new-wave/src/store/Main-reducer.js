@@ -19,7 +19,8 @@ const initialState = {
   successMessage: "",
   errorMessage: "",
   activeItems: "blog",
-  menuItems: []
+  menuItems: [],
+  blogDates: []
 };
 
 export default function reducer (state, action) {
@@ -67,7 +68,7 @@ export default function reducer (state, action) {
         isLoading: false
       };
     }
-    case actionType.receiveMenuItemsType: {
+    case actionType.receivedMenuItemsType: {
       let menuItems = [{
         description: "Про нас",
         subItems: [
@@ -118,7 +119,7 @@ export default function reducer (state, action) {
         menuItems
       };
     }
-    case actionType.receiveItemsType: {
+    case actionType.receivedItemsType: {
       return {
         ...state,
         paginationConfig: {
@@ -132,7 +133,7 @@ export default function reducer (state, action) {
         isLoading: false
       };
     }
-    case actionType.receiveArticlesType: {
+    case actionType.receivedArticlesType: {
       return {
         ...state,
         paginationConfig: {
@@ -142,15 +143,27 @@ export default function reducer (state, action) {
           size: action.response.size,
           number: action.response.number
         },
-        articles: action.response.content,
+        articles: state.articles.concat(action.response.content),
         isLoading: false
       };
     }
-    case actionType.receiveItemType: {
+    case actionType.receivedItemType: {
       return {
         ...state,
         selectedItem: action.response,
         isLoading: false
+      };
+    }
+    case actionType.receivedBlogDates: {
+      return {
+        ...state,
+        blogDates: action.response.reverse().map(date => {
+          const tempDate = new Date(date);
+          return {
+            year: tempDate.getFullYear(),
+            month: tempDate.toLocaleString('default', { month: 'long' })
+          }
+        })
       };
     }
     case actionType.changeActiveItemsType: {
