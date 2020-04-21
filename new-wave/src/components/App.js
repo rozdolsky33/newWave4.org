@@ -48,7 +48,7 @@ export default class App extends React.Component {
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />
             <Route path="/forgot-password" component={ForgotPasswordPage} />
-            <Route path="/reset-password" component={ResetPasswordPage} />
+            <Route path="/password-reset" component={ResetPasswordPage} />
 
             <Route path="/result/:token?" component={ResultPage} />
           </Router>

@@ -1,29 +1,20 @@
 import React from "react";
-import {Col, Row, Card} from "react-bootstrap";
-import CarouselPhotos from "./carousel-photos";
-import "./main.scss";
 import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {actionCreators} from "../../../store/Main-actions";
+import { bindActionCreators } from "redux";
+import { Col, Row, Card } from "react-bootstrap";
+import CarouselPhotos from "./carousel-photos";
+import { history } from "../../App";
+import { actionCreators } from "../../../store/Main-actions";
+import "./main.scss";
 
 function MainPage(props) {
-  const getRecentProjects = () => {
-    const recentProjects = [];
-    for (let i = 0; i < Math.min(3, props.projects.length); i++) {
-      recentProjects.push(getCard(props.projects[i]));
-    }
-    return recentProjects;
+  const getRecentItems = (type) => {
+    return props[type].slice(0, Math.min(3, props[type].length)).map(p => getCard(p, type));
   };
-  const getRecentArticles = () => {
-    const recentArticles = [];
-    for (let i = 0; i < Math.min(3, props.articles.length); i++) {
-      recentArticles.push(getCard(props.articles[i]));
-    }
-    return recentArticles;
-  };
-  const getCard = (item) => {
+  const getCard = (item, itemType) => {
     return (
-      <Card href={`/item/blog/${item.id}`}>
+      <Card className="mb-2" key={`${itemType}_${item.id}`}
+            onClick={() => history.push(`/item/${itemType}/${item.id}`)}>
         {!!item.imageUri ?
           <Card.Img style={{height: "70px", objectFit: "cover"}}
                     src={props.host + "/v2/api/image/" + item.imageUri} /> :
@@ -49,11 +40,11 @@ function MainPage(props) {
             height="130"
             alt="About Us"
           />
-          <h3 className="p-5 text-primary">
+          <h3 className="p-4 text-primary">
             Нова Хвиля
           </h3>
         </Col>
-        <Col xs md="6">
+        <Col xs md="6" className="d-flex flex-column justify-content-center">
           <p>
             Всеамериканська громадська Організація «Нова Українська Хвиля» - національно-патріотична і
             освітньо-культурна
@@ -67,15 +58,15 @@ function MainPage(props) {
           </p>
         </Col>
       </Row>
-      <Row className="position-relative">
+      <Row className="position-relative pb-5">
         <div className="main-recent-block bg-secondary position-absolute h-100 w-100"></div>
-        <Col xs md={{ span: 4, offset: 2 }} className="">
-          <h4 className="p-3 text-primary text-center">Нові проекти</h4>
-          <div className="bg-white p-1">{getRecentProjects()}</div>
+        <Col xs md={{ span: 4, offset: 2 }}>
+          <h4 className="p-4 text-white text-center">Нові проекти</h4>
+          <div className="bg-white p-1">{getRecentItems("project")}</div>
         </Col>
-        <Col xs md="4" className="">
-          <h4 className="p-3 text-primary text-center text-nowrap">Статті з наших блогів</h4>
-          <div className="bg-white p-1">{getRecentArticles()}</div>
+        <Col xs md="4">
+          <h4 className="p-4 text-white text-center text-nowrap">Статті з наших блогів</h4>
+          <div className="bg-white p-1">{getRecentItems("blog")}</div>
         </Col>
       </Row>
     </Col>

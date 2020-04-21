@@ -133,10 +133,10 @@ export const actionCreators = {
       dispatch({ type: actionType.requestFailedType, error: response.status});
     }
   },
-  addEditItem: (activeItems, itemParams) => async (dispatch) => {
+  addEditItem: (activeItems, itemParams, editMode) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
     const url = `${host}/v1/api/${activeItems}`;
-    const params = getParams("POST", true);
+    const params = getParams(editMode ? "PUT" : "POST", true);
     params.body = {
       ...itemParams,
       active: true,

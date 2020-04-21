@@ -10,8 +10,8 @@ const initialState = {
     number: 0
   },
   items: [],
-  articles: [],
-  projects: [],
+  blog: [],
+  project: [],
   addEditModalShown: false,
   selectedItem: undefined,
   editMode: false,
@@ -115,7 +115,7 @@ export default function reducer (state, action) {
       }, ...menuItems];
       return {
         ...state,
-        projects: activeProjects,
+        project: activeProjects,
         menuItems
       };
     }
@@ -143,7 +143,7 @@ export default function reducer (state, action) {
           size: action.response.size,
           number: action.response.number
         },
-        articles: state.articles.concat(action.response.content),
+        blog: state.blog.concat(action.response.content),
         isLoading: false
       };
     }

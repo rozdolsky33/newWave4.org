@@ -15,7 +15,7 @@ class ArticlePage extends React.Component {
         {!this.props.selectedItem ||
           <>
             {!!this.props.selectedItem.imageUri ?
-              <img style={{width: "100%", objectFit: "contain"}}
+              <img style={{width: "100%", objectFit: "cover", maxHeight: "330px"}}
                    src={this.props.host + "/v2/api/image/" + this.props.selectedItem.imageUri} /> :
               <div className="bg-secondary w-100"><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
             }

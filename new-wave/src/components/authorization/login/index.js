@@ -35,7 +35,7 @@ class LoginPage extends React.Component {
         )}
         <div className="d-flex justify-content-between">
           <Button variant="link" href="/registration">Зареєствуватися</Button>
-          <Button variant="link" onClick={this.props.sendResetPasswordRequest}>Забули пароль?</Button>
+          <Button variant="link" href="/forgot-password">Забули пароль?</Button>
         </div>
       </Col>
     );
