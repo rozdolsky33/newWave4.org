@@ -121,7 +121,7 @@ export const actionCreators = {
   },
   getItem: (type, id) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
-    let url = `${host}/${type === 'project' ? 'v2' : 'v1'}/api/${type}/${id}`;
+    let url = `${host}/v2/api/${type}/${id}`;
     let response = await fetch(url, getParams('GET', true));
     if (!response.ok) {
       dispatch({ type: actionType.requestFailedType, error: response.status });
