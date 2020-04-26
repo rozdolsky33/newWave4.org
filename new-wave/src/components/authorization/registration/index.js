@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../../store/Main-actions";
 import { history } from "../../App";
+import {withTranslation} from "react-i18next";
+import i18n from "../../../i18n";
 
 class RegistrationPage extends React.Component {
   constructor(props) {
@@ -21,25 +23,25 @@ class RegistrationPage extends React.Component {
   render() {
     return (
       <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
-        <h2 className="p-3 text-primary">Registration</h2>
+        <h2 className="p-3 text-primary">{i18n.t("registration.title")}</h2>
         <Form onSubmit={(e) => this.register(e)} className="text-left">
           <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="text" placeholder="Email" ref="email" />
+            <Form.Label>{i18n.t("registration.email")}</Form.Label>
+            <Form.Control type="text" placeholder={i18n.t("registration.email")} ref="email" />
           </Form.Group>
           <Form.Group controlId="firstName">
-            <Form.Label>First name</Form.Label>
-            <Form.Control type="text" placeholder="First name" ref="firstName" />
+            <Form.Label>{i18n.t("registration.first-name")}</Form.Label>
+            <Form.Control type="text" placeholder={i18n.t("registration.first-name")} ref="firstName" />
           </Form.Group>
           <Form.Group controlId="lastName">
-            <Form.Label>Last name</Form.Label>
-            <Form.Control type="text" placeholder="Last name" ref="lastName" />
+            <Form.Label>{i18n.t("registration.last-name")}</Form.Label>
+            <Form.Control type="text" placeholder={i18n.t("registration.last-name")} ref="lastName" />
           </Form.Group>
           <Form.Group controlId="pass">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" ref="password" />
+            <Form.Label>{i18n.t("registration.password")}</Form.Label>
+            <Form.Control type="password" placeholder={i18n.t("registration.password")} ref="password" />
           </Form.Group>
-          <Button type="submit" className="mb-1 w-100">Register</Button>
+          <Button type="submit" className="mb-1 w-100">{i18n.t("registration.btn-register")}</Button>
         </Form>
         {!!this.state.errorMessage && (
           <Alert variant="danger" className="mt-3">
@@ -53,4 +55,4 @@ class RegistrationPage extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(RegistrationPage);
+)(withTranslation()(RegistrationPage));

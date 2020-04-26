@@ -5,6 +5,8 @@ import {bindActionCreators} from "redux";
 import {actionCreators} from "../../../store/Main-actions";
 import errorImg from "../../../assets/NW_error.png";
 import successImg from "../../../assets/NW_success.png";
+import {withTranslation} from "react-i18next";
+import i18n from "../../../i18n";
 
 class ResultPage extends React.Component {
   componentDidMount() {
@@ -18,12 +20,12 @@ class ResultPage extends React.Component {
         {this.props.errorMessage ?
           <>
             <img src={errorImg} style={{width:80}} alt=""/>
-            <h2 className="p-3">Сталася помилка</h2>
+            <h2 className="p-3">{i18n.t("common.status-error")}</h2>
             <p>{this.props.errorMessage}</p>
           </> :
           <>
             <img src={successImg} style={{width:80}} alt=""/>
-            <h2 className="p-3">Успіх</h2>
+            <h2 className="p-3">{i18n.t("common.status-success")}</h2>
             <p>{this.props.successMessage}</p>
           </>}
       </Col>
@@ -33,4 +35,4 @@ class ResultPage extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(ResultPage);
+)(withTranslation()(ResultPage));

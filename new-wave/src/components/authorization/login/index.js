@@ -3,6 +3,8 @@ import {Button, Alert, Form, Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {actionCreators} from "../../../store/Main-actions";
+import {withTranslation} from "react-i18next";
+import i18n from "../../../i18n";
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -16,17 +18,17 @@ class LoginPage extends React.Component {
   render() {
     return (
       <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
-        <h2 className="p-3 text-primary">Login</h2>
+        <h2 className="p-3 text-primary">{i18n.t("login.title")}</h2>
         <Form onSubmit={(e) => this.login(e)} className="text-left">
           <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="text" placeholder="Email" ref="email" />
+            <Form.Label>{i18n.t("login.email")}</Form.Label>
+            <Form.Control type="text" placeholder={i18n.t("login.email")} ref="email" />
           </Form.Group>
           <Form.Group controlId="pass">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" ref="password" />
+            <Form.Label>{i18n.t("login.password")}</Form.Label>
+            <Form.Control type="password" placeholder={i18n.t("login.password")} ref="password" />
           </Form.Group>
-          <Button type="submit" className="mb-1 w-100">Login</Button>
+          <Button type="submit" className="mb-1 w-100">{i18n.t("login.btn-login")}</Button>
         </Form>
         {!!this.props.errorMessage && (
           <Alert variant="danger" className="mt-3">
@@ -34,8 +36,8 @@ class LoginPage extends React.Component {
           </Alert>
         )}
         <div className="d-flex justify-content-between">
-          <Button variant="link" href="/registration">Зареєствуватися</Button>
-          <Button variant="link" href="/forgot-password">Забули пароль?</Button>
+          <Button variant="link" href="/registration">{i18n.t("login.registration")}</Button>
+          <Button variant="link" href="/forgot-password">{i18n.t("login.forgot-pass")}</Button>
         </div>
       </Col>
     );
@@ -44,4 +46,4 @@ class LoginPage extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(LoginPage);
+)(withTranslation()(LoginPage));
