@@ -6,6 +6,8 @@ import AddEditModal from "./addEditModal";
 import PaginationPanel from "../common/pagination-panel";
 import { actionCreators } from "../../store/Main-actions";
 import Row from "react-bootstrap/Row";
+import {withTranslation} from "react-i18next";
+import i18n from "../../i18n";
 
 class AdminPage extends React.Component {
   constructor(props) {
@@ -34,9 +36,9 @@ class AdminPage extends React.Component {
       <thead>
       <tr>
         <th>#</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Date</th>
+        <th>{i18n.t("admin.title")}</th>
+        <th>{i18n.t("admin.author")}</th>
+        <th>{i18n.t("admin.date")}</th>
         <th>X</th>
       </tr>
       </thead>
@@ -91,10 +93,10 @@ class AdminPage extends React.Component {
           </Col>
         </Row>
         <Tabs id="admin-content" activeKey={this.props.activeItems} onSelect={this.changeActiveTab}>
-          <Tab eventKey="blog" title="Articles">
+          <Tab eventKey="blog" title={i18n.t("admin.articles")}>
             {this.getContentTable()}
           </Tab>
-          <Tab eventKey="project" title="Projects">
+          <Tab eventKey="project" title={i18n.t("admin.projects")}>
             {this.getContentTable()}
           </Tab>
         </Tabs>
@@ -111,4 +113,4 @@ class AdminPage extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(AdminPage);
+)(withTranslation()(AdminPage));

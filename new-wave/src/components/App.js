@@ -1,5 +1,5 @@
-import React from "react";
-import { Row } from "react-bootstrap";
+import React, {Suspense} from "react";
+import {Navbar, Row} from "react-bootstrap";
 import {Route, Router} from "react-router-dom";
 import NavBarBlock from "./nav-bar";
 import MainPage from "./pages/main";
@@ -26,7 +26,7 @@ export const history = createBrowserHistory();
 export default class App extends React.Component {
   render() {
     return (
-      <div className="App">
+      <Suspense className="App" fallback={null}>
         <NavBarBlock history={this.props.history} />
         <Row className="m-0 overflow-hidden">
           <Router history={this.props.history}>
@@ -53,7 +53,7 @@ export default class App extends React.Component {
             <Route path="/result/:token?" component={ResultPage} />
           </Router>
         </Row>
-      </div>
+      </Suspense>
     );
   }
 }

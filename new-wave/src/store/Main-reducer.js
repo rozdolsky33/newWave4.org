@@ -70,35 +70,35 @@ export default function reducer (state, action) {
     }
     case actionType.receivedMenuItemsType: {
       let menuItems = [{
-        description: "Про нас",
+        description: "menu.about-us.title",
         subItems: [
           {
-            description: "Рада",
+            description: "menu.about-us.our-team",
             link: "/our-team"
           },
           {
-            description: "Історія створення",
+            description: "menu.about-us.history",
             link: "/history"
           },
           {
-            description: "Звіти",
+            description: "menu.about-us.reports",
             link: "/reports"
           },
           {
-            description: "Контакти",
+            description: "menu.about-us.contact-us",
             link: "/contact-us"
           }
         ]
       },
         {
-          description: "Блоги",
+          description: "menu.blog",
           link: "/blog"
         }];
       const activeProjects = action.response.content.filter(project => project.active);
       if (activeProjects.length > 0) {
         menuItems = [
           {
-            description: "Проекти",
+            description: "menu.projects",
             subItems: activeProjects.map(project => {
               return {
                 description: project.title,
@@ -110,7 +110,13 @@ export default function reducer (state, action) {
         ];
       }
       menuItems = [{
-        description: "Головна",
+        description: "menu.admin",
+        link: "/admin"
+      }, {
+        description: "menu.login",
+        link: "/login"
+      }, {
+        description: "menu.main",
         link: "/"
       }, ...menuItems];
       return {

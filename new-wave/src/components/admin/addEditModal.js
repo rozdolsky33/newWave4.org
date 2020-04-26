@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import DatePicker from "react-datepicker";
 import { actionCreators } from "../../store/Main-actions";
 import "react-datepicker/dist/react-datepicker.css";
+import { withTranslation } from "react-i18next";
+import i18n from "../../i18n";
 
 class AddEditModal extends React.Component {
   constructor(props) {
@@ -49,20 +51,20 @@ class AddEditModal extends React.Component {
       <Modal show={this.props.addEditModalShown} onHide={() => this.props.toggleAddEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {this.props.editMode ? "Edit " : "Add "}
-            {this.props.activeItems === "blog" ? "article" : "project"}
+            {this.props.editMode ? i18n.t("admin.edit") : i18n.t("admin.add")}
+            {this.props.activeItems === "blog" ? i18n.t("admin.article") : i18n.t("admin.project")}
           </Modal.Title>
         </Modal.Header>
         <Form onSubmit={(e) => this.submit(e)}>
           <Modal.Body>
             <Form.Group controlId="title">
-              <Form.Label>Title</Form.Label>
-              <Form.Control type="text" placeholder="Article title"
+              <Form.Label>{i18n.t("admin.title")}</Form.Label>
+              <Form.Control type="text" placeholder={i18n.t("admin.title")}
                             value={this.state.title}
                             name="title" onChange={this.changeValue} />
             </Form.Group>
             <Form.Group as={Row} controlId="author">
-              <Form.Label column sm="2">Author</Form.Label>
+              <Form.Label column sm="2">{i18n.t("admin.author")}</Form.Label>
               <Col sm="10">
                 <Form.Control as="select" value={this.state.author}
                               name="author" onChange={this.changeValue}>
@@ -71,7 +73,7 @@ class AddEditModal extends React.Component {
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="pic">
-              <Form.Label column sm="2">Picture</Form.Label>
+              <Form.Label column sm="2">{i18n.t("admin.picture")}</Form.Label>
               <Col sm="10">
                 <div className="custom-file">
                   <input type="file" multiple={false}
@@ -85,32 +87,32 @@ class AddEditModal extends React.Component {
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="category">
-              <Form.Label column sm="2">Category</Form.Label>
+              <Form.Label column sm="2">{i18n.t("admin.category")}</Form.Label>
               <Col sm="10">
-                <Form.Control type="text" placeholder="Article category" value={this.state.category}
+                <Form.Control type="text" placeholder={i18n.t("admin.category")} value={this.state.category}
                               name="category" onChange={this.changeValue} />
               </Col>
             </Form.Group>
             <Form.Group controlId="date">
-              <Form.Label className="pr-3">Created at</Form.Label>
+              <Form.Label className="pr-3">{i18n.t("admin.date")}</Form.Label>
               <DatePicker className="form-control"
                           selected={this.state.date}
                           onChange={this.changeDate} />
             </Form.Group>
             <Form.Group controlId="preview">
-              <Form.Label>Preview</Form.Label>
+              <Form.Label>{i18n.t("admin.preview")}</Form.Label>
               <Form.Control as="textarea" rows="2" value={this.state.preview}
                             name="preview" onChange={this.changeValue} />
             </Form.Group>
             <Form.Group controlId="content">
-              <Form.Label>Article</Form.Label>
+              <Form.Label>{i18n.t("admin.content")}</Form.Label>
               <Form.Control as="textarea" rows="5" value={this.state.content}
                             name="content" onChange={this.changeValue} />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => this.props.toggleAddEditModal(false)}>Close</Button>
-            <Button variant="primary" type="submit">Submit</Button>
+            <Button variant="primary" type="submit">{i18n.t("admin.btn-submit")}</Button>
           </Modal.Footer>
         </Form>
       </Modal>
@@ -120,4 +122,4 @@ class AddEditModal extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(AddEditModal);
+)(withTranslation()(AddEditModal));

@@ -3,6 +3,8 @@ import {Button, Alert, Form, Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {actionCreators} from "../../../store/Main-actions";
+import {withTranslation} from "react-i18next";
+import i18n from "../../../i18n";
 
 class ResetPasswordPage extends React.Component {
   resetPassword(event) {
@@ -13,17 +15,17 @@ class ResetPasswordPage extends React.Component {
   render() {
     return (
       <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
-        <h2 className="p-3 text-primary">Login</h2>
+        <h2 className="p-3 text-primary">{i18n.t("reset-password.title")}</h2>
         <Form onSubmit={(e) => this.resetPassword(e)} className="text-left">
           <Form.Group controlId="pass">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" ref="password" />
+            <Form.Control type="password" placeholder={i18n.t("reset-password.password")} ref="password" />
           </Form.Group>
           <Form.Group controlId="pass-confirmation">
             <Form.Label>Please enter your password once again</Form.Label>
-            <Form.Control type="password" placeholder="Password confirmation" ref="pass-confirmation" />
+            <Form.Control type="password" placeholder={i18n.t("reset-password.password-confirm")} ref="pass-confirmation" />
           </Form.Group>
-          <Button type="submit" className="mb-1 w-100">Submit</Button>
+          <Button type="submit" className="mb-1 w-100">{i18n.t("reset-password.btn-submit")}</Button>
         </Form>
         {!!this.props.errorMessage && (
           <Alert variant="danger" className="mt-3">
@@ -37,4 +39,4 @@ class ResetPasswordPage extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(ResetPasswordPage);
+)(withTranslation()(ResetPasswordPage));

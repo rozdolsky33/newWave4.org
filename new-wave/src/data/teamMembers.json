@@ -2,21 +2,21 @@
   {
     "id": "1",
     "fullName": "Мирослава Роздольська",
-    "img": "./assets/MyroslavaRozdolska.jpg",
+    "img": "./assets/imgs/MyroslavaRozdolska.jpg",
     "position": "Голова",
     "location": "Стемфорд, КТ"
   },
   {
     "id": "2",
     "fullName": "Богдан Бохонок",
-    "img": "./assets/BohdanBohonok.jpg",
+    "img": "./assets/imgs/BohdanBohonok.jpg",
     "position": "Заступник",
     "location": "Пітсбург, ПА"
   },
   {
     "id": "3",
     "fullName": "Лариса Заник",
-    "img": "./assets/LarysaZanyk.jpg",
+    "img": "./assets/imgs/LarysaZanyk.jpg",
     "position": "Директор освітніх програм",
     "location": ""
   },
@@ -24,7 +24,7 @@
     "id": "4",
     "fullName": "Ольга Гриник",
     "position": "Голова Бруклінського осередку",
-    "img": "./assets/OlgaGrynyk.jpg",
+    "img": "./assets/imgs/OlgaGrynyk.jpg",
     "location": ""
   },
   {
