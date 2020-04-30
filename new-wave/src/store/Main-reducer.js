@@ -19,8 +19,8 @@ const initialState = {
   successMessage: "",
   errorMessage: "",
   activeItems: "blog",
-  menuItems: [],
-  blogDates: []
+  blogDates: [],
+  user: undefined
 };
 
 export default function reducer (state, action) {
@@ -57,8 +57,14 @@ export default function reducer (state, action) {
     case actionType.loginPassedType: {
       return {
         ...state,
-        token: action.token,
+        user: action.user,
         isLoading: false
+      };
+    }
+    case actionType.logoutType: {
+      return {
+        ...state,
+        user: undefined
       };
     }
     case actionType.requestPassedType: {
@@ -68,61 +74,10 @@ export default function reducer (state, action) {
         isLoading: false
       };
     }
-    case actionType.receivedMenuItemsType: {
-      let menuItems = [{
-        description: "menu.about-us.title",
-        subItems: [
-          {
-            description: "menu.about-us.our-team",
-            link: "/our-team"
-          },
-          {
-            description: "menu.about-us.history",
-            link: "/history"
-          },
-          {
-            description: "menu.about-us.reports",
-            link: "/reports"
-          },
-          {
-            description: "menu.about-us.contact-us",
-            link: "/contact-us"
-          }
-        ]
-      },
-        {
-          description: "menu.blog",
-          link: "/blog"
-        }];
-      const activeProjects = action.response.content.filter(project => project.active);
-      if (activeProjects.length > 0) {
-        menuItems = [
-          {
-            description: "menu.projects",
-            subItems: activeProjects.map(project => {
-              return {
-                description: project.title,
-                link: `/item/project/${project.id}`
-              }
-            })
-          },
-          ...menuItems
-        ];
-      }
-      menuItems = [{
-        description: "menu.admin",
-        link: "/admin"
-      }, {
-        description: "menu.login",
-        link: "/login"
-      }, {
-        description: "menu.main",
-        link: "/"
-      }, ...menuItems];
+    case actionType.receivedProjectsType: {
       return {
         ...state,
-        project: activeProjects,
-        menuItems
+        project: action.response.content.filter(project => project.active)
       };
     }
     case actionType.receivedItemsType: {
@@ -135,7 +90,14 @@ export default function reducer (state, action) {
           size: action.response.size,
           number: action.response.number
         },
-        items: action.response.content,
+        items: action.addResToList ? [...state.items, action.response.content] : action.response.content,
+        isLoading: false
+      };
+    }
+    case actionType.receivedFilteredItemsType: {
+      return {
+        ...state,
+        items: action.response,
         isLoading: false
       };
     }
@@ -167,7 +129,8 @@ export default function reducer (state, action) {
           const tempDate = new Date(date);
           return {
             year: tempDate.getFullYear(),
-            month: tempDate.toLocaleString('default', { month: 'long' })
+            month: tempDate.toLocaleString('default', { month: 'long' }),
+            monthVal: tempDate.getMonth() + 1
           }
         })
       };

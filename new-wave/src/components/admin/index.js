@@ -12,22 +12,18 @@ import i18n from "../../i18n";
 class AdminPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentPage: 0
-    };
     this.selectPage = this.selectPage.bind(this);
     this.changeActiveTab = this.changeActiveTab.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
 
   selectPage(pageNumber) {
-    this.setState({currentPage: pageNumber});
     this.props.getItemsList(this.props.activeItems, pageNumber, this.props.paginationConfig.size);
   }
 
   changeActiveTab(newTab) {
     this.props.changeActiveItems(newTab);
-    this.props.getItemsList(newTab, this.state.currentPage, this.props.paginationConfig.size);
+    this.props.getItemsList(newTab, 0, this.props.paginationConfig.size);
   }
 
   getContentTable() {
@@ -67,11 +63,11 @@ class AdminPage extends React.Component {
   async deleteItem(e, item) {
     e.stopPropagation();
     await this.props.deleteItem(this.props.activeItems, item.id);
-    this.props.getItemsList(this.props.activeItems, this.state.currentPage, this.props.paginationConfig.size);
+    this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
   }
 
   componentWillMount() {
-    this.props.getItemsList(this.props.activeItems, this.state.currentPage, this.props.paginationConfig.size);
+    this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
   }
 
   render() {
@@ -88,7 +84,7 @@ class AdminPage extends React.Component {
           <Col className="mt-3 d-flex justify-content-end">
             <PaginationPanel {...this.props.paginationConfig}
                                 selectPage={this.selectPage}
-                                currentPage={this.state.currentPage}
+                                currentPage={this.props.paginationConfig.number}
                                 pageSize={this.props.paginationConfig.size}/>
           </Col>
         </Row>

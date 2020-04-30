@@ -3,6 +3,7 @@
     "admin": "Адмінка",
     "main": "Головна",
     "login": "Логін",
+    "logout": "Логаут",
     "about-us": {
       "title": "Про нас",
       "our-team": "Рада",
@@ -10,7 +11,8 @@
       "reports": "Звіти",
       "contact-us": "Контакти"
     },
-    "projects": "Проекти",
+    "project": "Проекти",
+    "activities": "Активності",
     "blog": "Блоги",
     "donate": "Пожертви"
   },

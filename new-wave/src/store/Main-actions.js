@@ -1,4 +1,5 @@
 ﻿import * as actionType from './Main-types';
+import { history } from "../components/App";
 
 const host = 'http://162.212.158.14:8080';
 const getParams = (methodType, useAuth) => {
@@ -28,12 +29,27 @@ export const actionCreators = {
     let response = await fetch(url, params);
     if (response.ok) {
       const token = response.headers.get('Authorization');
-      dispatch({ type: actionType.loginPassedType, token });
+      let userRolesAndRights = response.headers.get('ROLES_AND_AUTHORITIES');
+      userRolesAndRights = userRolesAndRights.slice(1, userRolesAndRights.length - 1).split(", ");
+      let role = userRolesAndRights[userRolesAndRights.length - 1];
+      let rights = userRolesAndRights.slice(0, userRolesAndRights.length - 1);
       localStorage.setItem('token', token);
-      window.location.href = '/admin';
+      localStorage.setItem('role', role);
+      localStorage.setItem('rights', rights.toString());
+      dispatch({ type: actionType.loginPassedType, user: {token, role, rights} });
+      if (role.indexOf("ADMIN") > -1) {
+        history.push("/admin");
+      } else {
+        history.push("/");
+      }
     } else {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     }
+  },
+  logout: () => async (dispatch) => {
+    localStorage.removeItem('token');
+    dispatch({ type: actionType.logoutType });
+    history.push("/");
   },
   register: (email, firstName, lastName, password) => async (dispatch) => {
     const url = `${host}/v1/api/users`;
@@ -88,13 +104,25 @@ export const actionCreators = {
       error: 'This functionality is under development.',
     });
   },
-  getItemsList: (activeItems, pageNumber, pageSize) => async (dispatch) => {
+  getItemsList: (activeItems, pageNumber, pageSize, addResToList) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
     let url = `${host}/v2/api/${activeItems}/date?pageNumber=${pageNumber}&numberOfElementsPerPage=${pageSize}`;
     let response = await fetch(url, getParams('GET'));
     if (response.ok) {
       response = await response.json();
-      dispatch({ type: actionType.receivedItemsType, response });
+      dispatch({ type: actionType.receivedItemsType, addResToList, response });
+    } else {
+      dispatch({ type: actionType.requestFailedType, error: response.status });
+    }
+  },
+  getFilteredList: (activeItems, filter) => async (dispatch) => {
+    dispatch({ type: actionType.requestType });
+    let url = `${host}/v2/api/${activeItems}/${filter.entityName}/`;
+    url += filter.entityName === 'date' ? `year/month/${filter.year}/${filter.month}` : filter.value;
+    let response = await fetch(url, getParams('GET'));
+    if (response.ok) {
+      response = await response.json();
+      dispatch({ type: actionType.receivedFilteredItemsType, response });
     } else {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     }
@@ -110,13 +138,13 @@ export const actionCreators = {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     }
   },
-  getMenuItems: () => async (dispatch) => {
+  getProjects: (pageNumber, pageSize) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/project/date?pageNumber=0&numberOfElementsPerPage=99`;
+    let url = `${host}/v2/api/project/date?pageNumber=${pageNumber}&numberOfElementsPerPage=${pageSize}`;
     let response = await fetch(url, getParams('GET'));
     if (response.ok) {
       response = await response.json();
-      dispatch({ type: actionType.receivedMenuItemsType, response });
+      dispatch({ type: actionType.receivedProjectsType, response });
     }
   },
   getItem: (type, id) => async (dispatch) => {
@@ -130,9 +158,9 @@ export const actionCreators = {
       dispatch({ type: actionType.receivedItemType, response });
     }
   },
-  getBlogDates: () => async (dispatch) => {
+  getItemsDates: (itemType) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/blog/date/postIfExists`;
+    let url = `${host}/v2/api/${itemType}/date/postIfExists`;
     let response = await fetch(url, getParams('GET'));
     if (!response.ok) {
       dispatch({ type: actionType.requestFailedType, error: response.status });

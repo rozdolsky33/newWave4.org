@@ -6,33 +6,38 @@ import {actionCreators} from "../../../store/Main-actions";
 import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";
 
-class BlogPage extends React.Component {
+class ListPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 0,
-      pageSize: 5,
-      step: 5,
       filter: undefined
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
   componentWillMount() {
     window.addEventListener("scroll", this.handleScroll, true);
-    this.props.getBlogDates();
+    this.props.getItemsDates(this.props.type);
+    this.props.getItemsList(this.props.type, 0, 5);
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
   handleScroll() {
-    const newPage = this.state.currentPage + 1;
+    const newPage = this.props.paginationConfig.number + 1;
     if (!this.endOfList || this.props.paginationConfig.totalPages <= newPage) return false;
     const top = this.endOfList.getBoundingClientRect().top - 80;
     const isEndOfListVisible = top >= 0 && top <= window.innerHeight;
     if (isEndOfListVisible) {
-      this.setState({currentPage: newPage});
-      this.props.getArticles(newPage, this.state.pageSize);
+      this.props.getItemsList(this.props.type, newPage, this.props.paginationConfig.size, true);
+    }
+  }
+  toggleFilter(filter) {
+    this.setState({filter: filter});
+    if (filter) {
+      this.props.getFilteredList(this.props.type, filter);
+    } else {
+      this.props.getItemsList(this.props.type, 0, 5);
     }
   }
 
@@ -43,21 +48,25 @@ class BlogPage extends React.Component {
       let result = (
         <div key={key}>
           {currentYear !== date.year && <p className="m-0">&#9675; {date.year}</p>}
-          {currentMonth !== date.month && <p className="m-0 pl-2">
+          {(currentYear !== date.year || currentMonth !== date.month) && <p className="m-0 pl-2">
             <Button className="text-secondary" variant="link" size="sm"
-                    onClick={() => this.setState({filter: {entityName: "date", value: `${date.month} ${date.year}`}})}>
+                    onClick={() => this.toggleFilter({
+                      entityName: "date",
+                      value: `${date.month} ${date.year}`,
+                      month: date.monthVal,
+                      year: date.year})}>
               {date.month}
             </Button>
           </p>}
       </div>);
-      currentYear = date.year;
       currentMonth = date.month;
+      currentYear = date.year;
       return result;
     });
   }
 
-  getArticlesList() {
-    return this.props.blog.map((item, key) => {
+  getItemsList() {
+    return this.props.items.map((item, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
           {!!item.imageUri ?
@@ -70,7 +79,7 @@ class BlogPage extends React.Component {
             <div className="d-flex justify-content-between pb-3">
               <span className="text-secondary small">{new Date(item.date).toDateString()}</span>
               <Button className="text-secondary" variant="link" size="sm"
-                      onClick={() => this.setState({filter: {entityName: "author", value: item.author}})}>
+                      onClick={() => this.toggleFilter({entityName: "author", value: item.author})}>
                 {item.author}
               </Button>
             </div>
@@ -91,7 +100,7 @@ class BlogPage extends React.Component {
   render () {
     return (
       <Col className="text-center">
-        <h2 className="p-3 text-primary">{i18n.t("blogs.title")}</h2>
+        <h2 className="p-3 text-primary">{i18n.t("menu." + this.props.type)}</h2>
         <Row>
           <Col className="text-left pl-5" xs="12" md="2">
             {this.getDates()}
@@ -101,9 +110,9 @@ class BlogPage extends React.Component {
               {i18n.t("blogs.filtered-by")}&nbsp; <span>{i18n.t("blogs." + this.state.filter.entityName)}</span>:&nbsp;
               <span className="text-dark">{this.state.filter.value}</span>&nbsp;
               <Button className="p-0 text-dark font-weight-bold" variant="link" size="sm"
-                      onClick={() => this.setState({filter: undefined})}>x</Button>
+                      onClick={() => this.toggleFilter(undefined)}>x</Button>
             </Row>}
-            {this.getArticlesList()}
+            {this.getItemsList()}
             <div ref={el => {this.endOfList = el;}}></div>
           </Col>
         </Row>
@@ -114,4 +123,4 @@ class BlogPage extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(withTranslation()(BlogPage));
+)(withTranslation()(ListPage));

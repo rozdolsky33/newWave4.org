@@ -3,6 +3,7 @@
     "admin": "Admin",
     "main": "Main",
     "login": "Login",
+    "logout": "Logout",
     "about-us": {
       "title": "About Us",
       "our-team": "Our team",
@@ -10,7 +11,8 @@
       "reports": "Reports",
       "contact-us": "Contact Us"
     },
-    "projects": "Projects",
+    "project": "Projects",
+    "activities": "Activities",
     "blog": "Blog",
     "donate": "Donate"
   },

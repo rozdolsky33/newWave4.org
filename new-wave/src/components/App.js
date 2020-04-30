@@ -11,7 +11,7 @@ import EducationalPage from "./pages/projects/educational";
 import DonationsPage from "./pages/donations";
 import HistoryPage from "./pages/history";
 import ArticlePage from "./pages/article";
-import BlogPage from "./pages/blog";
+import ListPage from "./common/list";
 import OurTeamPage from "./pages/our-team";
 import ContactUsPage from "./pages/contact-us";
 import AdminPage from "./admin";
@@ -40,7 +40,8 @@ export default class App extends React.Component {
             <Route path="/publications" component={PublicationsPage} />
             <Route path="/culture-and-art" component={CultureAndArtPage} />
             <Route path="/donations" component={DonationsPage} />
-            <Route path="/blog" component={BlogPage} />
+            <Route path="/project" component={() => <ListPage type="project"/>} />
+            <Route path="/blog" component={() => <ListPage type="blog"/>} />
             <Route path="/item/:type/:id" component={ArticlePage} />
 
             <Route path="/admin" component={AdminPage} />

@@ -17,7 +17,7 @@ class RegistrationPage extends React.Component {
   async register(event) {
     event.preventDefault();
     await this.props.register(this.refs.email.value, this.refs.firstName.value, this.refs.lastName.value, this.refs.password.value);
-    history.push("result");
+    history.push("/result");
   }
 
   render() {
