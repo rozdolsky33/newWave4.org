@@ -25,7 +25,7 @@ class ListPage extends React.Component {
 
   handleScroll() {
     const newPage = this.props.paginationConfig.number + 1;
-    if (!this.endOfList || this.props.paginationConfig.totalPages <= newPage) return false;
+    if (!this.endOfList || this.props.paginationConfig.totalPages <= newPage || this.props.isLoading || !!this.state.filter) return;
     const top = this.endOfList.getBoundingClientRect().top - 80;
     const isEndOfListVisible = top >= 0 && top <= window.innerHeight;
     if (isEndOfListVisible) {

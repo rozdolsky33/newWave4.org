@@ -90,7 +90,7 @@ export default function reducer (state, action) {
           size: action.response.size,
           number: action.response.number
         },
-        items: action.addResToList ? [...state.items, action.response.content] : action.response.content,
+        items: action.addResToList ? [...state.items, ...action.response.content] : action.response.content,
         isLoading: false
       };
     }
