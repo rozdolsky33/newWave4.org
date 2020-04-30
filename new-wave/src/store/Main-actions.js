@@ -48,6 +48,8 @@ export const actionCreators = {
   },
   logout: () => async (dispatch) => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('rights');
     dispatch({ type: actionType.logoutType });
     history.push("/");
   },

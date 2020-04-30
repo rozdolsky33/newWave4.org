@@ -74,7 +74,7 @@ class NavBarBlock extends React.Component {
       menuItems = [...menuItems, blogMenuItem];
     }
     let userRole = (this.props.user && this.props.user.role) ||localStorage.getItem("role") || "";
-    if (userRole.indexOf("ADMIN" > -1)) {
+    if (userRole.indexOf("ADMIN") > -1) {
       menuItems.unshift({
         description: "menu.admin",
         link: "/admin"
