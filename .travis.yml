@@ -1,10 +1,13 @@
 language: node_js
 node_js:
-  - "13.7.0"
+  - "stable"
 services:
   - docker
 before_install:
   - docker build -t rozdolsky33/new-wave4-front-end -f Dockerfile.dev .
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s
+  - export PATH=$HOME/.yarn/bin:$PATH
+  - yarn install
 
 script:
-  - docker run -e CI=true rozdolsky33/new-wave4-front-end npm test
+  - docker run -e CI=true rozdolsky33/new-wave4-front-end npm run test
