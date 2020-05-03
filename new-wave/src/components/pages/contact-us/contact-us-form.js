@@ -3,9 +3,9 @@ import {InputGroup, FormControl, Form, Button} from "react-bootstrap";
 import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";
 
-function ContactUsForm() {
+function ContactUsForm(props) {
   return (
-    <Form>
+    <Form onSubmit={(e) => this.props.onSubmit(e)}>
       <InputGroup className="mb-3">
         <InputGroup.Prepend>
           <InputGroup.Text id="contact-us-name">&nbsp;&#9829;</InputGroup.Text>

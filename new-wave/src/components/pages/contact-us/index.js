@@ -24,7 +24,7 @@ function ContactUsPage() {
             <div className="text-center">
               <p>{i18n.t("contact-us.sub-title-2")}</p>
             </div>
-            <ContactUsForm/>
+            <ContactUsForm onSubmit={(e) => {e.preventDefault()}}/>
           </Col>
         </Row>
       </div>

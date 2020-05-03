@@ -3,7 +3,7 @@ import {Modal, Button, Form, Col, Row, Alert} from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import DatePicker from "react-datepicker";
-import { actionCreators } from "../../store/Main-actions";
+import { actionCreators } from "../../store/main/Main-actions";
 import "react-datepicker/dist/react-datepicker.css";
 import { withTranslation } from "react-i18next";
 import i18n from "../../i18n";

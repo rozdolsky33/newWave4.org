@@ -5,7 +5,7 @@ import { Col, Row, Card } from "react-bootstrap";
 import { withTranslation } from "react-i18next";
 import CarouselPhotos from "./carousel-photos";
 import { history } from "../../App";
-import { actionCreators } from "../../../store/Main-actions";
+import { actionCreators } from "../../../store/main/Main-actions";
 import i18n from "../../../i18n";
 import "./main.scss";
 

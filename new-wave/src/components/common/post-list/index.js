@@ -1,12 +1,12 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import {Button, Card, Col, Row, Alert} from "react-bootstrap";
-import {actionCreators} from "../../../store/Main-actions";
-import {withTranslation} from "react-i18next";
+import { Button, Card, Col, Row } from "react-bootstrap";
+import { actionCreators } from "../../../store/main/Main-actions";
+import { withTranslation } from "react-i18next";
 import i18n from "../../../i18n";
 
-class ListPage extends React.Component {
+class PostListPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,12 +84,8 @@ class ListPage extends React.Component {
               </Button>
             </div>
             <Card.Text>{item.preview}</Card.Text>
-            <div className="d-flex justify-content-between">
-              <span className="text-secondary">
-                <i className="fa fa-heart mr-2"></i>
-                <i className="fa fa-comment"></i>
-              </span>
-              <Card.Link href={`/item/blog/${item.id}`}>{i18n.t("blogs.read-more")}</Card.Link>
+            <div className="d-flex justify-content-end">
+              <Card.Link href={`/item/${this.props.type}/${item.id}`}>{i18n.t("posts.read-more")}</Card.Link>
             </div>
           </Card.Body>
         </Card>
@@ -107,7 +103,7 @@ class ListPage extends React.Component {
           </Col>
           <Col className="text-center" xs="12" md="8">
             {this.state.filter && <Row className="text-secondary p-3">
-              {i18n.t("blogs.filtered-by")}&nbsp; <span>{i18n.t("blogs." + this.state.filter.entityName)}</span>:&nbsp;
+              {i18n.t("posts.filtered-by")}&nbsp; <span>{i18n.t("posts." + this.state.filter.entityName)}</span>:&nbsp;
               <span className="text-dark">{this.state.filter.value}</span>&nbsp;
               <Button className="p-0 text-dark font-weight-bold" variant="link" size="sm"
                       onClick={() => this.toggleFilter(undefined)}>x</Button>
@@ -123,4 +119,4 @@ class ListPage extends React.Component {
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)
-)(withTranslation()(ListPage));
+)(withTranslation()(PostListPage));

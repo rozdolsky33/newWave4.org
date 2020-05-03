@@ -4,8 +4,13 @@ import { connect } from "react-redux";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 import { withTranslation } from "react-i18next";
 import { history } from '../components/App';
-import {actionCreators} from "../store/Main-actions";
+import { actionCreators } from "../store/main/Main-actions";
 import logo from "../assets/NW_logo_sm.png";
+import loginIcon from "../assets/login.png";
+import logoutIcon from "../assets/logout.png";
+import facebookIcon from "../assets/facebook.png";
+import uaIcon from "../assets/ua.png";
+import enIcon from "../assets/en.png";
 import i18n from "../i18n";
 
 class NavBarBlock extends React.Component {
@@ -55,7 +60,7 @@ class NavBarBlock extends React.Component {
       ]
     }];
     let blogMenuItem = {
-      description: "menu.activities",
+      description: "menu.posts",
       subItems: []
     };
     if (this.props.blog.length > 0 ) {
@@ -91,18 +96,18 @@ class NavBarBlock extends React.Component {
             <img src={logo} style={{width:80, marginTop: -7}} alt=""/>
           </a>
           {!!(this.props.user && this.props.user.token) || !!localStorage.getItem("token") ?
-            <span onClick={(e) => this.props.logout()} >
-              <img src={`../assets/imgs/logout.png`} style={{height:"29px"}} alt={i18n.t("menu.logout")}/>
+            <span onClick={(e) => this.props.logout()} className="ml-3">
+              <img src={logoutIcon} style={{height:"29px"}} alt={i18n.t("menu.logout")}/>
             </span>:
-            <span onClick={(e) => this.navigateTo("/login")} className="mr-1">
-              <img src={`../assets/imgs/login.png`} style={{height:"27px"}} alt={i18n.t("menu.login")}/>
+            <span onClick={(e) => this.navigateTo("/login")} className="mr-1 ml-3">
+              <img src={loginIcon} style={{height:"27px"}} alt={i18n.t("menu.login")}/>
             </span>}
           <span onClick={() => i18n.changeLanguage( i18n.language === "en" ? "ua" : "en")} className="mr-1">
-            <img src={`../assets/imgs/${i18n.language === "en" ? "ua" : "en"}.png`} style={{height:"28px"}}
+            <img src={i18n.language === "en" ? uaIcon : enIcon} style={{height:"28px"}}
                  alt={i18n.language === "en" ? "ua" : "en"}/>
           </span>
           <a href="https://www.facebook.com/New-Ukrainian-Wave-134781923303336/" >
-            <img src={`../assets/imgs/facebook.png`} style={{height:"26px"}} alt="facebook"/>
+            <img src={facebookIcon} style={{height:"26px"}} alt="facebook"/>
           </a>
         </Navbar.Brand>
         <Navbar.Toggle className="order-3 order-sm-2" aria-controls="basic-navbar-nav" />

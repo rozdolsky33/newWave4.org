@@ -12,8 +12,8 @@
       "contact-us": "Контакти"
     },
     "project": "Проекти",
-    "activities": "Активності",
-    "blog": "Блоги",
+    "posts": "Активності",
+    "blog": "Статті",
     "donate": "Пожертви"
   },
   "main": {
@@ -60,12 +60,19 @@
     "email": "Ваша пошта",
     "btn-send": "Відправити листа"
   },
-  "blogs": {
+  "posts": {
     "title": "Блог",
     "filtered-by": "Відфільтровано по ",
     "date": "даті",
     "author": "автору",
     "read-more": "Читати далі..."
+  },
+  "post": {
+    "comment": "Коментар",
+    "leave-comment": "Додати коментар",
+    "action-is-disabled": "Дія неможлива",
+    "you-should-be-logged-in": "Щоб виконати дану дію Ви маєте спершу залогуватися",
+    "nav-to-login": "Залогуватися"
   },
   "donation": {
     "title": "Пожертви",
@@ -130,6 +137,7 @@
     "common": "Щось пішло не так, код помилки - "
   },
   "common": {
+    "cancel": "Відмінити",
     "status-error": "Сталася помилка",
     "status-success": "Успіх"
   }

@@ -2,7 +2,7 @@ import React from "react";
 import {Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../../store/Main-actions";
+import {actionCreators} from "../../../store/main/Main-actions";
 import errorImg from "../../../assets/NW_error.png";
 import successImg from "../../../assets/NW_success.png";
 import {withTranslation} from "react-i18next";

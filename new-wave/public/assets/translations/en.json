@@ -12,8 +12,8 @@
       "contact-us": "Contact Us"
     },
     "project": "Projects",
-    "activities": "Activities",
-    "blog": "Blog",
+    "posts": "Posts",
+    "blog": "Articles",
     "donate": "Donate"
   },
   "main": {
@@ -60,12 +60,19 @@
     "email": "Your email",
     "btn-send": "Send an email"
   },
-  "blogs": {
-    "title": "Blog",
+  "posts": {
+    "title": "posts",
     "filtered-by": "Filtered by ",
     "date": "date",
     "author": "author",
     "read-more": "Read more..."
+  },
+  "post": {
+    "comment": "Comment",
+    "leave-comment": "Add Comment",
+    "action-is-disabled": "Action is impossible",
+    "you-should-be-logged-in": "You should log in at first to perform the action",
+    "nav-to-login": "Login"
   },
   "donation": {
     "title": "Donation",
@@ -130,6 +137,7 @@
     "common": "Something went wrong, error code - "
   },
   "common": {
+    "cancel": "Cancel",
     "status-error": "Error",
     "status-success": "Success"
   }

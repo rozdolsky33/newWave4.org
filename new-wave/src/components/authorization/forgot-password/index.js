@@ -2,14 +2,16 @@ import React from "react";
 import {Button, Alert, Form, Col} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../../store/Main-actions";
+import {actionCreators} from "../../../store/main/Main-actions";
 import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";
+import {history} from "../../App";
 
 class ForgotPasswordPage extends React.Component {
-  sendPassResetRequest(event) {
+  async sendPassResetRequest(event) {
     event.preventDefault();
-    this.props.sendPassResetRequest(this.refs.email.value);
+    await this.props.sendPassResetRequest(this.refs.email.value);
+    history.push("/result");
   }
 
   render() {

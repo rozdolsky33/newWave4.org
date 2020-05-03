@@ -1,0 +1,9 @@
+﻿export const requestType = "REQUEST_STARTED";
+export const requestPassedType = "REQUEST_SUCCESSFUL";
+export const requestFailedType = "REQUEST_FAILED";
+export const receivedItemType = "RECEIVED_ITEM";
+export const receivedLikesType = "RECEIVED_LIKES";
+export const toggledLikeType = "TOGGLED_LIKE";
+export const receivedCommentsType = "RECEIVED_COMMENTS";
+export const addedCommentType = "ADDED_COMMENT";
+export const removedCommentType = "REMOVED_COMMENT";

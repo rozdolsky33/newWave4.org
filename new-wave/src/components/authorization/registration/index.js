@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Alert, Form, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { actionCreators } from "../../../store/Main-actions";
+import { actionCreators } from "../../../store/main/Main-actions";
 import { history } from "../../App";
 import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";

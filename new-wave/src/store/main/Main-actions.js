@@ -1,23 +1,6 @@
 ﻿import * as actionType from './Main-types';
-import { history } from "../components/App";
-
-const host = 'http://162.212.158.14:8080';
-const getParams = (methodType, useAuth) => {
-  const params = {
-    method: methodType,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Request-Method': methodType,
-      'Access-Control-Request-Headers': 'Content-Type',
-      'Content-Type': 'application/json',
-    },
-  };
-  const token = localStorage.getItem('token');
-  if (!!token && !!useAuth) {
-    params.headers.Authorization = token;
-  }
-  return params;
-};
+import { history } from "../../components/App";
+import { host, getParams } from "../utils";
 
 export const actionCreators = {
   login: (email, password) => async (dispatch) => {
@@ -28,7 +11,9 @@ export const actionCreators = {
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);
     if (response.ok) {
+      response.headers.forEach((h, k) => console.log(k, h))
       const token = response.headers.get('Authorization');
+      const userId = response.headers.get('UserID');
       let userRolesAndRights = response.headers.get('ROLES_AND_AUTHORITIES');
       userRolesAndRights = userRolesAndRights.slice(1, userRolesAndRights.length - 1).split(", ");
       let role = userRolesAndRights[userRolesAndRights.length - 1];
@@ -36,6 +21,7 @@ export const actionCreators = {
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
       localStorage.setItem('rights', rights.toString());
+      localStorage.setItem('userId', userId);
       dispatch({ type: actionType.loginPassedType, user: {token, role, rights} });
       if (role.indexOf("ADMIN") > -1) {
         history.push("/admin");
@@ -50,6 +36,7 @@ export const actionCreators = {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('rights');
+    localStorage.removeItem('userId');
     dispatch({ type: actionType.logoutType });
     history.push("/");
   },
@@ -95,16 +82,42 @@ export const actionCreators = {
     }
   },
   sendPassResetRequest: (email) => async (dispatch) => {
-    dispatch({
-      type: actionType.requestFailedType,
-      error: 'This functionality is under development.',
-    });
+    let url = `${host}/v1/api/users/password-reset-request`;
+    const params = getParams('POST');
+    params.body = JSON.stringify({ email });
+
+    dispatch({ type: actionType.requestType });
+    let response = await fetch(url, params);
+    if (response.ok) {
+      return dispatch({
+        type: actionType.requestPassedType,
+        successMessage: 'На Вашу пошту було вислано посилання для відновлення паролю',
+      });
+    } else {
+      return dispatch({
+        type: actionType.requestFailedType,
+        error: response.status,
+      });
+    }
   },
-  resetPassword: (password) => async (dispatch) => {
-    dispatch({
-      type: actionType.requestFailedType,
-      error: 'This functionality is under development.',
-    });
+  resetPassword: (password, token) => async (dispatch) => {
+    let url = `${host}/v1/api/users/password-reset`;
+    const params = getParams('POST');
+    params.body = JSON.stringify({ password, token });
+
+    dispatch({ type: actionType.requestType });
+    let response = await fetch(url, params);
+    if (response.ok) {
+      return dispatch({
+        type: actionType.requestPassedType,
+        successMessage: 'Ви успішно змінили пароль на новий',
+      });
+    } else {
+      return dispatch({
+        type: actionType.requestFailedType,
+        error: response.status,
+      });
+    }
   },
   getItemsList: (activeItems, pageNumber, pageSize, addResToList) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
@@ -147,17 +160,6 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       dispatch({ type: actionType.receivedProjectsType, response });
-    }
-  },
-  getItem: (type, id) => async (dispatch) => {
-    dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/${type}/${id}`;
-    let response = await fetch(url, getParams('GET', true));
-    if (!response.ok) {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
-    } else {
-      response = await response.json();
-      dispatch({ type: actionType.receivedItemType, response });
     }
   },
   getItemsDates: (itemType) => async (dispatch) => {
@@ -216,5 +218,5 @@ export const actionCreators = {
     delete params.headers['Content-Type'];
     params.body = formData;
     await fetch(url, params);
-  },
+  }
 };

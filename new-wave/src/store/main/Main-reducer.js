@@ -1,7 +1,8 @@
 ﻿import * as actionType from "./Main-types";
+import { host } from "../utils";
 
 const initialState = {
-  host: "http://162.212.158.14:8080",
+  host,
   paginationConfig: {
     totalPages: 1,
     totalElements: 4,
@@ -112,13 +113,6 @@ export default function reducer (state, action) {
           number: action.response.number
         },
         blog: state.blog.concat(action.response.content),
-        isLoading: false
-      };
-    }
-    case actionType.receivedItemType: {
-      return {
-        ...state,
-        selectedItem: action.response,
         isLoading: false
       };
     }
