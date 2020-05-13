@@ -32,7 +32,8 @@ export default class App extends React.Component {
             <Route path="/contact-us" component={ContactUsPage} />
             <Route path="/history" component={HistoryPage} />
             <Route path="/donations" component={DonationsPage} />
-            <Route path="/project" component={() => <PostListPage type="project"/>} />
+            <Route path="/project/:category"
+                   component={(props) => <PostListPage type="project" category={props.match.params.category}/>} />
             <Route path="/blog" component={() => <PostListPage type="blog"/>} />
             <Route path="/item/:type/:id" component={PostPage} />
 

@@ -8,10 +8,14 @@ import { actionCreators } from "../../store/main/Main-actions";
 import Row from "react-bootstrap/Row";
 import {withTranslation} from "react-i18next";
 import i18n from "../../i18n";
+import {history} from "../App";
 
 class AdminPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      role: (this.props.user && this.props.user.role) || localStorage.getItem("role") || ""
+    };
     this.selectPage = this.selectPage.bind(this);
     this.changeActiveTab = this.changeActiveTab.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
@@ -40,18 +44,31 @@ class AdminPage extends React.Component {
       </thead>
       <tbody>
       {
-        this.props.items.map((item) => {
+        this.props.items.map((item, key) => {
           return (
-            <tr key={item.id} onClick={() => {
-              this.props.toggleAddEditModal(true, item)
+            <tr key={item.id} onClick={async() => {
+              if (this.props.activeItems === "users"){
+                await this.props.setAdminRole(item.email);
+                history.push("/result");
+              } else {
+                this.props.toggleAddEditModal(true, item);
+              }
             }}>
-              <td>{item.id}</td>
-              <td className="text-left">{item.title}</td>
-              <td>{item.author}</td>
-              <td>{new Date(item.date).toDateString()}</td>
+              <td>{item.id || key}</td>
+              {this.props.activeItems === "users" ?
+                <>
+                  <td className="text-left">{item.firstName}</td>
+                  <td className="text-left">{item.lastName}</td>
+                  <td className="text-left">{item.email}</td>
+                </> :
+                <>
+                  <td className="text-left">{item.title}</td>
+                  <td>{item.author}</td>
+                  <td>{new Date(item.date).toDateString()}</td>
+                </>
+              }
               <td>
-                <Button variant="danger" size="sm" onClick={(e) => this.deleteItem(e, item)}>
-                  X</Button>
+                <Button variant="danger" size="sm" onClick={(e) => this.deleteItem(e, item)}>X</Button>
               </td>
             </tr>);
         })
@@ -95,6 +112,11 @@ class AdminPage extends React.Component {
           <Tab eventKey="project" title={i18n.t("admin.projects")}>
             {this.getContentTable()}
           </Tab>
+          {this.state.role.indexOf("SUPER_ADMIN") >= 0 &&
+          <Tab eventKey="users" title={i18n.t("admin.users")}>
+            {this.getContentTable()}
+          </Tab>
+          }
         </Tabs>
         <Button variant="primary" size="lg" className="fixed-bottom m-3"
                 onClick={() => {this.props.toggleAddEditModal(true)}}>

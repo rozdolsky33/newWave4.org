@@ -12,31 +12,40 @@ class ArticlePage extends React.Component {
     super(props);
     this.state = {
       showAlert: false,
-      userId: localStorage.getItem("userId")
+      userId: localStorage.getItem("userId") || "",
+      userRole: localStorage.getItem("role") || ""
     };
     this.scrollToComments = this.scrollToComments.bind(this);
     this.toggleLike = this.toggleLike.bind(this);
     this.addComment = this.addComment.bind(this);
+    this.deleteComment = this.deleteComment.bind(this);
   }
 
   componentDidMount() {
     this.props.getItem(this.props.match.params.type, this.props.match.params.id);
-    this.props.getLikes(this.props.match.params.type, this.props.match.params.id);
-    this.props.getComments(this.props.match.params.type, this.props.match.params.id);
+    if (this.props.match.params.type === "blog") {
+      this.props.getLikes("blog", this.props.match.params.id);
+      this.props.getComments("blog", this.props.match.params.id);
+    }
   }
   toggleLike() {
     if(!this.state.userId) {
       this.setState({showAlert: true});
     } else {
-      this.props.toggleLike(this.props.match.params.type, this.props.match.params.id, this.state.userId, true);
+      this.props.toggleLike("blog", this.props.match.params.id, this.state.userId, true);
     }
   }
-  addComment(comment) {
+  async addComment(comment) {
     if(!this.state.userId) {
       this.setState({showAlert: true});
     } else {
-      this.props.addComment(this.props.match.params.type, this.props.match.params.id, this.state.userId, comment)
+      await this.props.addComment("blog", this.props.match.params.id, this.state.userId, comment);
+      this.props.getComments("blog", this.props.match.params.id);
     }
+  }
+  async deleteComment(commentId) {
+    await this.props.deleteComment(this.props.match.params.id, commentId, this.state.userId);
+    this.props.getComments("blog", this.props.match.params.id);
   }
   scrollToComments() {
     window.scrollTo(0, this.refs.postComments.offsetTop);
@@ -63,14 +72,16 @@ class ArticlePage extends React.Component {
               </Button>
             </div>
             <p className="pt-3">{this.props.selectedItem.content}</p>
-            <div ref="postComments">
-              <CommentForm onSubmit={this.addComment}/>
+            {this.props.match.params.type === "blog" && <div ref="postComments">
               {this.props.comments.map((comment, key) =>
                 <Alert key={key} variant="secondary" className="text-left">
+                  {this.state.userRole.indexOf("ADMIN") >= 0 &&<button type="button" className="close"
+                          onClick={() => this.deleteComment(comment.id)}>x</button>}
                   <b>{comment.username}</b>:&nbsp;{comment.content}
-                  <p className="small text-right">{new Date(comment.postedDate).toDateString()}</p>
+                  <p className="small text-right mb-0 mt-2">{new Date(comment.postedDate).toDateString()}</p>
                 </Alert>)}
-            </div>
+              <CommentForm onSubmit={this.addComment}/>
+            </div>}
           </>
           }
         <Modal show={this.state.showAlert} onHide={() => this.setState({showAlert: false})}>

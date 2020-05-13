@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
@@ -17,6 +17,7 @@ class NavBarBlock extends React.Component {
   componentDidMount() {
     this.props.getProjects(0, 5);
     this.props.getArticles(0, 5);
+    this.props.getCategories("project");
   }
   navigateTo(menuItemLink) {
     history.push(menuItemLink);
@@ -59,26 +60,24 @@ class NavBarBlock extends React.Component {
         }
       ]
     }];
-    let blogMenuItem = {
-      description: "menu.posts",
-      subItems: []
-    };
-    if (this.props.blog.length > 0 ) {
-      blogMenuItem.subItems.push({
-        description: "menu.blog",
-        link: "/blog"
-      });
-    }
-    if (this.props.project.length > 0 ) {
-      blogMenuItem.subItems.push({
+    if (this.props.projectCategories.length > 0 ) {
+      const categoriesMenuItem = {
         description: "menu.project",
-        link: "/project"
-      });
+        subItems: this.props.projectCategories.map((cat, key) => {
+          return {
+            description: cat,
+            link: `/project/${cat}`
+          }
+        })
+      };
+      menuItems = [...menuItems, categoriesMenuItem];
     }
-    if (this.props.project.length + this.props.blog.length > 0 ) {
-      menuItems = [...menuItems, blogMenuItem];
-    }
-    let userRole = (this.props.user && this.props.user.role) ||localStorage.getItem("role") || "";
+    const blogMenuItem = {
+      description: "menu.blog",
+      link: "/blog"
+    };
+    menuItems = [...menuItems, blogMenuItem];
+    let userRole = (this.props.user && this.props.user.role) || localStorage.getItem("role") || "";
     if (userRole.indexOf("ADMIN") > -1) {
       menuItems.unshift({
         description: "menu.admin",

@@ -7,9 +7,6 @@ import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";
 
 class LoginPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   login(event) {
     event.preventDefault();
     this.props.login(this.refs.email.value, this.refs.password.value);

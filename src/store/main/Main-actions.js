@@ -119,25 +119,64 @@ export const actionCreators = {
       });
     }
   },
-  getItemsList: (activeItems, pageNumber, pageSize, addResToList) => async (dispatch) => {
+  setAdminRole: (email) => async (dispatch) => {
+    let url = `${host}/v1/api/users/role-admin-request`;
+    const params = getParams('POST');
+    params.body = JSON.stringify({ email });
+
     dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/${activeItems}/date?pageNumber=${pageNumber}&numberOfElementsPerPage=${pageSize}`;
-    let response = await fetch(url, getParams('GET'));
+    let response = await fetch(url, params);
     if (response.ok) {
-      response = await response.json();
-      dispatch({ type: actionType.receivedItemsType, addResToList, response });
+      return dispatch({
+        type: actionType.requestPassedType,
+        successMessage: 'Ви успішно відправили листа для видачі адміністративних прав цьому користувачу',
+      });
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      return dispatch({
+        type: actionType.requestFailedType,
+        error: response.status,
+      });
     }
   },
-  getFilteredList: (activeItems, filter) => async (dispatch) => {
+  getItemsList: (activeItems, pageNumber, pageSize, addResToList, filterEntity, filterValue) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/${activeItems}/${filter.entityName}/`;
-    url += filter.entityName === 'date' ? `year/month/${filter.year}/${filter.month}` : filter.value;
-    let response = await fetch(url, getParams('GET'));
+    let url = '';
+    if (activeItems === 'users') {
+      url = `${host}/v1/api/users?limit=${pageSize}&page=${pageNumber}`;
+    } else {
+      url = `${host}/v2/api/${activeItems}`;
+      switch (filterEntity) {
+        case 'category': {
+          url += `/categories/${filterValue}?`;
+          break;
+        }
+        case 'date': {
+          url += `/date/year/month/${filterValue.year}/${filterValue.month}`;
+          break;
+        }
+        case 'author': {
+          url += `/author/name?name=${filterValue}&`;
+          break;
+        }
+        default: {
+          url += '/date?'
+        }
+      }
+      url += !filterEntity || filterEntity !== 'date' ? `pageNumber=${pageNumber}&numberOfElementsPerPage=${pageSize}` : '';
+    }
+
+    let response = await fetch(url, getParams('GET', true));
     if (response.ok) {
       response = await response.json();
-      dispatch({ type: actionType.receivedFilteredItemsType, response });
+      response = activeItems === 'users' || (filterEntity && filterEntity === 'date') ? {
+        content: response,
+        totalPages: 99,
+        totalElements: 999,
+        numberOfElements: 999,
+        size: pageSize,
+        number: pageNumber
+      } : response;
+      dispatch({ type: actionType.receivedItemsType, addResToList, response });
     } else {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     }
@@ -160,6 +199,15 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       dispatch({ type: actionType.receivedProjectsType, response });
+    }
+  },
+  getCategories: (entityName) => async (dispatch) => {
+    dispatch({ type: actionType.requestType });
+    let url = `${host}/v2/api/${entityName}/categories`;
+    let response = await fetch(url, getParams('GET'));
+    if (response.ok) {
+      response = await response.json();
+      dispatch({ type: actionType.receivedCategoriesType, entityName, response });
     }
   },
   getItemsDates: (itemType) => async (dispatch) => {

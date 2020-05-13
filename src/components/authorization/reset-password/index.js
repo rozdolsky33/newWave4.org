@@ -10,7 +10,7 @@ import {history} from "../../App";
 class ResetPasswordPage extends React.Component {
   async resetPassword(event) {
     event.preventDefault();
-    if (this.refs.password.value = this.refs["pass-confirmation"].value) {
+    if (this.refs.password.value === this.refs["pass-confirmation"].value) {
       await this.props.resetPassword(this.refs.password.value, this.props.match.params.token);
       history.push("/result");
     }

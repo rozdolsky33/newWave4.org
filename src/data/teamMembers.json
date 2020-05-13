@@ -32,5 +32,12 @@
     "fullName": "Галина Семеняк",
     "position": "Голова осередку Пасейк, Н.Дж.",
     "location": "Пассейк, НДж"
+  },
+  {
+    "id": "6",
+    "fullName": "Остап Стахів",
+    "position": "Член ради",
+    "img": "./assets/imgs/OstapStahiv.jpg",
+    "location": ""
   }
 ]

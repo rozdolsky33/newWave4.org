@@ -12,16 +12,15 @@
       "contact-us": "Contact Us"
     },
     "project": "Projects",
-    "posts": "Posts",
-    "blog": "Articles",
+    "blog": "Blogs",
     "donate": "Donate"
   },
   "main": {
     "title": "New Wave",
     "description": "New Ukrainian Wave All-American Non-Governmental Organization is a national-patriotic and educational-cultural non-governmental organization.",
-    "new-projects": "New projects",
+    "new-projects": "Our projects",
     "no-projects": "No projects yet",
-    "new-articles": "Recent articles",
+    "new-articles": "Blogs",
     "no-articles": "No articles yet"
   },
   "our-team": {
@@ -63,6 +62,8 @@
   "posts": {
     "title": "posts",
     "filtered-by": "Filtered by ",
+    "categories": "Categories",
+    "category": "category",
     "date": "date",
     "author": "author",
     "read-more": "Read more..."

@@ -13,6 +13,8 @@ const initialState = {
   items: [],
   blog: [],
   project: [],
+  projectCategories: [],
+  blogCategories: [],
   addEditModalShown: false,
   selectedItem: undefined,
   editMode: false,
@@ -81,6 +83,12 @@ export default function reducer (state, action) {
         project: action.response.content.filter(project => project.active)
       };
     }
+    case actionType.receivedCategoriesType: {
+      return {
+        ...state,
+        [action.entityName + "Categories"]: action.response
+      };
+    }
     case actionType.receivedItemsType: {
       return {
         ...state,
@@ -92,13 +100,6 @@ export default function reducer (state, action) {
           number: action.response.number
         },
         items: action.addResToList ? [...state.items, ...action.response.content] : action.response.content,
-        isLoading: false
-      };
-    }
-    case actionType.receivedFilteredItemsType: {
-      return {
-        ...state,
-        items: action.response,
         isLoading: false
       };
     }

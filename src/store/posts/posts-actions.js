@@ -25,16 +25,16 @@ export const actionCreators = {
       dispatch({ type: actionType.receivedLikesType, response });
     }
   },
-  toggleLike: (postType, postId) => async (dispatch) => {
-    /*dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/${type}/${id}`;
+  toggleLike: (postType, postId, userId) => async (dispatch) => {
+    dispatch({ type: actionType.requestType });
+    let url = `${host}/v1/api/${postType}/posts/${postId}/like/user/${userId}`;
     let response = await fetch(url, getParams('GET', true));
     if (!response.ok) {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     } else {
       response = await response.json();
       dispatch({ type: actionType.receivedItemType, response });
-    }*/
+    }
   },
   getComments: (postType, postId) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
@@ -58,15 +58,15 @@ export const actionCreators = {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     }
   },
-  deleteComments: (postType, postId, commentId) => async (dispatch) => {
-    /*dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/${type}/${id}`;
+  deleteComment: (postId, commentId, userId) => async (dispatch) => {
+    dispatch({ type: actionType.requestType });
+    let url = `${host}/v1/api/blog/posts/${postId}/comments/${commentId}/userId/${userId}`;
     let response = await fetch(url, getParams('GET', true));
     if (!response.ok) {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     } else {
       response = await response.json();
       dispatch({ type: actionType.receivedItemType, response });
-    }*/
+    }
   },
 };

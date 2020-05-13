@@ -1,5 +1,5 @@
 import React from "react";
-import { InputGroup, FormControl, Form, Button } from "react-bootstrap";
+import { FormControl, Form, Button } from "react-bootstrap";
 import { withTranslation } from "react-i18next";
 import i18n from "../../../../i18n";
 

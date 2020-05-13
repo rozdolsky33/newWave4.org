@@ -16,8 +16,15 @@ class PostListPage extends React.Component {
   }
   componentWillMount() {
     window.addEventListener("scroll", this.handleScroll, true);
-    this.props.getItemsDates(this.props.type);
-    this.props.getItemsList(this.props.type, 0, 5);
+    const filter = this.props.category ? {
+      entityName: "category",
+      value: this.props.category
+    } : undefined;
+    this.toggleFilter(filter);
+    if (this.props.type === "blog") {
+      this.props.getItemsDates(this.props.type);
+      this.props.getCategories(this.props.type);
+    }
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
@@ -35,7 +42,7 @@ class PostListPage extends React.Component {
   toggleFilter(filter) {
     this.setState({filter: filter});
     if (filter) {
-      this.props.getFilteredList(this.props.type, filter);
+      this.props.getItemsList(this.props.type, 0, 99, false, filter.entityName, filter.value);
     } else {
       this.props.getItemsList(this.props.type, 0, 5);
     }
@@ -52,9 +59,11 @@ class PostListPage extends React.Component {
             <Button className="text-secondary" variant="link" size="sm"
                     onClick={() => this.toggleFilter({
                       entityName: "date",
-                      value: `${date.month} ${date.year}`,
-                      month: date.monthVal,
-                      year: date.year})}>
+                      description: `${date.month} ${date.year}`,
+                      value: {
+                        month: date.monthVal,
+                        year: date.year
+                      }})}>
               {date.month}
             </Button>
           </p>}
@@ -79,7 +88,7 @@ class PostListPage extends React.Component {
             <div className="d-flex justify-content-between pb-3">
               <span className="text-secondary small">{new Date(item.date).toDateString()}</span>
               <Button className="text-secondary" variant="link" size="sm"
-                      onClick={() => this.toggleFilter({entityName: "author", value: item.author})}>
+                      onClick={() => this.props.type === "blog" && this.toggleFilter({entityName: "author", value: item.author})}>
                 {item.author}
               </Button>
             </div>
@@ -99,12 +108,21 @@ class PostListPage extends React.Component {
         <h2 className="p-3 text-primary">{i18n.t("menu." + this.props.type)}</h2>
         <Row>
           <Col className="text-left pl-5" xs="12" md="2">
-            {this.getDates()}
+            {this.props.type === "blog" && <>
+              <p className="mb-0 mt-3">{i18n.t("posts.categories")}</p>
+              {this.props[`${this.props.type}Categories`].map((cat, key) => {
+                return <Button key={key} className="text-secondary text-left" variant="link" size="sm"
+                               onClick={() => this.toggleFilter({
+                                 entityName: "category",
+                                 value: cat})}>{cat}</Button>;
+              })}
+              {this.getDates()}
+            </>}
           </Col>
           <Col className="text-center" xs="12" md="8">
             {this.state.filter && <Row className="text-secondary p-3">
-              {i18n.t("posts.filtered-by")}&nbsp; <span>{i18n.t("posts." + this.state.filter.entityName)}</span>:&nbsp;
-              <span className="text-dark">{this.state.filter.value}</span>&nbsp;
+              {i18n.t("posts.filtered-by")}<span>{i18n.t("posts." + this.state.filter.entityName)}</span>:&nbsp;
+              <span className="text-dark">{this.state.filter.description || this.state.filter.value}</span>&nbsp;
               <Button className="p-0 text-dark font-weight-bold" variant="link" size="sm"
                       onClick={() => this.toggleFilter(undefined)}>x</Button>
             </Row>}
