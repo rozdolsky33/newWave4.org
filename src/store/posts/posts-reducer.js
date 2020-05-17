@@ -23,7 +23,7 @@ export default function reducer (state, action) {
     case actionType.requestFailedType: {
       return {
         ...state,
-        errorMessage: action.errorMessage || `Something went wrong, error code - ${action.error}`,
+        errorMessage: action.errorMessage || 'error.common',
         isLoading: false
       };
     }

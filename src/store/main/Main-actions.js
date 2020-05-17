@@ -11,7 +11,7 @@ export const actionCreators = {
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);
     if (response.ok) {
-      response.headers.forEach((h, k) => console.log(k, h))
+      response.headers.forEach((h, k) => console.log(k, h));
       const token = response.headers.get('Authorization');
       const userId = response.headers.get('UserID');
       let userRolesAndRights = response.headers.get('ROLES_AND_AUTHORITIES');
@@ -50,8 +50,7 @@ export const actionCreators = {
     if (response.ok) {
       return dispatch({
         type: actionType.requestPassedType,
-        successMessage:
-          'Реєстрація пройшла успішно. Перевірте свою пошту для підтвердження',
+        successMessage: 'message.registration-success',
       });
     } else {
       return dispatch({
@@ -69,12 +68,12 @@ export const actionCreators = {
       if (response.operationResult === 'ERROR') {
         dispatch({
           type: actionType.requestFailedType,
-          errorMessage: 'Дане посилання вже недійсне',
+          errorMessage: 'error.invalid-url',
         });
       } else {
         dispatch({
           type: actionType.requestPassedType,
-          successMessage: 'Підтвердження пройшло успішно',
+          successMessage: 'message.action-approved',
         });
       }
     } else {
@@ -91,7 +90,26 @@ export const actionCreators = {
     if (response.ok) {
       return dispatch({
         type: actionType.requestPassedType,
-        successMessage: 'На Вашу пошту було вислано посилання для відновлення паролю',
+        successMessage: 'message.reset-password-request',
+      });
+    } else {
+      return dispatch({
+        type: actionType.requestFailedType,
+        error: response.status,
+      });
+    }
+  },
+  sendAdminRoleRequest: (email) => async (dispatch) => {
+    let url = `${host}/v1/api/users/role-admin-request`;
+    const params = getParams('POST');
+    params.body = JSON.stringify({ email });
+
+    dispatch({ type: actionType.requestType });
+    let response = await fetch(url, params);
+    if (response.ok) {
+      return dispatch({
+        type: actionType.requestPassedType,
+        successMessage: 'message.admin-role-email-sent',
       });
     } else {
       return dispatch({
@@ -110,26 +128,7 @@ export const actionCreators = {
     if (response.ok) {
       return dispatch({
         type: actionType.requestPassedType,
-        successMessage: 'Ви успішно змінили пароль на новий',
-      });
-    } else {
-      return dispatch({
-        type: actionType.requestFailedType,
-        error: response.status,
-      });
-    }
-  },
-  setAdminRole: (email) => async (dispatch) => {
-    let url = `${host}/v1/api/users/role-admin-request`;
-    const params = getParams('POST');
-    params.body = JSON.stringify({ email });
-
-    dispatch({ type: actionType.requestType });
-    let response = await fetch(url, params);
-    if (response.ok) {
-      return dispatch({
-        type: actionType.requestPassedType,
-        successMessage: 'Ви успішно відправили листа для видачі адміністративних прав цьому користувачу',
+        successMessage: 'message.reset-password-success',
       });
     } else {
       return dispatch({
@@ -169,10 +168,10 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       response = activeItems === 'users' || (filterEntity && filterEntity === 'date') ? {
-        content: response,
-        totalPages: 99,
-        totalElements: 999,
-        numberOfElements: 999,
+        content: response.userRest,
+        totalPages: Math.ceil(response.totalElements/pageSize),
+        totalElements: response.totalElements,
+        numberOfElements: pageSize,
         size: pageSize,
         number: pageNumber
       } : response;
@@ -266,5 +265,33 @@ export const actionCreators = {
     delete params.headers['Content-Type'];
     params.body = formData;
     await fetch(url, params);
+  },
+  sendContactUsEmail: (subject, email, content) => async (dispatch) => {
+    const url = `${host}/v2/api/send/contact-us`;
+    const params = getParams('POST');
+    params.body = JSON.stringify({ subject, email, content });
+
+    dispatch({ type: actionType.requestType });
+    let response = await fetch(url, params);
+    if (!response.ok) {
+      return dispatch({
+        type: actionType.requestFailedType,
+        error: response.status,
+      });
+    }
+  },
+  donate: (name, email, cardNumber, validTill, cvc) => async (dispatch) => {
+    const url = `${host}/v1/api/donate`;
+    const params = getParams('POST');
+    params.body = JSON.stringify({ name, email, cardNumber, validTill, cvc });
+
+    dispatch({ type: actionType.requestType });
+    let response = await fetch(url, params);
+    if (!response.ok) {
+      return dispatch({
+        type: actionType.requestFailedType,
+        error: response.status,
+      });
+    }
   }
 };

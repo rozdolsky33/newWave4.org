@@ -63,7 +63,7 @@ class ArticlePage extends React.Component {
                    src={this.props.host + "/v2/api/image/" + this.props.selectedItem.imageUri} /> :
               <div className="bg-secondary w-100"><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
             }
-            <h2 className="p-3 text-primary">{this.props.selectedItem.title}</h2>
+            <h2 className="p-3 text-secondary">{this.props.selectedItem.title}</h2>
             <div className="d-flex justify-content-between pt-5 flex-column flex-md-row">
               <div className="text-secondary order-2 order-md-1">
                 <span className="mr-2">{new Date(this.props.selectedItem.date).toDateString()}</span>
@@ -81,9 +81,10 @@ class ArticlePage extends React.Component {
               </Button>
             </div>
             <p className="pt-3">{this.props.selectedItem.content}</p>
+            <h5 className="pt-3 text-left">{i18n.t("post.comments")}</h5>
             {this.props.match.params.type === "blog" && <div ref="postComments">
               {this.props.comments.map((comment, key) =>
-                <Alert key={key} variant="secondary" className="text-left">
+                <Alert key={key} variant="light" className="text-left border-light">
                   {(this.state.userRole.indexOf("ADMIN") >= 0 || comment.userId === this.state.userId) &&
                   <button type="button" className="close"
                           onClick={() => this.deleteComment(comment.id)}>x</button>}
@@ -100,10 +101,10 @@ class ArticlePage extends React.Component {
           </Modal.Header>
           <Modal.Body>{i18n.t("post.you-should-be-logged-in")}</Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => this.setState({showAlert: false})}>
-              {i18n.t("common.cancel")}
+            <Button variant="danger" onClick={() => this.setState({showAlert: false})}>
+              {i18n.t("common.btn-cancel")}
             </Button>
-            <Button variant="primary" onClick={() => history.push("/login")}>
+            <Button variant="success" onClick={() => history.push("/login")}>
               {i18n.t("post.nav-to-login")}
             </Button>
           </Modal.Footer>

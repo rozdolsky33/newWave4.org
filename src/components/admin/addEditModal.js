@@ -111,8 +111,8 @@ class AddEditModal extends React.Component {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => this.props.toggleAddEditModal(false)}>Close</Button>
-            <Button variant="primary" type="submit">{i18n.t("admin.btn-submit")}</Button>
+            <Button variant="danger" onClick={() => this.props.toggleAddEditModal(false)}>{i18n.t("common.btn-close")}</Button>
+            <Button variant="success" type="submit">{i18n.t("common.btn-submit")}</Button>
           </Modal.Footer>
         </Form>
       </Modal>

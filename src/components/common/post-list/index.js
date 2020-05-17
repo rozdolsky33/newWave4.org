@@ -105,7 +105,7 @@ class PostListPage extends React.Component {
   render () {
     return (
       <Col className="text-center">
-        <h2 className="p-3 text-primary">{i18n.t("menu." + this.props.type)}</h2>
+        <h2 className="p-3 text-secondary">{i18n.t("menu." + this.props.type)}</h2>
         <Row>
           <Col className="text-left pl-5" xs="12" md="2">
             {this.props.type === "blog" && <>

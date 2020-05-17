@@ -127,7 +127,9 @@ class NavBarBlock extends React.Component {
           </Nav>
         </Navbar.Collapse>
         <div className="order-2 order-sm-3">
-          <Button onClick={(e) => this.navigateTo("/donations")} className="ml-md-4">{i18n.t("menu.donate")}</Button>
+          <Button variant="secondary" className="ml-md-4"
+                  onClick={(e) => this.navigateTo("/donations")}>
+            {i18n.t("menu.donate")}</Button>
         </div>
       </Navbar>
     );

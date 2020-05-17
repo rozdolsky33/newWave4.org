@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {Table, Button, Col, Tab, Tabs, Alert} from "react-bootstrap";
+import {Table, Button, Col, Tab, Tabs, Alert, Form} from "react-bootstrap";
 import AddEditModal from "./addEditModal";
 import PaginationPanel from "../common/pagination-panel";
 import { actionCreators } from "../../store/main/Main-actions";
@@ -9,12 +9,14 @@ import Row from "react-bootstrap/Row";
 import {withTranslation} from "react-i18next";
 import i18n from "../../i18n";
 import {history} from "../App";
+import SetAdminRoleModal from "./setAdminRoleModal";
 
 class AdminPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      role: (this.props.user && this.props.user.role) || localStorage.getItem("role") || ""
+      role: (this.props.user && this.props.user.role) || localStorage.getItem("role") || "",
+      setAdminRoleModalShown: false
     };
     this.selectPage = this.selectPage.bind(this);
     this.changeActiveTab = this.changeActiveTab.bind(this);
@@ -47,10 +49,7 @@ class AdminPage extends React.Component {
         this.props.items.map((item, key) => {
           return (
             <tr key={item.id} onClick={async() => {
-              if (this.props.activeItems === "users"){
-                await this.props.setAdminRole(item.email);
-                history.push("/result");
-              } else {
+              if (this.props.activeItems !== "users"){
                 this.props.toggleAddEditModal(true, item);
               }
             }}>
@@ -90,13 +89,18 @@ class AdminPage extends React.Component {
   render() {
     return (
       <Col className="text-center" xs md={{ span: 10, offset: 1 }}>
-        <Row className="pt-3 d-flex justify-content-end">
+        {!!this.props.errorMessage && <Row className="pt-3">
           <Col>
-            {!!this.props.errorMessage && (
-              <Alert variant="danger" className="mt-3">
-                {this.props.errorMessage}
-              </Alert>
-            )}
+            <Alert variant="danger" className="mt-3">
+              {this.props.errorMessage}
+            </Alert>
+          </Col>
+        </Row>}
+        <Row className="pt-3 mb-3">
+          <Col className="mt-3 d-flex justify-content-start">
+            <Button variant="secondary"
+                    disabled={this.state.role.indexOf("SUPER_ADMIN") < 0 }
+                    onClick={()=> this.setState({setAdminRoleModalShown: true})}>{i18n.t("admin.btn-set-admin-role")}</Button>
           </Col>
           <Col className="mt-3 d-flex justify-content-end">
             <PaginationPanel {...this.props.paginationConfig}
@@ -115,14 +119,20 @@ class AdminPage extends React.Component {
           {this.state.role.indexOf("SUPER_ADMIN") >= 0 &&
           <Tab eventKey="users" title={i18n.t("admin.users")}>
             {this.getContentTable()}
-          </Tab>
-          }
+          </Tab>}
         </Tabs>
-        <Button variant="primary" size="lg" className="fixed-bottom m-3"
+        <Button variant="secondary" size="lg" className="fixed-bottom m-3"
                 onClick={() => {this.props.toggleAddEditModal(true)}}>
           +
         </Button>
         {this.props.addEditModalShown && <AddEditModal />}
+        {this.state.setAdminRoleModalShown && <SetAdminRoleModal closeModal={async(email) => {
+          this.setState({setAdminRoleModalShown: false});
+          if (email) {
+            await this.props.sendAdminRoleRequest(email);
+            history.push("/result");
+          }
+        }}/>}
       </Col>
     );
   }

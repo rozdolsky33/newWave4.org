@@ -21,7 +21,7 @@ function MainPage(props) {
         {!!item.imageUri ?
           <Card.Img style={{height: "70px", objectFit: "cover"}}
                     src={props.host + "/v2/api/image/" + item.imageUri} /> :
-          <div className="bg-secondary" style={{height: "50px"}}/>
+          <div className="bg-secondary" style={{height: "70px"}}/>
         }
         <Card.Body>
           <Card.Title>{item.title}</Card.Title>
@@ -43,7 +43,7 @@ function MainPage(props) {
             height="130"
             alt="About Us"
           />
-          <h3 className="p-4 text-primary">{i18n.t("main.title")}</h3>
+          <h3 className="p-4 text-info font-weight-bold">{i18n.t("main.title")}</h3>
         </Col>
         <Col xs md="6" className="d-flex flex-column justify-content-center">{i18n.t("main.description")}</Col>
       </Row>
