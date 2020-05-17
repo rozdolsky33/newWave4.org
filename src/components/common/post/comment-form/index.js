@@ -8,7 +8,7 @@ function CommentForm(props) {
   return (
     <Form className="text-left" onSubmit={(e) => {
       e.preventDefault();
-      props.onSubmit(newComment.current && newComment.current.value)
+      props.onSubmit(newComment.current && newComment.current.value);
     }}>
       <label htmlFor="newComment">{i18n.t("post.comment")}</label>
       <FormControl id="newComment"

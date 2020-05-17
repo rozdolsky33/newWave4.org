@@ -28,11 +28,14 @@ class ArticlePage extends React.Component {
       this.props.getComments("blog", this.props.match.params.id);
     }
   }
-  toggleLike() {
+  async toggleLike() {
+    let userLike = this.props.likes.find(l => l.userId === this.state.userId);
+    let likeId =  userLike ? userLike.id : undefined;
     if(!this.state.userId) {
       this.setState({showAlert: true});
     } else {
-      this.props.toggleLike("blog", this.props.match.params.id, this.state.userId, true);
+      await this.props.toggleLike("blog", this.props.match.params.id, this.state.userId, likeId);
+      this.props.getLikes("blog", this.props.match.params.id);
     }
   }
   async addComment(comment) {
@@ -64,8 +67,14 @@ class ArticlePage extends React.Component {
             <div className="d-flex justify-content-between pt-5 flex-column flex-md-row">
               <div className="text-secondary order-2 order-md-1">
                 <span className="mr-2">{new Date(this.props.selectedItem.date).toDateString()}</span>
-                <a onClick={this.toggleLike}><i className="fa fa-heart mr-1"></i>{this.props.likes.length}</a>
-                <a onClick={this.scrollToComments}><i className="fa fa-comment mr-1 ml-2"></i>{this.props.comments.length}</a>
+                <a onClick={this.toggleLike}
+                   className={this.props.likes.find(l => l.userId === this.state.userId) && "text-dark"}>
+                  <i className="fa fa-heart mr-1"></i>{this.props.likes.length}
+                </a>
+                <a onClick={this.scrollToComments}
+                   className={this.props.comments.find(c => c.userId === this.state.userId) && "text-dark"}>
+                  <i className="fa fa-comment mr-1 ml-2"></i>{this.props.comments.length}
+                </a>
               </div>
               <Button className="order-1 order-md-2" variant="link" onClick={() => {history.push("blog")}}>
                 {this.props.selectedItem.author}
@@ -75,12 +84,13 @@ class ArticlePage extends React.Component {
             {this.props.match.params.type === "blog" && <div ref="postComments">
               {this.props.comments.map((comment, key) =>
                 <Alert key={key} variant="secondary" className="text-left">
-                  {this.state.userRole.indexOf("ADMIN") >= 0 &&<button type="button" className="close"
+                  {(this.state.userRole.indexOf("ADMIN") >= 0 || comment.userId === this.state.userId) &&
+                  <button type="button" className="close"
                           onClick={() => this.deleteComment(comment.id)}>x</button>}
                   <b>{comment.username}</b>:&nbsp;{comment.content}
                   <p className="small text-right mb-0 mt-2">{new Date(comment.postedDate).toDateString()}</p>
                 </Alert>)}
-              <CommentForm onSubmit={this.addComment}/>
+              {!this.props.isLoading && <CommentForm onSubmit={this.addComment}/>}
             </div>}
           </>
           }
@@ -93,7 +103,7 @@ class ArticlePage extends React.Component {
             <Button variant="secondary" onClick={() => this.setState({showAlert: false})}>
               {i18n.t("common.cancel")}
             </Button>
-            <Button variant="primary" onClick={() => this.setState({showAlert: false})}>
+            <Button variant="primary" onClick={() => history.push("/login")}>
               {i18n.t("post.nav-to-login")}
             </Button>
           </Modal.Footer>
