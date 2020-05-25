@@ -7,6 +7,7 @@ import { actionCreators } from "../../store/main/Main-actions";
 import "react-datepicker/dist/react-datepicker.css";
 import { withTranslation } from "react-i18next";
 import i18n from "../../i18n";
+import CKEditor from "ckeditor4-react";
 
 class AddEditModal extends React.Component {
   constructor(props) {
@@ -29,8 +30,8 @@ class AddEditModal extends React.Component {
   }
 
   changeValue(event) {
-    let fieldName = event.target.name;
-    let fieldValue = event.target.value;
+    let fieldName = event.target ? event.target.name : "content";
+    let fieldValue = event.target ? event.target.value : event.editor.getData();
     this.setState({ [fieldName]: fieldValue });
   }
   changeDate(newDate) {
@@ -48,7 +49,7 @@ class AddEditModal extends React.Component {
   }
   render() {
     return (
-      <Modal show={this.props.addEditModalShown} onHide={() => this.props.toggleAddEditModal(false)}>
+      <Modal size="lg" show={this.props.addEditModalShown} onHide={() => this.props.toggleAddEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
             {this.props.editMode ? i18n.t("admin.edit") : i18n.t("admin.add")}
@@ -57,11 +58,13 @@ class AddEditModal extends React.Component {
         </Modal.Header>
         <Form onSubmit={(e) => this.submit(e)}>
           <Modal.Body>
-            <Form.Group controlId="title">
-              <Form.Label>{i18n.t("admin.title")}</Form.Label>
-              <Form.Control type="text" placeholder={i18n.t("admin.title")}
-                            value={this.state.title}
-                            name="title" onChange={this.changeValue} />
+            <Form.Group as={Row} controlId="title">
+              <Form.Label column sm="2">{i18n.t("admin.title")}</Form.Label>
+              <Col sm="10">
+                <Form.Control type="text" placeholder={i18n.t("admin.title")}
+                              value={this.state.title}
+                              name="title" onChange={this.changeValue} />
+              </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="author">
               <Form.Label column sm="2">{i18n.t("admin.author")}</Form.Label>
@@ -93,22 +96,23 @@ class AddEditModal extends React.Component {
                               name="category" onChange={this.changeValue} />
               </Col>
             </Form.Group>
-            <Form.Group controlId="date">
-              <Form.Label className="pr-3">{i18n.t("admin.date")}</Form.Label>
-              <DatePicker className="form-control"
-                          selected={this.state.date}
-                          onChange={this.changeDate} />
+            <Form.Group  as={Row} controlId="date">
+              <Form.Label column sm="2">{i18n.t("admin.date")}</Form.Label>
+              <Col sm="10">
+                <DatePicker className="form-control"
+                            selected={this.state.date}
+                            onChange={this.changeDate} />
+              </Col>
             </Form.Group>
-            <Form.Group controlId="preview">
-              <Form.Label>{i18n.t("admin.preview")}</Form.Label>
-              <Form.Control as="textarea" rows="2" value={this.state.preview}
-                            name="preview" onChange={this.changeValue} />
+            <Form.Group as={Row} controlId="preview">
+              <Form.Label column sm="2">{i18n.t("admin.preview")}</Form.Label>
+              <Col sm="10">
+                <Form.Control as="textarea" rows="2" value={this.state.preview}
+                              name="preview" onChange={this.changeValue} />
+              </Col>
             </Form.Group>
-            <Form.Group controlId="content">
-              <Form.Label>{i18n.t("admin.content")}</Form.Label>
-              <Form.Control as="textarea" rows="5" value={this.state.content}
-                            name="content" onChange={this.changeValue} />
-            </Form.Group>
+            <label>{i18n.t("admin.content")}</label>
+            <CKEditor data={this.state.content} type="classic" onChange={this.changeValue}/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={() => this.props.toggleAddEditModal(false)}>{i18n.t("common.btn-close")}</Button>

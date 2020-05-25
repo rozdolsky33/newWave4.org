@@ -29,6 +29,15 @@ class PostListPage extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.category !== nextProps.category) {
+      const filter = nextProps.category ? {
+        entityName: "category",
+        value: nextProps.category
+      } : undefined;
+      this.toggleFilter(filter);
+    }
+  }
 
   handleScroll() {
     const newPage = this.props.paginationConfig.number + 1;
@@ -75,6 +84,7 @@ class PostListPage extends React.Component {
   }
 
   getItemsList() {
+    if (!this.props.items) return;
     return this.props.items.map((item, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
@@ -121,7 +131,7 @@ class PostListPage extends React.Component {
           </Col>
           <Col className="text-center" xs="12" md="8">
             {this.state.filter && <Row className="text-secondary p-3">
-              {i18n.t("posts.filtered-by")}<span>{i18n.t("posts." + this.state.filter.entityName)}</span>:&nbsp;
+              {i18n.t("posts.filtered-by")}&nbsp;<span>{i18n.t("posts." + this.state.filter.entityName)}</span>:&nbsp;
               <span className="text-dark">{this.state.filter.description || this.state.filter.value}</span>&nbsp;
               <Button className="p-0 text-dark font-weight-bold" variant="link" size="sm"
                       onClick={() => this.toggleFilter(undefined)}>x</Button>

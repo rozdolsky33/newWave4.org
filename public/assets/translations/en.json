@@ -16,7 +16,7 @@
     "donate": "Donate"
   },
   "main": {
-    "title": "New Wave",
+    "title": "Ukrainian New Wave",
     "description": "The All-American Organization “New Ukrainian Wave” (below as NUW) is a voluntary charitable, national, patriotic, educational and cultural non-profit organization established on the basis of the common interests of the Ukrainian immigrants of the latest emigrational “wave”, both citizens of Ukraine and ethnical Ukrainians who are the citizens of other countries, who accept the goals and major principles of this organization",
     "new-projects": "Our projects",
     "no-projects": "No projects yet",
@@ -129,8 +129,8 @@
     "project": "project",
     "picture": "Picture",
     "category": "Category",
-    "content": "Short content",
-    "preview": "Main content",
+    "content": "Main content",
+    "preview": "Short content",
     "set-admin-role": "Enter the email of a user, which you want to make an admin",
     "btn-set-admin-role": "Give admin rights"
   },

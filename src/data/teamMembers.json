@@ -1,17 +1,17 @@
 [
   {
     "id": "1",
-    "fullName": "Мирослава Роздольська",
-    "img": "./assets/imgs/MyroslavaRozdolska.jpg",
-    "position": "Голова",
-    "location": "Стемфорд, КТ"
-  },
-  {
-    "id": "2",
     "fullName": "Богдан Бохонок",
     "img": "./assets/imgs/BohdanBohonok.jpg",
     "position": "Заступник",
     "location": "Пітсбург, ПА"
+  },
+  {
+    "id": "2",
+    "fullName": "Мирослава Роздольська",
+    "img": "./assets/imgs/MyroslavaRozdolska.jpg",
+    "position": "Голова",
+    "location": "Стемфорд, КТ"
   },
   {
     "id": "3",
@@ -29,15 +29,9 @@
   },
   {
     "id": "5",
-    "fullName": "Галина Семеняк",
-    "position": "Голова осередку Пасейк, Н.Дж.",
-    "location": "Пассейк, НДж"
-  },
-  {
-    "id": "6",
     "fullName": "Остап Стахів",
     "position": "Член ради",
     "img": "./assets/imgs/OstapStahiv.jpg",
-    "location": ""
+    "location": "Клівленд, ОГ"
   }
 ]

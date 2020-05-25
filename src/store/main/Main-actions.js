@@ -168,9 +168,9 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       response = activeItems === 'users' || (filterEntity && filterEntity === 'date') ? {
-        content: response.userRest,
-        totalPages: Math.ceil(response.totalElements/pageSize),
-        totalElements: response.totalElements,
+        content: activeItems === 'users' ? response.userRest : response,
+        totalPages: Math.ceil((response.totalElements || 999) / pageSize),
+        totalElements: response.totalElements || 999,
         numberOfElements: pageSize,
         size: pageSize,
         number: pageNumber
@@ -266,10 +266,10 @@ export const actionCreators = {
     params.body = formData;
     await fetch(url, params);
   },
-  sendContactUsEmail: (subject, email, content) => async (dispatch) => {
+  sendContactUsEmail: (subject, from, content) => async (dispatch) => {
     const url = `${host}/v2/api/send/contact-us`;
     const params = getParams('POST');
-    params.body = JSON.stringify({ subject, email, content });
+    params.body = JSON.stringify({ subject, from, content });
 
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);

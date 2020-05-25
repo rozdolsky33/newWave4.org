@@ -80,7 +80,7 @@ class ArticlePage extends React.Component {
                 {this.props.selectedItem.author}
               </Button>
             </div>
-            <p className="pt-3">{this.props.selectedItem.content}</p>
+            <div className="pt-3 content" dangerouslySetInnerHTML={{__html: this.props.selectedItem.content}}></div>
             <h5 className="pt-3 text-left">{i18n.t("post.comments")}</h5>
             {this.props.match.params.type === "blog" && <div ref="postComments">
               {this.props.comments.map((comment, key) =>
