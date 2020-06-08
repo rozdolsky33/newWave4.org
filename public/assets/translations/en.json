@@ -24,7 +24,34 @@
     "no-articles": "No articles yet"
   },
   "our-team": {
-    "title": "Our team"
+    "title": "Our team",
+    "team-members": {
+      "BohdanBohonok": {
+        "fullName": "Bohdan Bohonok",
+        "location": "Pittsburgh, PA",
+        "position": "Vice President"
+      },
+      "MyroslavaRozdolska": {
+        "fullName": "Myroslava Rozdolska",
+        "location": "New York",
+        "position": "President"
+      },
+      "LarysaZanyk": {
+        "fullName": "Larysa Zanyk",
+        "location": "New York",
+        "position": "Director of Educational Program"
+      },
+      "OlgaHrynyk": {
+        "fullName": "Olha Hrynyk",
+        "location": "Brooklyn, NY",
+        "position": "Head of Brooklyn Department"
+      },
+      "OstapStahiv": {
+        "fullName": "Ostap Stakhiv",
+        "location": "Cleveland, OH",
+        "position": "Director of Culture Program"
+      }
+    }
   },
   "history": {
     "title": "Historical events",
@@ -95,7 +122,7 @@
     "password": "Password",
     "btn-login": "Login",
     "registration": "Registrate",
-    "forgot-pass": "Forgot password"
+    "forgot-pass": "Reset Password"
   },
   "registration": {
     "title": "Registration",
@@ -106,7 +133,7 @@
     "btn-register": "Registrate"
   },
   "forgot-password": {
-    "title": "Password recover",
+    "title": "Password recovery",
     "email": "Email",
     "btn-submit": "Submit"
   },

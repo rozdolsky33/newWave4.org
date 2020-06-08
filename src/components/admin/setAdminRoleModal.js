@@ -1,8 +1,7 @@
 import React from "react";
-import {Modal, Button, Form, Col, Row, Alert} from "react-bootstrap";
+import {Modal, Button, Form, Alert} from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import DatePicker from "react-datepicker";
 import { actionCreators } from "../../store/main/Main-actions";
 import "react-datepicker/dist/react-datepicker.css";
 import { withTranslation } from "react-i18next";

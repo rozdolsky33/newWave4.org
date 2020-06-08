@@ -88,11 +88,9 @@ class PostListPage extends React.Component {
     return this.props.items.map((item, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
-          {!!item.imageUri ?
-            <Card.Img style={{width: "25%", objectFit: "cover"}}
-                      src={this.props.host + "/v2/api/image/" + item.imageUri} /> :
-            <div className="bg-secondary w-25"/>
-          }
+          <Card.Img style={{width: "25%", objectFit: "cover"}}
+                    src={item.imageUri ? this.props.host + "/v2/api/image/" + item.imageUri :
+                      "../../assets/imgs/NW_post_placeholder.jpg"} />
           <Card.Body className="justify-content-between flex-column d-flex w-75">
             <Card.Title>{item.title}</Card.Title>
             <div className="d-flex justify-content-between pb-3">

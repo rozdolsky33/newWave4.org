@@ -58,11 +58,9 @@ class ArticlePage extends React.Component {
       <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
         {!this.props.selectedItem ||
           <>
-            {!!this.props.selectedItem.imageUri ?
-              <img style={{width: "100%", objectFit: "cover", maxHeight: "330px"}}
-                   src={this.props.host + "/v2/api/image/" + this.props.selectedItem.imageUri} /> :
-              <div className="bg-secondary w-100"><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
-            }
+            <img style={{width: "100%", objectFit: "cover", maxHeight: "330px"}} alt={this.props.selectedItem.title}
+                 src={this.props.selectedItem.imageUri ? this.props.host + "/v2/api/image/" + this.props.selectedItem.imageUri :
+                   "../../assets/imgs/NW_post_placeholder.jpg"} />
             <h2 className="p-3 text-secondary">{this.props.selectedItem.title}</h2>
             <div className="d-flex justify-content-between pt-5 flex-column flex-md-row">
               <div className="text-secondary order-2 order-md-1">

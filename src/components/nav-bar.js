@@ -6,18 +6,25 @@ import { withTranslation } from "react-i18next";
 import { history } from '../components/App';
 import { actionCreators } from "../store/main/Main-actions";
 import logo from "../assets/NW_logo_sm.png";
-import loginIcon from "../assets/login.png";
-import logoutIcon from "../assets/logout.png";
 import facebookIcon from "../assets/facebook.png";
 import uaIcon from "../assets/ua.png";
 import enIcon from "../assets/en.png";
 import i18n from "../i18n";
 
 class NavBarBlock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeSession: !!(props.user && props.user.token) || !!localStorage.getItem("token")
+    }
+  }
   componentDidMount() {
     this.props.getProjects(0, 5);
     this.props.getArticles(0, 5);
     this.props.getCategories("project");
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ activeSession: !!(nextProps.user && nextProps.user.token) || !!localStorage.getItem("token") });
   }
   navigateTo(menuItemLink) {
     history.push(menuItemLink);
@@ -94,17 +101,19 @@ class NavBarBlock extends React.Component {
           <a onClick={(e) => this.navigateTo("/")} >
             <img src={logo} style={{width:80, marginTop: -7}} alt=""/>
           </a>
-          {!!(this.props.user && this.props.user.token) || !!localStorage.getItem("token") ?
-            <span onClick={(e) => this.props.logout()} className="ml-3">
-              <img src={logoutIcon} style={{height:"29px"}} alt={i18n.t("menu.logout")}/>
-            </span>:
-            <span onClick={(e) => this.navigateTo("/login")} className="mr-1 ml-3">
-              <img src={loginIcon} style={{height:"27px"}} alt={i18n.t("menu.login")}/>
-            </span>}
-          <span onClick={() => i18n.changeLanguage( i18n.language === "en" ? "ua" : "en")} className="mr-1">
+          {this.state.activeSession ?
+            <Button variant="outline-secondary" className="ml-3 mr-1" onClick={(e) => this.props.logout()}>
+              <i className="fa fa-sign-out mr-1"></i>
+              <span className="d-none d-md-inline">{i18n.t("menu.logout")}</span>
+            </Button> :
+            <Button variant="outline-secondary" className="ml-3 mr-1" onClick={(e) => this.navigateTo("/login")}>
+              <i className="fa fa-sign-in mr-1"></i>
+              <span className="d-none d-md-inline">{i18n.t("menu.login")}</span>
+            </Button>}
+          <a onClick={() => i18n.changeLanguage( i18n.language === "en" ? "ua" : "en")} className="mr-1">
             <img src={i18n.language === "en" ? uaIcon : enIcon} style={{height:"28px"}}
                  alt={i18n.language === "en" ? "ua" : "en"}/>
-          </span>
+          </a>
           <a href="https://www.facebook.com/New-Ukrainian-Wave-134781923303336/" >
             <img src={facebookIcon} style={{height:"26px"}} alt="facebook"/>
           </a>
@@ -114,21 +123,22 @@ class NavBarBlock extends React.Component {
           <Nav>
             {this.getNavItems().map((menuItem, key) => {
               if (!!menuItem.subItems) {
-                return (<NavDropdown title={i18n.t(menuItem.description)} key={key} className={ this.isNavItemActive(menuItem) ? "active" : ""}>
+                return (<NavDropdown title={i18n.t(menuItem.description)} key={key}
+                                     className={"font-weight-bold h5" + (this.isNavItemActive(menuItem) ? " active" : "")}>
                   {menuItem.subItems.map((item, key) => {
                     return (<NavDropdown.Item key={key} onClick={(e) => this.navigateTo(item.link)}>{i18n.t(item.description)}</NavDropdown.Item>);
                   })}
                 </NavDropdown>);
               }
-              return (<Nav.Link key={key} onClick={(e) => this.navigateTo(menuItem.link)} className={ this.isNavItemActive(menuItem) ? "active" : ""}>
+              return (<Nav.Link key={key} onClick={(e) => this.navigateTo(menuItem.link)}
+                                className={"font-weight-bold h5" + (this.isNavItemActive(menuItem) ? " active" : "")}>
                 {i18n.t(menuItem.description)}
               </Nav.Link>);
             })}
           </Nav>
         </Navbar.Collapse>
         <div className="order-2 order-sm-3">
-          <Button variant="secondary" className="ml-md-4"
-                  onClick={(e) => this.navigateTo("/donations")}>
+          <Button variant="outline-secondary" className="ml-md-4" onClick={(e) => this.navigateTo("/donations")}>
             {i18n.t("menu.donate")}</Button>
         </div>
       </Navbar>

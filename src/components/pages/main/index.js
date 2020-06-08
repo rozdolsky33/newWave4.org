@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import { bindActionCreators } from "redux";
 import { Col, Row, Card } from "react-bootstrap";
 import { withTranslation } from "react-i18next";
-import CarouselPhotos from "./carousel-photos";
 import { history } from "../../App";
 import { actionCreators } from "../../../store/main/Main-actions";
 import i18n from "../../../i18n";
@@ -18,11 +17,9 @@ function MainPage(props) {
     return (
       <Card className="mb-2" key={`${itemType}_${item.id}`}
             onClick={() => history.push(`/item/${itemType}/${item.id}`)}>
-        {!!item.imageUri ?
-          <Card.Img style={{height: "70px", objectFit: "cover"}}
-                    src={props.host + "/v2/api/image/" + item.imageUri} /> :
-          <div className="bg-secondary" style={{height: "70px"}}/>
-        }
+        <Card.Img style={{height: "70px", objectFit: "cover"}}
+                  src={item.imageUri ? props.host + "/v2/api/image/" + item.imageUri :
+                    "../assets/imgs/NW_post_placeholder.jpg"} />
         <Card.Body>
           <Card.Title>{item.title}</Card.Title>
           <Card.Text className="overflow-hidden" style={{height: "70px"}}>{item.preview}</Card.Text>
@@ -32,10 +29,9 @@ function MainPage(props) {
   };
 
   return (
-    <Col>
-      <div className="main-page-cover">
-        <CarouselPhotos/>
-      </div>
+    <>
+      <img className="position-fixed w-100 h-100" style={{objectFit: "cover"}}
+           src="./assets/imgs/NW_main_cover_0.jpg" alt="main-cover" />
       <Row className="main-description-block pb-3 pt-3 bg-white position-relative">
         <Col xs md={{ span: 2, offset: 2 }} className="text-center d-flex flex-column justify-content-center align-items-center">
           <img
@@ -62,7 +58,12 @@ function MainPage(props) {
           </div>
         </Col>
       </Row>
-    </Col>
+      <Row className="w-100 m-0">
+        <Col className="bg-secondary text-white p-4 col-12">
+          New Wave (C) 2020
+        </Col>
+      </Row>
+    </>
   );
 }
 export default connect(

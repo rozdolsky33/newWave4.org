@@ -33,8 +33,8 @@ class LoginPage extends React.Component {
           </Alert>
         )}
         <div className="d-flex justify-content-between">
-          <Button variant="link" href="/registration">{i18n.t("login.registration")}</Button>
-          <Button variant="link" href="/forgot-password">{i18n.t("login.forgot-pass")}</Button>
+          <Button variant="light" href="/registration">{i18n.t("login.registration")}</Button>
+          <Button variant="light" href="/forgot-password">{i18n.t("login.forgot-pass")}</Button>
         </div>
       </Col>
     );

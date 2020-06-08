@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {Table, Button, Col, Tab, Tabs, Alert, Form} from "react-bootstrap";
+import {Table, Button, Col, Tab, Tabs, Alert} from "react-bootstrap";
 import AddEditModal from "./addEditModal";
 import PaginationPanel from "../common/pagination-panel";
 import { actionCreators } from "../../store/main/Main-actions";

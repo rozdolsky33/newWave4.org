@@ -24,7 +24,34 @@
     "no-articles": "Стідкуйте за оновленнями"
   },
   "our-team": {
-    "title": "Наша команда"
+    "title": "Наша команда",
+    "team-members": {
+      "BohdanBohonok": {
+        "fullName": "Богдан Бохонок",
+        "location": "Пітсбург, ПА",
+        "position": "Заступник"
+      },
+      "MyroslavaRozdolska": {
+        "fullName": "Мирослава Роздольська",
+        "location": "Нью-Йорк",
+        "position": "Голова"
+      },
+      "LarysaZanyk": {
+        "fullName": "Лариса Заник",
+        "location": "Нью-Йорк",
+        "position": "Директор освітніх програм"
+      },
+      "OlgaHrynyk": {
+        "fullName": "Ольга Гриник",
+        "location": "Бруклін, НЮ",
+        "position": "Голова Бруклінського осередку"
+      },
+      "OstapStahiv": {
+        "fullName": "Остап Стахів",
+        "location": "Клівленд, ОГ",
+        "position": "Член ради"
+      }
+    }
   },
   "history": {
     "title": "Наша історія",
@@ -95,7 +122,7 @@
     "password": "Пароль",
     "btn-login": "Логін",
     "registration": "Зареєструватися",
-    "forgot-pass": "Забули пароль?"
+    "forgot-pass": "Відновити пароль"
   },
   "registration": {
     "title": "Реєстрація",
