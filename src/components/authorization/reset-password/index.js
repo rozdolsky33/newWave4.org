@@ -11,7 +11,7 @@ class ResetPasswordPage extends React.Component {
   async resetPassword(event) {
     event.preventDefault();
     if (this.refs.password.value === this.refs["pass-confirmation"].value) {
-      await this.props.resetPassword(this.refs.password.value, this.props.match.params.token);
+      await this.props.resetPassword(this.refs.password.value, this.props.token, this.props.passwordReset);
       history.push("/result");
     }
   }
@@ -19,7 +19,10 @@ class ResetPasswordPage extends React.Component {
   render() {
     return (
       <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
-        <h2 className="p-3 text-secondary">{i18n.t("reset-password.title")}</h2>
+        <h2 className="p-3 text-secondary">
+          {this.props.passwordReset ? i18n.t("reset-password.title") :
+            i18n.t("reset-password.title-for-admin-role")}
+        </h2>
         <Form onSubmit={(e) => this.resetPassword(e)} className="text-left">
           <Form.Group controlId="pass">
             <Form.Label>Password</Form.Label>

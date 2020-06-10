@@ -139,6 +139,7 @@
   },
   "reset-password": {
     "title": "Password reset",
+    "title-for-admin-role": "Set password for admin",
     "password": "Password",
     "password-confirm": "Please enter your password once again",
     "btn-submit": "Submit"

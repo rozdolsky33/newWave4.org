@@ -7,7 +7,9 @@ import { actionCreators } from "../../store/main/Main-actions";
 import "react-datepicker/dist/react-datepicker.css";
 import { withTranslation } from "react-i18next";
 import i18n from "../../i18n";
-import CKEditor from "ckeditor4-react";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {host} from "../../store/utils";
 
 class AddEditModal extends React.Component {
   constructor(props) {
@@ -29,9 +31,10 @@ class AddEditModal extends React.Component {
     this.changeDate = this.changeDate.bind(this);
   }
 
-  changeValue(event) {
+  changeValue(event, editor) {
+    console.log(event, editor);
     let fieldName = event.target ? event.target.name : "content";
-    let fieldValue = event.target ? event.target.value : event.editor.getData();
+    let fieldValue = event.target ? event.target.value : editor.getData();
     this.setState({ [fieldName]: fieldValue });
   }
   changeDate(newDate) {
@@ -112,7 +115,12 @@ class AddEditModal extends React.Component {
               </Col>
             </Form.Group>
             <label>{i18n.t("admin.content")}</label>
-            <CKEditor data={this.state.content} type="classic" onChange={this.changeValue}/>
+            <CKEditor editor={ ClassicEditor } data={this.state.content} onChange={this.changeValue}
+                      config={{
+                        ckfinder: {
+                          uploadUrl: `${host}/v1/api/images/uploadFile`
+                        }
+                      }}/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={() => this.props.toggleAddEditModal(false)}>{i18n.t("common.btn-close")}</Button>

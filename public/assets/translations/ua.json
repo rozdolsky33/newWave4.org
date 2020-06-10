@@ -139,6 +139,7 @@
   },
   "reset-password": {
     "title": "Зміна паролю",
+    "title-for-admin-role": "Встановіть пароль для адміністратора",
     "password": "Пароль",
     "password-confirm": "Введіть пароль ще раз для підтвердження",
     "btn-submit": "Змінити"

@@ -55,13 +55,13 @@ class ArticlePage extends React.Component {
   }
   render() {
     return (
-      <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
+      <Col xs md={{ span: 8, offset: 2 }}>
         {!this.props.selectedItem ||
           <>
             <img style={{width: "100%", objectFit: "cover", maxHeight: "330px"}} alt={this.props.selectedItem.title}
                  src={this.props.selectedItem.imageUri ? this.props.host + "/v2/api/image/" + this.props.selectedItem.imageUri :
                    "../../assets/imgs/NW_post_placeholder.jpg"} />
-            <h2 className="p-3 text-secondary">{this.props.selectedItem.title}</h2>
+            <h2 className="p-3 text-center text-secondary">{this.props.selectedItem.title}</h2>
             <div className="d-flex justify-content-between pt-5 flex-column flex-md-row">
               <div className="text-secondary order-2 order-md-1">
                 <span className="mr-2">{new Date(this.props.selectedItem.date).toDateString()}</span>

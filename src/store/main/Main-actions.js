@@ -101,7 +101,7 @@ export const actionCreators = {
   },
   sendAdminRoleRequest: (email) => async (dispatch) => {
     let url = `${host}/v1/api/users/role-admin-request`;
-    const params = getParams('POST');
+    const params = getParams('POST', true);
     params.body = JSON.stringify({ email });
 
     dispatch({ type: actionType.requestType });
@@ -118,8 +118,8 @@ export const actionCreators = {
       });
     }
   },
-  resetPassword: (password, token) => async (dispatch) => {
-    let url = `${host}/v1/api/users/password-reset`;
+  resetPassword: (password, token, passwordReset) => async (dispatch) => {
+    let url = `${host}/v1/api/users/${passwordReset ? 'password-reset' : 'role-admin-reset'}`;
     const params = getParams('POST');
     params.body = JSON.stringify({ password, token });
 
