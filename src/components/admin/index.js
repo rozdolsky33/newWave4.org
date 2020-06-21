@@ -92,7 +92,7 @@ class AdminPage extends React.Component {
         {!!this.props.errorMessage && <Row className="pt-3">
           <Col>
             <Alert variant="danger" className="mt-3">
-              {this.props.errorMessage}
+              {i18n.t(this.props.errorMessage)}
             </Alert>
           </Col>
         </Row>}
