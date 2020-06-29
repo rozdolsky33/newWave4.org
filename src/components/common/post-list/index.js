@@ -21,10 +21,8 @@ class PostListPage extends React.Component {
       value: this.props.category
     } : undefined;
     this.toggleFilter(filter);
-    if (this.props.type === "blog") {
-      this.props.getItemsDates(this.props.type);
-      this.props.getCategories(this.props.type);
-    }
+    this.props.getItemsDates(this.props.type);
+    this.props.getCategories(this.props.type);
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
@@ -60,7 +58,7 @@ class PostListPage extends React.Component {
   getDates() {
     let currentYear = 0;
     let currentMonth = "";
-    return this.props.blogDates.map((date, key) => {
+    return this.props.filterDates.map((date, key) => {
       let result = (
         <div key={key}>
           {currentYear !== date.year && <p className="m-0">&#9675; {date.year}</p>}
@@ -116,16 +114,14 @@ class PostListPage extends React.Component {
         <h2 className="p-3 text-secondary">{i18n.t("menu." + this.props.type)}</h2>
         <Row>
           <Col className="text-left pl-5" xs="12" md="2">
-            {this.props.type === "blog" && <>
-              <p className="mb-0 mt-3">{i18n.t("posts.categories")}</p>
-              {this.props[`${this.props.type}Categories`].map((cat, key) => {
-                return <Button key={key} className="text-secondary text-left" variant="link" size="sm"
-                               onClick={() => this.toggleFilter({
-                                 entityName: "category",
-                                 value: cat})}>{cat}</Button>;
-              })}
-              {this.getDates()}
-            </>}
+            <p className="mb-0 mt-3">{i18n.t("posts.categories")}</p>
+            {this.props[`${this.props.type}Categories`].map((cat, key) => {
+              return <Button key={key} className="text-secondary text-left" variant="link" size="sm"
+                             onClick={() => this.toggleFilter({
+                               entityName: "category",
+                               value: cat})}>{cat}</Button>;
+            })}
+            {this.getDates()}
           </Col>
           <Col className="text-center" xs="12" md="8">
             {this.state.filter && <Row className="text-secondary p-3">

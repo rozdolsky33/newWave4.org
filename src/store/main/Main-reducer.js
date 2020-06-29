@@ -10,6 +10,7 @@ const initialState = {
     size: 5,
     number: 0
   },
+  authors: [],
   items: [],
   blog: [],
   project: [],
@@ -22,7 +23,7 @@ const initialState = {
   successMessage: "",
   errorMessage: "",
   activeItems: "blog",
-  blogDates: [],
+  filterDates: [],
   user: undefined
 };
 
@@ -117,10 +118,10 @@ export default function reducer (state, action) {
         isLoading: false
       };
     }
-    case actionType.receivedBlogDates: {
+    case actionType.receivedFilterDates: {
       return {
         ...state,
-        blogDates: action.response.reverse().map(date => {
+        filterDates: action.response.reverse().map(date => {
           const tempDate = new Date(date);
           return {
             year: tempDate.getFullYear(),

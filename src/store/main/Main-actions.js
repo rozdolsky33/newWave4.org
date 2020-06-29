@@ -211,13 +211,13 @@ export const actionCreators = {
   },
   getItemsDates: (itemType) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
-    let url = `${host}/v2/api/${itemType}/date/postIfExists`;
+    let url = `${host}/v2/api/${itemType}/date/${itemType === "blog" ? 'postIfExists' : 'projectIfExists'}`;
     let response = await fetch(url, getParams('GET'));
     if (!response.ok) {
       dispatch({ type: actionType.requestFailedType, error: response.status });
     } else {
       response = await response.json();
-      dispatch({ type: actionType.receivedBlogDates, response });
+      dispatch({ type: actionType.receivedFilterDates, response });
     }
   },
   deleteItem: (activeItems, id) => async (dispatch) => {
