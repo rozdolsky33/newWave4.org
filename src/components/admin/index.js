@@ -38,9 +38,19 @@ class AdminPage extends React.Component {
       <thead>
       <tr>
         <th>#</th>
-        <th>{i18n.t("admin.title")}</th>
-        <th>{i18n.t("admin.author")}</th>
-        <th>{i18n.t("admin.date")}</th>
+
+        {this.props.activeItems === "users" ?
+          <>
+            <th>{i18n.t("common.first-name")}</th>
+            <th>{i18n.t("common.last-name")}</th>
+            <th>{i18n.t("common.email")}</th>
+          </> :
+          <>
+            <th>{i18n.t("admin.title")}</th>
+            <th>{i18n.t("admin.author")}</th>
+            <th>{i18n.t("admin.date")}</th>
+          </>
+        }
         <th>X</th>
       </tr>
       </thead>
@@ -78,12 +88,13 @@ class AdminPage extends React.Component {
 
   async deleteItem(e, item) {
     e.stopPropagation();
-    await this.props.deleteItem(this.props.activeItems, item.id);
+    await this.props.deleteItem(this.props.activeItems, item.id || item.userId);
     this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
   }
 
   componentWillMount() {
     this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
+    this.props.getAuthor(localStorage.getItem("userId"));
   }
 
   render() {
@@ -121,10 +132,10 @@ class AdminPage extends React.Component {
             {this.getContentTable()}
           </Tab>}
         </Tabs>
-        <Button variant="secondary" size="lg" className="fixed-bottom m-3"
-                onClick={() => {this.props.toggleAddEditModal(true)}}>
-          +
-        </Button>
+        {this.props.activeItems !== "users" &&
+          <Button variant="secondary" size="lg" className="fixed-bottom m-3"
+                  onClick={() => {this.props.toggleAddEditModal(true)}}>+</Button>
+        }
         {this.props.addEditModalShown && <AddEditModal />}
         {this.state.setAdminRoleModalShown && <SetAdminRoleModal closeModal={async(email) => {
           this.setState({setAdminRoleModalShown: false});

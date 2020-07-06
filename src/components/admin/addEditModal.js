@@ -14,11 +14,14 @@ class AddEditModal extends React.Component {
     super(props);
     this.state = props.editMode ? {
       ...props.selectedItem,
-      date: new Date(props.selectedItem.date)
+      date: new Date(props.selectedItem.date),
+      externalResource: !!props.selectedItem.url
     } : {
       date: new Date(),
+      externalResource: false,
+      externalURL: "",
       title: "",
-      author: "Myroslava Rozdolska",
+      author: this.props.author,
       category: "",
       preview: "",
       content: "",
@@ -44,6 +47,11 @@ class AddEditModal extends React.Component {
   
   async submit(event) {
     event.preventDefault();
+    if (this.state.externalResource) {
+      this.setState({content: ""});
+    } else {
+      this.setState({externalURL: ""});
+    }
     await this.props.addEditItem(this.props.activeItems, this.state, this.props.editMode);
     this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
   }
@@ -64,15 +72,6 @@ class AddEditModal extends React.Component {
                 <Form.Control type="text" placeholder={i18n.t("admin.title")}
                               value={this.state.title}
                               name="title" onChange={this.changeValue} />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="author">
-              <Form.Label column sm="2">{i18n.t("admin.author")}</Form.Label>
-              <Col sm="10">
-                <Form.Control as="select" value={this.state.author}
-                              name="author" onChange={this.changeValue}>
-                  <option>Myroslava Rozdolska</option>
-                </Form.Control>
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="pic">
@@ -111,19 +110,37 @@ class AddEditModal extends React.Component {
                               name="preview" onChange={this.changeValue} />
               </Col>
             </Form.Group>
-            <label>{i18n.t("admin.content")}</label>
-            <CKEditor data={this.state.content} type="classic"
-                      config={ {
-                        toolbar: [
-                          { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-' ] },
-                          { name: 'links', items: [ 'Link', 'Unlink', '-' ] },
-                          { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                          '/',
-                          { name: 'styles', items: [ 'Styles', 'Format', '-' ] },
-                          { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule' ] }
-                          ]
-                      } }
-                      onChange={this.changeValue}/>
+            <Form.Group controlId="externalКesource">
+              <Form.Check type="checkbox" label={i18n.t("admin.external-resource")}
+                          onChange={(e) => {
+                            this.setState({externalResource: e.target.checked});
+                          }} />
+            </Form.Group>
+            { this.state.externalResource ?
+              <Form.Group as={Row} controlId="url">
+                <Form.Label column sm="2">{i18n.t("admin.external-url")}</Form.Label>
+                <Col sm="10">
+                  <Form.Control type="text" placeholder={i18n.t("admin.external-url")}
+                                value={this.state.externalURL}
+                                name="externalURL" onChange={this.changeValue} />
+                </Col>
+              </Form.Group> :
+              <>
+                <label>{i18n.t("admin.content")}</label>
+                <CKEditor data={this.state.content} type="classic"
+                          config={ {
+                            toolbar: [
+                              { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-' ] },
+                              { name: 'links', items: [ 'Link', 'Unlink', '-' ] },
+                              { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+                              { name: 'styles', items: [ 'Styles', 'Format', '-' ] },
+                              { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule' ] }
+                            ]
+                          } }
+                          onChange={this.changeValue}/>
+              </>
+
+            }
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={() => this.props.toggleAddEditModal(false)}>{i18n.t("common.btn-close")}</Button>

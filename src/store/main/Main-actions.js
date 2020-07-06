@@ -266,6 +266,18 @@ export const actionCreators = {
     params.body = formData;
     await fetch(url, params);
   },
+  getAuthor: (adminId) => async (dispatch) => {
+    const url = `${host}/v1/api/users/${adminId}`;
+    const params = getParams('GET', true);
+    let response = await fetch(url, params);
+
+    if (response.ok) {
+      response = await response.json();
+      dispatch({ type: actionType.receivedAuthor, author: response});
+    } else {
+      dispatch({ type: actionType.requestFailedType, error: response.status });
+    }
+  },
   sendContactUsEmail: (subject, from, content) => async (dispatch) => {
     const url = `${host}/v2/api/send/contact-us`;
     const params = getParams('POST');

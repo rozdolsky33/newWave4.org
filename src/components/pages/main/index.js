@@ -16,7 +16,13 @@ function MainPage(props) {
   const getCard = (item, itemType) => {
     return (
       <Card className="mb-2" key={`${itemType}_${item.id}`}
-            onClick={() => history.push(`/item/${itemType}/${item.id}`)}>
+            onClick={() => {
+              if (item.externalURL) {
+                window.open(item.externalURL, '_blank');
+              } else {
+                history.push(`/item/${itemType}/${item.id}`);
+              }}
+            }>
         <Card.Img style={{height: "70px", objectFit: "cover"}}
                   src={item.imageUri ? props.host + "/v2/api/image/" + item.imageUri :
                     "../assets/imgs/NW_post_placeholder.jpg"} />
@@ -31,9 +37,11 @@ function MainPage(props) {
   return (
     <>
       <img className="position-fixed w-100 h-100" style={{objectFit: "cover"}}
+           src="./assets/imgs/NW_main_cover_1.jpg" alt="main-cover-bg" />
+      <img className="position-fixed w-100 main-cover"
            src="./assets/imgs/NW_main_cover_0.jpg" alt="main-cover" />
       <Row className="main-description-block pb-3 pt-3 bg-white position-relative">
-        <Col xs md={{ span: 2, offset: 2 }} className="text-center d-flex flex-column justify-content-center align-items-center">
+        <Col xs lg={{ span: 2, offset: 2 }} className="text-center d-flex flex-column justify-content-center align-items-center">
           <img
             src="../assets/imgs/NW_logo_sm_2.jpg"
             height="130"
@@ -41,9 +49,9 @@ function MainPage(props) {
           />
           <h3 className="p-4 text-info font-weight-bold">{i18n.t("main.title")}</h3>
         </Col>
-        <Col xs md="6" className="d-flex flex-column justify-content-center">{i18n.t("main.description")}</Col>
+        <Col xs lg="6" className="d-flex flex-column justify-content-center">{i18n.t("main.description")}</Col>
       </Row>
-      <Row className="position-relative pb-5">
+      <Row className="position-relative pb-5 w-100 m-0">
         <div className="main-recent-block bg-secondary position-absolute h-100 w-100"></div>
         <Col xs md={{ span: 4, offset: 2 }}>
           <h4 className="p-4 text-white text-center">{i18n.t("main.new-projects")}</h4>

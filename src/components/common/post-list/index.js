@@ -100,7 +100,14 @@ class PostListPage extends React.Component {
             </div>
             <Card.Text>{item.preview}</Card.Text>
             <div className="d-flex justify-content-end">
-              <Card.Link href={`/item/${this.props.type}/${item.id}`}>{i18n.t("posts.read-more")}</Card.Link>
+              {item.externalURL ?
+                <Card.Link href={item.externalURL} target="_blank">
+                  {i18n.t("posts.read-more")}
+                </Card.Link> :
+                <Card.Link href={`/item/${this.props.type}/${item.id}`}>
+                  {i18n.t("posts.read-more")}
+                </Card.Link>
+              }
             </div>
           </Card.Body>
         </Card>

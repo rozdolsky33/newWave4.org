@@ -63,7 +63,7 @@ class ArticlePage extends React.Component {
                    "../../assets/imgs/NW_post_placeholder.jpg"} />
             <h2 className="p-3 text-center text-secondary">{this.props.selectedItem.title}</h2>
             <div className="d-flex justify-content-between pt-5 flex-column flex-md-row">
-              <div className="text-secondary order-2 order-md-1">
+              {this.props.match.params.type === "blog" ? <div className="text-secondary order-2 order-md-1">
                 <span className="mr-2">{new Date(this.props.selectedItem.date).toDateString()}</span>
                 <a onClick={this.toggleLike}
                    className={this.props.likes.find(l => l.userId === this.state.userId) && "text-dark"}>
@@ -73,24 +73,27 @@ class ArticlePage extends React.Component {
                    className={this.props.comments.find(c => c.userId === this.state.userId) && "text-dark"}>
                   <i className="fa fa-comment mr-1 ml-2"></i>{this.props.comments.length}
                 </a>
-              </div>
+              </div> : <div></div>}
               <Button className="order-1 order-md-2" variant="link" onClick={() => {history.push("blog")}}>
                 {this.props.selectedItem.author}
               </Button>
             </div>
             <div className="pt-3 content" dangerouslySetInnerHTML={{__html: this.props.selectedItem.content}}></div>
-            <h5 className="pt-3 text-left">{i18n.t("post.comments")}</h5>
-            {this.props.match.params.type === "blog" && <div ref="postComments">
-              {this.props.comments.map((comment, key) =>
-                <Alert key={key} variant="light" className="text-left border-light">
-                  {(this.state.userRole.indexOf("ADMIN") >= 0 || comment.userId === this.state.userId) &&
-                  <button type="button" className="close"
-                          onClick={() => this.deleteComment(comment.id)}>x</button>}
-                  <b>{comment.username}</b>:&nbsp;{comment.content}
-                  <p className="small text-right mb-0 mt-2">{new Date(comment.postedDate).toDateString()}</p>
-                </Alert>)}
-              {!this.props.isLoading && <CommentForm onSubmit={this.addComment}/>}
-            </div>}
+            {this.props.match.params.type === "blog" &&
+              <>
+                <h5 className="pt-3 text-left">{i18n.t("post.comments")}</h5>
+                <div ref="postComments">
+                  {this.props.comments.map((comment, key) =>
+                    <Alert key={key} variant="light" className="text-left border-light">
+                      {(this.state.userRole.indexOf("ADMIN") >= 0 || comment.userId === this.state.userId) &&
+                      <button type="button" className="close"
+                              onClick={() => this.deleteComment(comment.id)}>x</button>}
+                      <b>{comment.username}</b>:&nbsp;{comment.content}
+                      <p className="small text-right mb-0 mt-2">{new Date(comment.postedDate).toDateString()}</p>
+                    </Alert>)}
+                  {!this.props.isLoading && <CommentForm onSubmit={this.addComment}/>}
+                </div>
+              </>}
           </>
           }
         <Modal show={this.state.showAlert} onHide={() => this.setState({showAlert: false})}>

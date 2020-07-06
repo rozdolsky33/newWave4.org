@@ -10,7 +10,7 @@ const initialState = {
     size: 5,
     number: 0
   },
-  authors: [],
+  author: "",
   items: [],
   blog: [],
   project: [],
@@ -138,6 +138,12 @@ export default function reducer (state, action) {
       };
       newState.paginationConfig.number = 0;
       return newState
+    }
+    case actionType.receivedAuthor: {
+      return{
+        ...state,
+        author: action.author ? action.author.firstName + ' ' + action.author.lastName : '',
+      };
     }
     default: {
       return state;

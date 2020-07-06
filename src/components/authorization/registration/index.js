@@ -26,16 +26,16 @@ class RegistrationPage extends React.Component {
         <h2 className="p-3 text-secondary">{i18n.t("registration.title")}</h2>
         <Form onSubmit={(e) => this.register(e)} className="text-left">
           <Form.Group controlId="email">
-            <Form.Label>{i18n.t("registration.email")}</Form.Label>
-            <Form.Control type="text" placeholder={i18n.t("registration.email")} ref="email" />
+            <Form.Label>{i18n.t("common.email")}</Form.Label>
+            <Form.Control type="text" placeholder={i18n.t("common.email")} ref="email" />
           </Form.Group>
           <Form.Group controlId="firstName">
-            <Form.Label>{i18n.t("registration.first-name")}</Form.Label>
-            <Form.Control type="text" placeholder={i18n.t("registration.first-name")} ref="firstName" />
+            <Form.Label>{i18n.t("common.first-name")}</Form.Label>
+            <Form.Control type="text" placeholder={i18n.t("common.first-name")} ref="firstName" />
           </Form.Group>
           <Form.Group controlId="lastName">
-            <Form.Label>{i18n.t("registration.last-name")}</Form.Label>
-            <Form.Control type="text" placeholder={i18n.t("registration.last-name")} ref="lastName" />
+            <Form.Label>{i18n.t("common.last-name")}</Form.Label>
+            <Form.Control type="text" placeholder={i18n.t("common.last-name")} ref="lastName" />
           </Form.Group>
           <Form.Group controlId="pass">
             <Form.Label>{i18n.t("registration.password")}</Form.Label>

@@ -126,9 +126,6 @@
   },
   "registration": {
     "title": "Реєстрація",
-    "first-name": "Ім'я",
-    "last-name": "Прізвище",
-    "email": "Пошта",
     "password": "Пароль",
     "btn-register": "Зареєструватися"
   },
@@ -158,6 +155,8 @@
     "picture": "Зображен.",
     "category": "Категорія",
     "content": "Вміст статті",
+    "external-resource": "Зовнішній ресурс",
+    "external-url": "Посилання",
     "preview": "Короткий вміст",
     "set-admin-role": "Вкажіть пошту користувача, якого Ви хочете зробити адміністратором",
     "btn-set-admin-role": "Видати права адміністратора"
@@ -179,6 +178,8 @@
     "btn-close": "Відміна",
     "btn-submit": "Відправити",
     "email": "Пошта",
+    "first-name": "Ім'я",
+    "last-name": "Прізвище",
     "status-error": "Сталася помилка",
     "status-success": "Успіх"
   }

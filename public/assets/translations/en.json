@@ -126,9 +126,6 @@
   },
   "registration": {
     "title": "Registration",
-    "first-name": "First name",
-    "last-name": "Last name",
-    "email": "Email",
     "password": "Password",
     "btn-register": "Registrate"
   },
@@ -158,6 +155,8 @@
     "picture": "Picture",
     "category": "Category",
     "content": "Main content",
+    "external-resource": "External resource",
+    "external-url": "Link",
     "preview": "Short content",
     "set-admin-role": "Enter the email of a user, which you want to make an admin",
     "btn-set-admin-role": "Give admin rights"
@@ -179,6 +178,8 @@
     "btn-close": "Close",
     "btn-submit": "Submit",
     "email": "Email",
+    "first-name": "First name",
+    "last-name": "Last name",
     "status-error": "Error",
     "status-success": "Success"
   }
