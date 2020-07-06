@@ -292,10 +292,10 @@ export const actionCreators = {
       });
     }
   },
-  donate: (name, email, cardNumber, validTill, cvc) => async (dispatch) => {
-    const url = `${host}/v1/api/donate`;
+  donate: (fullName, email, amount, cardNumber, expMonth, expYear, cvc) => async (dispatch) => {
+    const url = `${host}/v2/api/card-donation`;
     const params = getParams('POST');
-    params.body = JSON.stringify({ name, email, cardNumber, validTill, cvc });
+    params.body = JSON.stringify({ fullName, email, amount: amount * 100, cardNumber, expMonth, expYear, cvc });
 
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);

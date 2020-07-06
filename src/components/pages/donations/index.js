@@ -7,10 +7,12 @@ import {bindActionCreators} from "redux";
 import {actionCreators} from "../../../store/main/Main-actions";
 
 function DonationsPage(props) {
-  const name = React.useRef();
+  const fullName = React.useRef();
+  const amount = React.useRef();
   const email = React.useRef();
   const cardNumber = React.useRef();
-  const validTill = React.useRef();
+  const expMonth = React.useRef();
+  const expYear = React.useRef();
   const cvc = React.useRef();
   return (
     <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
@@ -19,11 +21,14 @@ function DonationsPage(props) {
         {i18n.t("donation.sub-title-2")}</p>
       <Form onSubmit={async(e) => {
         e.preventDefault();
-        await props.donate(name.current.value, email.current.value, cardNumber.current.value, validTill.current.value, cvc.current.value);
-        name.current.value = "";
+        await props.donate(fullName.current.value, email.current.value, amount.current.value, cardNumber.current.value,
+          expMonth.current.value, expYear.current.value, cvc.current.value);
+        fullName.current.value = "";
         email.current.value = "";
+        amount.current.value = "";
         cardNumber.current.value = "";
-        validTill.current.value = "";
+        expMonth.current.value = "";
+        expYear.current.value = "";
         cvc.current.value = "";
       }}>
         <InputGroup className="mb-3">
@@ -54,7 +59,7 @@ function DonationsPage(props) {
           <InputGroup.Prepend>
             <InputGroup.Text id="contact-us-name">&nbsp;&#9829;</InputGroup.Text>
           </InputGroup.Prepend>
-          <FormControl required ref={name}
+          <FormControl required ref={fullName}
             placeholder={i18n.t("donation.name")}
             aria-label="Name"
             aria-describedby="contact-us-name"
@@ -71,17 +76,31 @@ function DonationsPage(props) {
           />
         </InputGroup>
         <InputGroup className="mb-3">
+          <InputGroup.Prepend>
+            <InputGroup.Text id="contact-us-amount">&nbsp;$&nbsp;</InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl required ref={amount} type="number"
+            placeholder={i18n.t("donation.amount")}
+            aria-label="Amount"
+            aria-describedby="contact-us-amount"
+          />
+        </InputGroup>
+        <InputGroup className="mb-3">
           <FormControl required ref={cardNumber}
             placeholder={i18n.t("donation.card-number")}
             aria-label="Card number"
             aria-describedby="card-number"/>
         </InputGroup>
         <InputGroup className="mb-3">
-          <FormControl required ref={validTill}
-            placeholder={i18n.t("donation.valid-till")}
-            aria-label="Valid date"
-            aria-describedby="valid-date"/>
-          <FormControl required ref={cvc}
+          <FormControl required ref={expMonth} type="number"
+            placeholder={i18n.t("donation.valid-till-month")}
+            aria-label="Valid month"
+            aria-describedby="valid-month"/>
+          <FormControl required ref={expYear} type="number"
+            placeholder={i18n.t("donation.valid-till-year")}
+            aria-label="Valid year"
+            aria-describedby="valid-year"/>
+          <FormControl required ref={cvc} type="number"
             placeholder={i18n.t("donation.cvc")}
             aria-label="CVC code"
             aria-describedby="cvc-code"/>
