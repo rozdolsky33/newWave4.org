@@ -33,23 +33,18 @@
   }
 }
 
-.main-cover {
+.main-cover img {
   height: 430px;
+  width: 100%;
   object-fit: cover;
+  object-position: bottom;
 
   @media (max-width: 400px) {
     height: 200px;
   }
 }
 
-.main-description-block {
-  margin-top: 430px;
-
-  @media (max-width: 400px) {
-    margin-top: 200px;
-  }
-}
-
 .main-recent-block {
   opacity: 0.6;
+  background-image: url("../../../assets/NW_background.jpg")
 }

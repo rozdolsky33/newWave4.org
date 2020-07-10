@@ -166,7 +166,9 @@
   "error": {
     "invalid-url": "This link isn't valid any longer",
     "page-is-not-ready": "This page isn't ready yet",
-    "common": "Something went wrong :("
+    "common": "Something went wrong :(",
+    "no-session": "You should login at first and then try again",
+    "wrong-creds": "Check you login and password"
   },
   "message": {
     "action-approved": "Your action was successfully approved",

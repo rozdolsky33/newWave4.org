@@ -36,20 +36,21 @@ function MainPage(props) {
 
   return (
     <>
-      <img className="position-fixed w-100 h-100" style={{objectFit: "cover"}}
-           src="./assets/imgs/NW_main_cover_1.jpg" alt="main-cover-bg" />
-      <img className="position-fixed w-100 main-cover"
-           src="./assets/imgs/NW_main_cover_0.jpg" alt="main-cover" />
-      <Row className="main-description-block pb-3 pt-3 bg-white position-relative">
-        <Col xs lg={{ span: 2, offset: 2 }} className="text-center d-flex flex-column justify-content-center align-items-center">
+      <Row className="main-cover">
+        <Col>
+          <img src="./assets/imgs/NW_main_cover.jpg" alt="main-cover" />
+        </Col>
+      </Row>
+      <Row className="pb-3 pt-3 bg-white position-relative">
+        <Col xs="12" lg={{ span: 2, offset: 2 }} className="text-center d-flex flex-column justify-content-center align-items-center">
           <img
             src="../assets/imgs/NW_logo_sm_2.jpg"
             height="130"
-            alt="About Us"
+            alt="New wave"
           />
           <h3 className="p-4 text-info font-weight-bold">{i18n.t("main.title")}</h3>
         </Col>
-        <Col xs lg="6" className="d-flex flex-column justify-content-center">{i18n.t("main.description")}</Col>
+        <Col xs="12" lg="6" className="d-flex flex-column justify-content-center">{i18n.t("main.description")}</Col>
       </Row>
       <Row className="position-relative pb-5 w-100 m-0">
         <div className="main-recent-block bg-secondary position-absolute h-100 w-100"></div>

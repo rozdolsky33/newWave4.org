@@ -1,6 +1,7 @@
 ﻿export const requestType = "REQUEST_STARTED";
 export const requestPassedType = "REQUEST_SUCCESSFUL";
 export const requestFailedType = "REQUEST_FAILED";
+export const clearErrorsType = "CLEAR_ERRORS";
 export const loginPassedType = "LOGIN_SUCCESSFUL";
 export const logoutType = "LOGOUT";
 export const addEditItemPassedType = "ADD_EDIT_ITEM_SUCCESSFUL";

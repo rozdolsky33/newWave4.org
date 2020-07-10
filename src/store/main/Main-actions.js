@@ -3,6 +3,9 @@ import { history } from "../../components/App";
 import { host, getParams } from "../utils";
 
 export const actionCreators = {
+  clearErrors: () => async (dispatch) => {
+    dispatch({ type: actionType.clearErrorsType });
+  },
   login: (email, password) => async (dispatch) => {
     const url = `${host}/v1/api/users/login`;
     const params = getParams('POST');
@@ -29,7 +32,10 @@ export const actionCreators = {
         history.push("/");
       }
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({
+        type: actionType.requestFailedType,
+        errorMessage: response.status === 403 ? 'error.wrong-creds' : 'error.common'
+      });
     }
   },
   logout: () => async (dispatch) => {
@@ -53,10 +59,7 @@ export const actionCreators = {
         successMessage: 'message.registration-success',
       });
     } else {
-      return dispatch({
-        type: actionType.requestFailedType,
-        error: response.status,
-      });
+      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   checkToken: (token) => async (dispatch) => {
@@ -77,7 +80,7 @@ export const actionCreators = {
         });
       }
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   sendPassResetRequest: (email) => async (dispatch) => {
@@ -93,10 +96,7 @@ export const actionCreators = {
         successMessage: 'message.reset-password-request',
       });
     } else {
-      return dispatch({
-        type: actionType.requestFailedType,
-        error: response.status,
-      });
+      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   sendAdminRoleRequest: (email) => async (dispatch) => {
@@ -112,10 +112,7 @@ export const actionCreators = {
         successMessage: 'message.admin-role-email-sent',
       });
     } else {
-      return dispatch({
-        type: actionType.requestFailedType,
-        error: response.status,
-      });
+      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   resetPassword: (password, token, passwordReset) => async (dispatch) => {
@@ -131,10 +128,7 @@ export const actionCreators = {
         successMessage: 'message.reset-password-success',
       });
     } else {
-      return dispatch({
-        type: actionType.requestFailedType,
-        error: response.status,
-      });
+      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   getItemsList: (activeItems, pageNumber, pageSize, addResToList, filterEntity, filterValue) => async (dispatch) => {
@@ -177,7 +171,7 @@ export const actionCreators = {
       } : response;
       dispatch({ type: actionType.receivedItemsType, addResToList, response });
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   getArticles: (pageNumber, pageSize) => async (dispatch) => {
@@ -188,7 +182,7 @@ export const actionCreators = {
       response = await response.json();
       dispatch({ type: actionType.receivedArticlesType, response });
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   getProjects: (pageNumber, pageSize) => async (dispatch) => {
@@ -214,7 +208,7 @@ export const actionCreators = {
     let url = `${host}/v2/api/${itemType}/date/${itemType === "blog" ? 'postIfExists' : 'projectIfExists'}`;
     let response = await fetch(url, getParams('GET'));
     if (!response.ok) {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     } else {
       response = await response.json();
       dispatch({ type: actionType.receivedFilterDates, response });
@@ -228,7 +222,7 @@ export const actionCreators = {
     if (response.ok) {
       dispatch({ type: actionType.itemDeletedType });
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   addEditItem: (activeItems, itemParams, editMode) => async (dispatch) => {
@@ -248,7 +242,7 @@ export const actionCreators = {
       dispatch({ type: actionType.addEditItemPassedType });
       dispatch({ type: actionType.toggleAddEditModalType, shown: false });
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   changeActiveItems: (activeItems) => (dispatch) => {
@@ -275,7 +269,7 @@ export const actionCreators = {
       response = await response.json();
       dispatch({ type: actionType.receivedAuthor, author: response});
     } else {
-      dispatch({ type: actionType.requestFailedType, error: response.status });
+      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   sendContactUsEmail: (subject, from, content) => async (dispatch) => {
@@ -286,10 +280,7 @@ export const actionCreators = {
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);
     if (!response.ok) {
-      return dispatch({
-        type: actionType.requestFailedType,
-        error: response.status,
-      });
+      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   },
   donate: (fullName, email, amount, cardNumber, expMonth, expYear, cvc) => async (dispatch) => {
@@ -300,10 +291,7 @@ export const actionCreators = {
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);
     if (!response.ok) {
-      return dispatch({
-        type: actionType.requestFailedType,
-        error: response.status,
-      });
+      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
     }
   }
 };

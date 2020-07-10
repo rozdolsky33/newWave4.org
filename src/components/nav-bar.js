@@ -94,22 +94,25 @@ class NavBarBlock extends React.Component {
     return menuItems;
   }
 
+  getAuthorizationBtn() {
+    return this.state.activeSession ?
+        <Button variant="outline-secondary" onClick={(e) => this.props.logout()}>
+          <i className="fa fa-sign-out mr-1"></i>{i18n.t("menu.logout")}</Button> :
+        <Button variant="outline-secondary" onClick={(e) => this.navigateTo("/login")}>
+          <i className="fa fa-sign-in mr-1"></i>{i18n.t("menu.login")}</Button>;
+  }
+
   render() {
+    this.props.history.listen((location, action) => {
+      this.props.clearErrors();
+    });
     return (
       <Navbar expand="sm" sticky="top" bg="light" variant="light" className="d-flex">
-        <Navbar.Brand className="order-1">
+        <Navbar.Brand>
           <a onClick={(e) => this.navigateTo("/")} >
             <img src={logo} style={{width:80, marginTop: -7}} alt=""/>
           </a>
-          {this.state.activeSession ?
-            <Button variant="outline-secondary" className="ml-3 mr-1" onClick={(e) => this.props.logout()}>
-              <i className="fa fa-sign-out mr-1"></i>
-              <span className="d-none d-md-inline">{i18n.t("menu.logout")}</span>
-            </Button> :
-            <Button variant="outline-secondary" className="ml-3 mr-1" onClick={(e) => this.navigateTo("/login")}>
-              <i className="fa fa-sign-in mr-1"></i>
-              <span className="d-none d-md-inline">{i18n.t("menu.login")}</span>
-            </Button>}
+          <div className="d-none d-sm-inline ml-3 mr-1">{this.getAuthorizationBtn()}</div>
           <a onClick={() => i18n.changeLanguage( i18n.language === "en" ? "ua" : "en")} className="mr-1">
             <img src={i18n.language === "en" ? uaIcon : enIcon} style={{height:"28px"}}
                  alt={i18n.language === "en" ? "ua" : "en"}/>
@@ -118,8 +121,8 @@ class NavBarBlock extends React.Component {
             <img src={facebookIcon} style={{height:"26px"}} alt="facebook"/>
           </a>
         </Navbar.Brand>
-        <Navbar.Toggle className="order-3 order-sm-2" aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end order-3 order-sm-2">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav>
             {this.getNavItems().map((menuItem, key) => {
               if (!!menuItem.subItems) {
@@ -135,9 +138,14 @@ class NavBarBlock extends React.Component {
                 {i18n.t(menuItem.description)}
               </Nav.Link>);
             })}
+            <Nav.Link key="donations" onClick={(e) => this.navigateTo("/donations")}
+                      className={"font-weight-bold h5 d-inline d-sm-none" + (this.isNavItemActive("donations") ? " active" : "")}>
+              {i18n.t("menu.donate")}
+            </Nav.Link>
+            <div className="d-inline d-sm-none">{this.getAuthorizationBtn()}</div>
           </Nav>
         </Navbar.Collapse>
-        <div className="order-2 order-sm-3">
+        <div className="d-none d-sm-inline">
           <Button variant="outline-secondary" className="ml-md-4" onClick={(e) => this.navigateTo("/donations")}>
             {i18n.t("menu.donate")}</Button>
         </div>

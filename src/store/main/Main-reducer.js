@@ -38,10 +38,28 @@ export default function reducer (state, action) {
       };
     }
     case actionType.requestFailedType: {
+      if (action.errorCode && action.errorCode === 403) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('rights');
+        localStorage.removeItem('userId');
+        return {
+          ...state,
+          user: undefined,
+          errorMessage: 'error.no-session',
+          isLoading: false
+        };
+      }
       return {
         ...state,
         errorMessage: action.errorMessage || 'error.common',
         isLoading: false
+      };
+    }
+    case actionType.clearErrorsType: {
+      return {
+        ...state,
+        errorMessage: ''
       };
     }
     case actionType.toggleAddEditModalType: {
