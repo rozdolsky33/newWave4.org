@@ -55,13 +55,13 @@ function MainPage(props) {
       <Row className="position-relative pb-5 w-100 m-0">
         <div className="main-recent-block bg-secondary position-absolute h-100 w-100"></div>
         <Col xs md={{ span: 4, offset: 2 }}>
-          <h4 className="p-4 text-white text-center">{i18n.t("main.new-projects")}</h4>
+          <h4 className="pt-4 text-uppercase text-white text-center">{i18n.t("main.new-projects")}</h4>
           <div className="bg-white p-1">{getRecentItems("project") ||
             <div className="p-3 text-center w-100">{i18n.t("main.no-projects")}</div>}
           </div>
         </Col>
         <Col xs md="4">
-          <h4 className="p-4 text-white text-center text-nowrap">{i18n.t("main.new-articles")}</h4>
+          <h4 className="pt-4 text-uppercase text-white text-center text-nowrap">{i18n.t("main.new-articles")}</h4>
           <div className="bg-white p-1">{getRecentItems("blog") ||
             <div className="p-3 text-center w-100">{i18n.t("main.no-articles")}</div>}
           </div>
