@@ -33,6 +33,7 @@ function DonationsPage(props) {
       }}>
         <InputGroup className="mb-3">
           <Form.Check
+            checked={true}
             name="donate-by"
             inline
             label={i18n.t("donation.donate-by") + "Credit Card"}
@@ -42,6 +43,7 @@ function DonationsPage(props) {
           <Form.Check
             name="donate-by"
             inline
+            disabled
             label={i18n.t("donation.donate-by") + "PayPal"}
             type="radio"
             id="donate-pay-pal"

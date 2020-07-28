@@ -15,7 +15,7 @@ class AddEditModal extends React.Component {
     this.state = props.editMode ? {
       ...props.selectedItem,
       date: new Date(props.selectedItem.date),
-      externalResource: !!props.selectedItem.url
+      externalResource: !!props.selectedItem.externalURL
     } : {
       date: new Date(),
       externalResource: false,
@@ -57,12 +57,14 @@ class AddEditModal extends React.Component {
   }
   render() {
     return (
-      <Modal size="lg" show={this.props.addEditModalShown} onHide={() => this.props.toggleAddEditModal(false)}>
-        <Modal.Header closeButton>
+      <div className="modal d-block bg-white text-left overflow-auto">
+        <Modal.Header>
           <Modal.Title>
             {this.props.editMode ? i18n.t("admin.edit") : i18n.t("admin.add")}
             {this.props.activeItems === "blog" ? i18n.t("admin.article") : i18n.t("admin.project")}
           </Modal.Title>
+          <Button variant="outline-danger" onClick={() => this.props.toggleAddEditModal(false)}>X</Button>
+
         </Modal.Header>
         <Form onSubmit={(e) => this.submit(e)}>
           <Modal.Body>
@@ -112,6 +114,7 @@ class AddEditModal extends React.Component {
             </Form.Group>
             <Form.Group controlId="externalКesource">
               <Form.Check type="checkbox" label={i18n.t("admin.external-resource")}
+                          checked={this.state.externalResource}
                           onChange={(e) => {
                             this.setState({externalResource: e.target.checked});
                           }} />
@@ -147,7 +150,7 @@ class AddEditModal extends React.Component {
             <Button variant="success" type="submit">{i18n.t("common.btn-submit")}</Button>
           </Modal.Footer>
         </Form>
-      </Modal>
+      </div>
     );
   }
 }
