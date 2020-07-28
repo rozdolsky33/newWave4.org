@@ -67,84 +67,86 @@ class AddEditModal extends React.Component {
 
         </Modal.Header>
         <Form onSubmit={(e) => this.submit(e)}>
-          <Modal.Body>
-            <Form.Group as={Row} controlId="title">
-              <Form.Label column sm="2">{i18n.t("admin.title")}</Form.Label>
-              <Col sm="10">
-                <Form.Control type="text" placeholder={i18n.t("admin.title")}
-                              value={this.state.title}
-                              name="title" onChange={this.changeValue} />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="pic">
-              <Form.Label column sm="2">{i18n.t("admin.picture")}</Form.Label>
-              <Col sm="10">
-                <div className="custom-file">
-                  <input type="file" multiple={false}
-                         className="custom-file-input"
-                         id="pictureInput"
-                         onChange={this.uploadFile}/>
-                  <label className="custom-file-label" htmlFor="pictureInput">
-                    {this.state.imageUri || "Choose file"}
-                  </label>
-                </div>
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="category">
-              <Form.Label column sm="2">{i18n.t("admin.category")}</Form.Label>
-              <Col sm="10">
-                <Form.Control type="text" placeholder={i18n.t("admin.category")} value={this.state.category}
-                              name="category" onChange={this.changeValue} />
-              </Col>
-            </Form.Group>
-            <Form.Group  as={Row} controlId="date">
-              <Form.Label column sm="2">{i18n.t("admin.date")}</Form.Label>
-              <Col sm="10">
-                <DatePicker className="form-control"
-                            selected={this.state.date}
-                            onChange={this.changeDate} />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId="preview">
-              <Form.Label column sm="2">{i18n.t("admin.preview")}</Form.Label>
-              <Col sm="10">
-                <Form.Control as="textarea" rows="2" value={this.state.preview}
-                              name="preview" onChange={this.changeValue} />
-              </Col>
-            </Form.Group>
-            <Form.Group controlId="externalКesource">
-              <Form.Check type="checkbox" label={i18n.t("admin.external-resource")}
-                          checked={this.state.externalResource}
-                          onChange={(e) => {
-                            this.setState({externalResource: e.target.checked});
-                          }} />
-            </Form.Group>
-            { this.state.externalResource ?
-              <Form.Group as={Row} controlId="url">
-                <Form.Label column sm="2">{i18n.t("admin.external-url")}</Form.Label>
+          <Col xs md={{ span: 10, offset: 1 }} xl={{ span: 8, offset: 2 }}>
+            <Modal.Body>
+              <Form.Group as={Row} controlId="title">
+                <Form.Label column sm="2">{i18n.t("admin.title")}</Form.Label>
                 <Col sm="10">
-                  <Form.Control type="text" placeholder={i18n.t("admin.external-url")}
-                                value={this.state.externalURL}
-                                name="externalURL" onChange={this.changeValue} />
+                  <Form.Control type="text" placeholder={i18n.t("admin.title")}
+                                value={this.state.title}
+                                name="title" onChange={this.changeValue} />
                 </Col>
-              </Form.Group> :
-              <>
-                <label>{i18n.t("admin.content")}</label>
-                <CKEditor data={this.state.content} type="classic"
-                          config={ {
-                            toolbar: [
-                              { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-' ] },
-                              { name: 'links', items: [ 'Link', 'Unlink', '-' ] },
-                              { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-                              { name: 'styles', items: [ 'Styles', 'Format', '-' ] },
-                              { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule' ] }
-                            ]
-                          } }
-                          onChange={this.changeValue}/>
-              </>
+              </Form.Group>
+              <Form.Group as={Row} controlId="pic">
+                <Form.Label column sm="2">{i18n.t("admin.picture")}</Form.Label>
+                <Col sm="10">
+                  <div className="custom-file">
+                    <input type="file" multiple={false}
+                           className="custom-file-input"
+                           id="pictureInput"
+                           onChange={this.uploadFile}/>
+                    <label className="custom-file-label" htmlFor="pictureInput">
+                      {this.state.imageUri || "Choose file"}
+                    </label>
+                  </div>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} controlId="category">
+                <Form.Label column sm="2">{i18n.t("admin.category")}</Form.Label>
+                <Col sm="10">
+                  <Form.Control type="text" placeholder={i18n.t("admin.category")} value={this.state.category}
+                                name="category" onChange={this.changeValue} />
+                </Col>
+              </Form.Group>
+              <Form.Group  as={Row} controlId="date">
+                <Form.Label column sm="2">{i18n.t("admin.date")}</Form.Label>
+                <Col sm="10">
+                  <DatePicker className="form-control"
+                              selected={this.state.date}
+                              onChange={this.changeDate} />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} controlId="preview">
+                <Form.Label column sm="2">{i18n.t("admin.preview")}</Form.Label>
+                <Col sm="10">
+                  <Form.Control as="textarea" rows="2" value={this.state.preview}
+                                name="preview" onChange={this.changeValue} />
+                </Col>
+              </Form.Group>
+              <Form.Group controlId="externalКesource">
+                <Form.Check type="checkbox" label={i18n.t("admin.external-resource")}
+                            checked={this.state.externalResource}
+                            onChange={(e) => {
+                              this.setState({externalResource: e.target.checked});
+                            }} />
+              </Form.Group>
+              { this.state.externalResource ?
+                  <Form.Group as={Row} controlId="url">
+                    <Form.Label column sm="2">{i18n.t("admin.external-url")}</Form.Label>
+                    <Col sm="10">
+                      <Form.Control type="text" placeholder={i18n.t("admin.external-url")}
+                                    value={this.state.externalURL}
+                                    name="externalURL" onChange={this.changeValue} />
+                    </Col>
+                  </Form.Group> :
+                  <>
+                    <label>{i18n.t("admin.content")}</label>
+                    <CKEditor data={this.state.content} type="classic"
+                              config={ {
+                                toolbar: [
+                                  { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-' ] },
+                                  { name: 'links', items: [ 'Link', 'Unlink', '-' ] },
+                                  { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+                                  { name: 'styles', items: [ 'Styles', 'Format', '-' ] },
+                                  { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule' ] }
+                                ]
+                              } }
+                              onChange={this.changeValue}/>
+                  </>
 
-            }
-          </Modal.Body>
+              }
+            </Modal.Body>
+          </Col>
           <Modal.Footer>
             <Button variant="danger" onClick={() => this.props.toggleAddEditModal(false)}>{i18n.t("common.btn-close")}</Button>
             <Button variant="success" type="submit">{i18n.t("common.btn-submit")}</Button>

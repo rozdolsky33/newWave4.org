@@ -58,25 +58,30 @@ class PostListPage extends React.Component {
   getDates() {
     let currentYear = 0;
     let currentMonth = "";
-    return this.props.filterDates.map((date, key) => {
+    return this.props.filterDates.map((date) => {
+      const dateObj = {
+        year: date.substring(0, 4),
+        month: i18n.t("common.months." + date.substring(5, 7)),
+        monthVal: parseInt(date.substring(5, 7))
+      }
       let result = (
-        <div key={key}>
-          {currentYear !== date.year && <p className="m-0">&#9675; {date.year}</p>}
-          {(currentYear !== date.year || currentMonth !== date.month) && <p className="m-0 pl-2">
+        <div key={date}>
+          {currentYear !== dateObj.year && <p className="m-0">&#9675; {dateObj.year}</p>}
+          {(currentYear !== dateObj.year || currentMonth !== dateObj.month) && <p className="m-0 pl-2">
             <Button className="text-secondary" variant="link" size="sm"
                     onClick={() => this.toggleFilter({
                       entityName: "date",
-                      description: `${date.month} ${date.year}`,
+                      description: `${dateObj.month} ${dateObj.year}`,
                       value: {
-                        month: date.monthVal,
-                        year: date.year
+                        month: dateObj.monthVal,
+                        year: dateObj.year
                       }})}>
-              {date.month}
+              {dateObj.month}
             </Button>
           </p>}
       </div>);
-      currentMonth = date.month;
-      currentYear = date.year;
+      currentMonth = dateObj.month;
+      currentYear = dateObj.year;
       return result;
     });
   }
@@ -85,7 +90,7 @@ class PostListPage extends React.Component {
     if (!this.props.items) return;
     return this.props.items.map((item, key) => {
       return (
-        <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
+        <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left" style={{maxHeight: "180px"}}>
           <Card.Img style={{width: "25%", objectFit: "cover"}}
                     src={item.imageUri ? this.props.host + "/v2/api/image/" + item.imageUri :
                       "../../assets/imgs/NW_post_placeholder.jpg"} />

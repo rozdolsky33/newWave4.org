@@ -139,14 +139,7 @@ export default function reducer (state, action) {
     case actionType.receivedFilterDates: {
       return {
         ...state,
-        filterDates: action.response.reverse().map(date => {
-          const tempDate = new Date(date);
-          return {
-            year: tempDate.getFullYear(),
-            month: tempDate.toLocaleString('default', { month: 'long' }),
-            monthVal: tempDate.getMonth() + 1
-          }
-        })
+        filterDates: action.response
       };
     }
     case actionType.changeActiveItemsType: {

@@ -63,7 +63,11 @@ class AdminPage extends React.Component {
                 this.props.toggleAddEditModal(true, item);
               }
             }}>
-              <td>{item.id || key}</td>
+              <td>
+                {item.id || key}
+                {item.roleName && item.roleName.indexOf("ADMIN") > -1 &&
+                  <i className="fa fa-lock ml-1"></i>}
+              </td>
               {this.props.activeItems === "users" ?
                 <>
                   <td className="text-left">{item.firstName}</td>
