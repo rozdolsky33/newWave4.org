@@ -2,6 +2,15 @@
 import { history } from "../../components/App";
 import { host, getParams } from "../utils";
 
+const checkForFailure = (response, dispatch) => {
+  if (!response.ok) {
+    let errorMessage = response.error ? response.error: '';
+    errorMessage = !response.message ? errorMessage :
+        (!!errorMessage ? errorMessage + '. ' + response.message : response.message);
+    errorMessage = !!errorMessage ? errorMessage : 'error.common';
+    dispatch({ type: actionType.requestFailedType, errorCode: response.status, errorMessage });
+  }
+}
 export const actionCreators = {
   clearErrors: () => async (dispatch) => {
     dispatch({ type: actionType.clearErrorsType });
@@ -59,7 +68,7 @@ export const actionCreators = {
         successMessage: 'message.registration-success',
       });
     } else {
-      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
+      checkForFailure(response, dispatch);
     }
   },
   checkToken: (token) => async (dispatch) => {
@@ -80,7 +89,7 @@ export const actionCreators = {
         });
       }
     } else {
-      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
+      checkForFailure(response, dispatch);
     }
   },
   sendPassResetRequest: (email) => async (dispatch) => {
@@ -95,9 +104,7 @@ export const actionCreators = {
         type: actionType.requestPassedType,
         successMessage: 'message.reset-password-request',
       });
-    } else {
-      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   sendAdminRoleRequest: (email) => async (dispatch) => {
     let url = `${host}/v1/api/users/role-admin-request`;
@@ -111,9 +118,7 @@ export const actionCreators = {
         type: actionType.requestPassedType,
         successMessage: 'message.admin-role-email-sent',
       });
-    } else {
-      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   resetPassword: (password, token, passwordReset) => async (dispatch) => {
     let url = `${host}/v1/api/users/${passwordReset ? 'password-reset' : 'role-admin-reset'}`;
@@ -127,9 +132,7 @@ export const actionCreators = {
         type: actionType.requestPassedType,
         successMessage: 'message.reset-password-success',
       });
-    } else {
-      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   getItemsList: (activeItems, pageNumber, pageSize, addResToList, filterEntity, filterValue) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
@@ -170,9 +173,7 @@ export const actionCreators = {
         number: pageNumber
       } : response;
       dispatch({ type: actionType.receivedItemsType, addResToList, response });
-    } else {
-      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   getArticles: (pageNumber, pageSize) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
@@ -181,9 +182,7 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       dispatch({ type: actionType.receivedArticlesType, response });
-    } else {
-      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   getProjects: (pageNumber, pageSize) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
@@ -192,7 +191,7 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       dispatch({ type: actionType.receivedProjectsType, response });
-    }
+    } else checkForFailure(response, dispatch);
   },
   getCategories: (entityName) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
@@ -201,16 +200,16 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       dispatch({ type: actionType.receivedCategoriesType, entityName, response });
-    }
+    } else checkForFailure(response, dispatch);
   },
   getItemsDates: (itemType) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
     let url = `${host}/v2/api/${itemType}/date/${itemType === "blog" ? 'postIfExists' : 'projectIfExists'}`;
     let response = await fetch(url, getParams('GET'));
+    response = await response.json();
     if (!response.ok) {
-      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
+      checkForFailure(response, dispatch);
     } else {
-      response = await response.json();
       dispatch({ type: actionType.receivedFilterDates, response });
     }
   },
@@ -221,9 +220,7 @@ export const actionCreators = {
 
     if (response.ok) {
       dispatch({ type: actionType.itemDeletedType });
-    } else {
-      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   addEditItem: (activeItems, itemParams, editMode) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
@@ -241,9 +238,7 @@ export const actionCreators = {
     if (response.ok) {
       dispatch({ type: actionType.addEditItemPassedType });
       dispatch({ type: actionType.toggleAddEditModalType, shown: false });
-    } else {
-      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   changeActiveItems: (activeItems) => (dispatch) => {
     dispatch({ type: actionType.changeActiveItemsType, activeItems });
@@ -268,9 +263,7 @@ export const actionCreators = {
     if (response.ok) {
       response = await response.json();
       dispatch({ type: actionType.receivedAuthor, author: response});
-    } else {
-      dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    } else checkForFailure(response, dispatch);
   },
   sendContactUsEmail: (subject, from, content) => async (dispatch) => {
     const url = `${host}/v2/api/send/contact-us`;
@@ -279,9 +272,7 @@ export const actionCreators = {
 
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);
-    if (!response.ok) {
-      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    checkForFailure(response, dispatch);
   },
   donate: (fullName, email, amount, cardNumber, expMonth, expYear, cvc) => async (dispatch) => {
     const url = `${host}/v2/api/card-donation`;
@@ -290,8 +281,11 @@ export const actionCreators = {
 
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);
-    if (!response.ok) {
-      return dispatch({ type: actionType.requestFailedType, errorCode: response.status });
-    }
+    if (response.ok) {
+      return dispatch({
+        type: actionType.requestPassedType,
+        successMessage: 'message.donation-success',
+      });
+    } else checkForFailure(response, dispatch);
   }
 };

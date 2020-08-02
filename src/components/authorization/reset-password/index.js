@@ -35,8 +35,7 @@ class ResetPasswordPage extends React.Component {
           <Button type="submit" className="mb-1 w-100">{i18n.t("reset-password.btn-submit")}</Button>
         </Form>
         {!!this.props.errorMessage && (
-          <Alert variant="danger" className="mt-3">
-            {i18n.t(this.props.errorMessage)}</Alert>
+          <Alert variant="danger" className="mt-3">{i18n.t(this.props.errorMessage)}</Alert>
         )}
       </Col>
     );

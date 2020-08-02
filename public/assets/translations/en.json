@@ -175,7 +175,8 @@
     "registration-success": "Successful registration. Please check your email for confirmation",
     "reset-password-request": "We have sent you an email to restore your password",
     "reset-password-success": "You successfully changed your password",
-    "admin-role-email-sent": "We have sent an email for the user"
+    "admin-role-email-sent": "We have sent an email for the user",
+    "donation-success": "We are very grateful for your contribution into Ukrainian New Wave life"
   },
   "common": {
     "btn-cancel": "Cancel",
