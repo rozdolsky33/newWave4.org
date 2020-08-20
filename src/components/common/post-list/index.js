@@ -88,7 +88,7 @@ class PostListPage extends React.Component {
 
   getItemsList() {
     if (!this.props.items) return;
-    return this.props.items.map((item, key) => {
+    return this.props.items.filter(i => i.active).map((item, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left" style={{maxHeight: "180px"}}>
           <Card.Img style={{width: "25%", objectFit: "cover"}}
