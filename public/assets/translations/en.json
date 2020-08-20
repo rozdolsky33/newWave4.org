@@ -116,6 +116,7 @@
     "valid-till-month": "Expiration Month",
     "valid-till-year": "Expiration Year",
     "cvc": "CVC-code",
+    "full-amount": "Full amount:",
     "btn-donate": "Donate"
   },
   "login": {

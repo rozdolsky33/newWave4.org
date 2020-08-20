@@ -1,6 +1,7 @@
 ﻿import * as actionType from './Main-types';
 import { history } from "../../components/App";
 import { host, getParams } from "../utils";
+import Cookies from 'universal-cookie';
 
 const checkForFailure = (response, dispatch) => {
   if (!response.ok) {
@@ -11,6 +12,8 @@ const checkForFailure = (response, dispatch) => {
     dispatch({ type: actionType.requestFailedType, errorCode: response.status, errorMessage });
   }
 }
+const cookies = new Cookies();
+
 export const actionCreators = {
   clearErrors: () => async (dispatch) => {
     dispatch({ type: actionType.clearErrorsType });
@@ -30,7 +33,9 @@ export const actionCreators = {
       userRolesAndRights = userRolesAndRights.slice(1, userRolesAndRights.length - 1).split(", ");
       let role = userRolesAndRights[userRolesAndRights.length - 1];
       let rights = userRolesAndRights.slice(0, userRolesAndRights.length - 1);
-      localStorage.setItem('token', token);
+      let expires = new Date();
+      expires.setDate(expires.getDate() + 4);
+      cookies.set('token', token, { expires });
       localStorage.setItem('role', role);
       localStorage.setItem('rights', rights.toString());
       localStorage.setItem('userId', userId);
@@ -48,7 +53,7 @@ export const actionCreators = {
     }
   },
   logout: () => async (dispatch) => {
-    localStorage.removeItem('token');
+    cookies.remove('token');
     localStorage.removeItem('role');
     localStorage.removeItem('rights');
     localStorage.removeItem('userId');
@@ -274,7 +279,8 @@ export const actionCreators = {
   donate: (fullName, email, amount, cardNumber, expMonth, expYear, cvc) => async (dispatch) => {
     const url = `${host}/v2/api/card-donation`;
     const params = getParams('POST');
-    params.body = JSON.stringify({ fullName, email, amount: amount * 100, cardNumber, expMonth, expYear, cvc });
+    params.body = JSON.stringify({ fullName, email, amount: Math.round((parseInt(amount) * 1.029 + 0.3) * 100),
+      cardNumber, expMonth, expYear, cvc });
 
     dispatch({ type: actionType.requestType });
     let response = await fetch(url, params);

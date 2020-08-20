@@ -1,6 +1,8 @@
 ﻿import * as actionType from "./Main-types";
 import { host } from "../utils";
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 const initialState = {
   host,
   paginationConfig: {
@@ -39,6 +41,7 @@ export default function reducer (state, action) {
     }
     case actionType.requestFailedType: {
       if (action.errorCode && action.errorCode === 403) {
+        cookies.remove("token");
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('rights');

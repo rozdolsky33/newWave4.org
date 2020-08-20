@@ -8,6 +8,18 @@ import {actionCreators} from "../../../store/main/Main-actions";
 import {history} from "../../App";
 
 class DonationsPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fullName: '',
+      email: '',
+      amount: null,
+      cardNumber: '',
+      expMonth: null,
+      expYear: null,
+      cvc: null
+    }
+  }
   render () {
     return (
         <Col className="text-center" xs md={{ span: 8, offset: 2 }}>
@@ -16,8 +28,8 @@ class DonationsPage extends React.Component {
             {i18n.t("donation.sub-title-2")}</p>
           <Form onSubmit={async(e) => {
             e.preventDefault();
-            await this.props.donate(this.refs.fullName.value, this.refs.email.value, this.refs.amount.value,
-                this.refs.cardNumber.value.replace(/\s+/g, ""), this.refs.expMonth.value, this.refs.expYear.value, this.refs.cvc.value);
+            await this.props.donate(this.state.fullName, this.state.email, this.state.amount,
+                this.state.cardNumber.replace(/\s+/g, ""), this.state.expMonth, this.state.expYear, this.state.cvc);
             if (!this.props.errorMessage) {
               history.push("/result");
             }
@@ -52,7 +64,9 @@ class DonationsPage extends React.Component {
               <InputGroup.Prepend>
                 <InputGroup.Text id="contact-us-name">&nbsp;&#9829;</InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl required ref="fullName"
+              <FormControl required
+                           value={this.state.fullName}
+                           onChange={(e) => this.setState({fullName: e.target.value})}
                            placeholder={i18n.t("donation.name")}
                            aria-label="Name"
                            aria-describedby="contact-us-name"
@@ -62,7 +76,9 @@ class DonationsPage extends React.Component {
               <InputGroup.Prepend>
                 <InputGroup.Text id="contact-us-email">@</InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl required ref="email"
+              <FormControl required
+                           value={this.state.email}
+                           onChange={(e) => this.setState({email: e.target.value})}
                            placeholder={i18n.t("donation.email")}
                            aria-label="Email"
                            aria-describedby="contact-us-email"
@@ -72,14 +88,17 @@ class DonationsPage extends React.Component {
               <InputGroup.Prepend>
                 <InputGroup.Text id="contact-us-amount">&nbsp;$&nbsp;</InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl required ref="amount" type="number"
+              <FormControl required type="number"
+                           value={this.state.amount}
+                           onChange={(e) => this.setState({amount: e.target.value})}
                            placeholder={i18n.t("donation.amount")}
                            aria-label="Amount"
                            aria-describedby="contact-us-amount"
               />
             </InputGroup>
             <InputGroup className="mb-3">
-              <FormControl required ref="cardNumber"
+              <FormControl required
+                           value={this.state.cardNumber}
                            onChange={(e) => {
                              const normalizedVal = e.target.value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
                              let newVal = "";
@@ -88,27 +107,36 @@ class DonationsPage extends React.Component {
                                    ((normalizedVal.length <= (i + 1) * 4) ? "" : " ");
                              }
                              e.target.value = newVal;
+                             this.setState({cardNumber: newVal})
                            }}
                            placeholder={i18n.t("donation.card-number")}
                            aria-label="Card number"
                            aria-describedby="card-number"/>
             </InputGroup>
             <InputGroup className="mb-3">
-              <FormControl required ref="expMonth" type="number"
+              <FormControl required type="number"
+                           value={this.state.expMonth}
+                           onChange={(e) => this.setState({expMonth: e.target.value})}
                            placeholder={i18n.t("donation.valid-till-month")}
                            aria-label="Valid month"
                            aria-describedby="valid-month"/>
-              <FormControl required ref="expYear" type="number"
+              <FormControl required type="number"
+                           value={this.state.expYear}
+                           onChange={(e) => this.setState({expYear: e.target.value})}
                            placeholder={i18n.t("donation.valid-till-year")}
                            aria-label="Valid year"
                            aria-describedby="valid-year"/>
-              <FormControl required ref="cvc" type="number"
+              <FormControl required type="number"
+                           value={this.state.cvc}
+                           onChange={(e) => this.setState({cvc: e.target.value})}
                            placeholder={i18n.t("donation.cvc")}
                            aria-label="CVC code"
                            aria-describedby="cvc-code"/>
             </InputGroup>
             {!!this.props.errorMessage && (<Alert variant="danger" className="mt-3">{i18n.t(this.props.errorMessage)}</Alert>)}
-            <Form.Group className="p-3">
+            <Form.Group className="pt-3 d-flex justify-content-between">
+              <h2>{!!this.state.amount &&
+              (i18n.t("donation.full-amount") + ' ' + Math.round((parseInt(this.state.amount) * 1.029 + 0.3) * 100) / 100 + '$')}</h2>
               <Button variant="secondary" type="submit">{i18n.t("donation.btn-donate")}</Button>
             </Form.Group>
           </Form>

@@ -10,12 +10,15 @@ import facebookIcon from "../assets/facebook.png";
 import uaIcon from "../assets/ua.png";
 import enIcon from "../assets/en.png";
 import i18n from "../i18n";
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 class NavBarBlock extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeSession: !!(props.user && props.user.token) || !!localStorage.getItem("token")
+      token: cookies.get("token"),
+      activeSession: !!cookies.get("token")
     }
   }
   componentDidMount() {
@@ -24,7 +27,7 @@ class NavBarBlock extends React.Component {
     this.props.getCategories("project");
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({ activeSession: !!(nextProps.user && nextProps.user.token) || !!localStorage.getItem("token") });
+    this.setState({ activeSession: !!cookies.get("token") });
   }
   navigateTo(menuItemLink) {
     history.push(menuItemLink);

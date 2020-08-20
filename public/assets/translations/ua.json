@@ -116,6 +116,7 @@
     "valid-till-month": "Дійсна до (Місяць)",
     "valid-till-year": "Дійсна до (Рік)",
     "cvc": "CVC-код",
+    "full-amount": "Повна сума:",
     "btn-donate": "Пожертвувати"
   },
   "login": {
