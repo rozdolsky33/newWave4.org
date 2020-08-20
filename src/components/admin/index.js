@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {Table, Button, Col, Tab, Tabs, Alert} from "react-bootstrap";
+import {Table, Button, Col, Tab, Tabs, Alert, Form} from "react-bootstrap";
 import AddEditModal from "./addEditModal";
 import PaginationPanel from "../common/pagination-panel";
 import { actionCreators } from "../../store/main/Main-actions";
@@ -41,47 +41,60 @@ class AdminPage extends React.Component {
 
         {this.props.activeItems === "users" ?
           <>
+            <th>{i18n.t("admin.role")}</th>
             <th>{i18n.t("common.first-name")}</th>
             <th>{i18n.t("common.last-name")}</th>
             <th>{i18n.t("common.email")}</th>
           </> :
           <>
+            <th>{i18n.t("admin.active")}</th>
             <th>{i18n.t("admin.title")}</th>
             <th>{i18n.t("admin.author")}</th>
             <th>{i18n.t("admin.date")}</th>
           </>
         }
-        <th>X</th>
+        <th>{i18n.t("admin.actions")}</th>
       </tr>
       </thead>
       <tbody>
       {
         this.props.items.map((item, key) => {
           return (
-            <tr key={item.id} onClick={async() => {
-              if (this.props.activeItems !== "users"){
-                this.props.toggleAddEditModal(true, item);
-              }
-            }}>
-              <td>
-                {item.id || key}
-                {item.roleName && item.roleName.indexOf("ADMIN") > -1 &&
-                  <i className="fa fa-lock ml-1"></i>}
-              </td>
+            <tr key={item.id}>
+              <td>{item.id || key}</td>
               {this.props.activeItems === "users" ?
                 <>
+                  <td>
+                    {item.roleName && item.roleName.indexOf("ADMIN") > -1 &&
+                    <i className="fa fa-lock ml-1"></i>}
+                  </td>
                   <td className="text-left">{item.firstName}</td>
                   <td className="text-left">{item.lastName}</td>
                   <td className="text-left">{item.email}</td>
                 </> :
                 <>
+                  <td>
+                    <Form.Check type="checkbox" checked={item.active}
+                                onChange={async (e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  await this.props.addEditItem(this.props.activeItems, {...item, active: e.target.checked}, true);
+                                  this.props.getItemsList(this.props.activeItems, 0, this.props.paginationConfig.size);
+                                }} />
+                  </td>
                   <td className="text-left">{item.title}</td>
                   <td>{item.author}</td>
                   <td>{new Date(item.date).toDateString()}</td>
                 </>
               }
-              <td>
-                <Button variant="danger" size="sm" onClick={(e) => this.deleteItem(e, item)}>X</Button>
+              <td className="d-flex justify-content-center align-items-stretch">
+                {this.props.activeItems === "users" ||
+                <Button variant="success" size="sm" className="mr-2"
+                        onClick={(e) => this.props.toggleAddEditModal(true, item)}>
+                  <i className="fa fa-edit"></i></Button>}
+                <Button variant="danger" size="sm" onClick={(e) => this.deleteItem(e, item)}>
+                  <i className="fa fa-trash"></i></Button>
+
               </td>
             </tr>);
         })

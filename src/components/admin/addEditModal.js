@@ -26,6 +26,7 @@ class AddEditModal extends React.Component {
       preview: "",
       content: "",
       imageUri: "",
+      active: true
     };
     this.changeValue = this.changeValue.bind(this);
     this.uploadFile = this.uploadFile.bind(this);

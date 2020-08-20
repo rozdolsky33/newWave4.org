@@ -17,6 +17,7 @@ import RegistrationPage from "./authorization/registration";
 import ForgotPasswordPage from "./authorization/forgot-password";
 import ResetPasswordPage from "./authorization/reset-password";
 import ResultPage from "./pages/result";
+import './app.css';
 
 export const history = createBrowserHistory();
 export default class App extends React.Component {

@@ -227,11 +227,8 @@ export const actionCreators = {
     const url =
       `${host}/v1/api/${activeItems}` + (editMode ? `/${itemParams.id}` : '');
     const params = getParams(editMode ? 'PUT' : 'POST', true);
-    params.body = {
-      ...itemParams,
-      active: true,
-    };
-    params.body.date = params.body.date.toGMTString();
+    params.body = { ...itemParams };
+    params.body.date = typeof params.body.date === 'string' ? params.body.date : params.body.date.toGMTString();
     params.body = JSON.stringify(params.body);
     let response = await fetch(url, params);
 
