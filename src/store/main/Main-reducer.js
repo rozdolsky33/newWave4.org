@@ -22,6 +22,7 @@ const initialState = {
   selectedItem: undefined,
   editMode: false,
   isLoading: false,
+  activeSession: false,
   successMessage: "",
   errorMessage: "",
   activeItems: "blog",
@@ -36,7 +37,8 @@ export default function reducer (state, action) {
       return {
         ...state,
         errorMessage: "",
-        isLoading: true
+        isLoading: true,
+        activeSession: cookies.get("token")
       };
     }
     case actionType.requestFailedType: {
@@ -83,13 +85,15 @@ export default function reducer (state, action) {
       return {
         ...state,
         user: action.user,
-        isLoading: false
+        isLoading: false,
+        activeSession: true
       };
     }
     case actionType.logoutType: {
       return {
         ...state,
-        user: undefined
+        user: undefined,
+        activeSession: false
       };
     }
     case actionType.requestPassedType: {
@@ -102,7 +106,7 @@ export default function reducer (state, action) {
     case actionType.receivedProjectsType: {
       return {
         ...state,
-        project: action.response.content.filter(project => project.active)
+        project: action.response.content.filter(project => project.active).forEach(i => {i.date = i.date.slice(0, -9)})
       };
     }
     case actionType.receivedCategoriesType: {
@@ -112,6 +116,8 @@ export default function reducer (state, action) {
       };
     }
     case actionType.receivedItemsType: {
+      const newItems = action.response.content.filter(project => project.active);
+      newItems.forEach(i => {i.date = i.date.slice(0, -9)});
       return {
         ...state,
         paginationConfig: {
@@ -121,11 +127,13 @@ export default function reducer (state, action) {
           size: action.response.size,
           number: action.response.number
         },
-        items: action.addResToList ? [...state.items, ...action.response.content] : action.response.content,
+        items: action.addResToList ? [...state.items, ...newItems] : newItems,
         isLoading: false
       };
     }
     case actionType.receivedArticlesType: {
+      const newItems = action.response.content.filter(project => project.active);
+      newItems.forEach(i => {i.date = i.date.slice(0, -9)});
       return {
         ...state,
         paginationConfig: {
@@ -135,14 +143,14 @@ export default function reducer (state, action) {
           size: action.response.size,
           number: action.response.number
         },
-        blog: state.blog.concat(action.response.content),
+        blog: state.blog.concat(newItems),
         isLoading: false
       };
     }
     case actionType.receivedFilterDates: {
       return {
         ...state,
-        filterDates: action.response
+        filterDates: action.response.map(d => d.slice(0, -9))
       };
     }
     case actionType.changeActiveItemsType: {

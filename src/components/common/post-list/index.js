@@ -1,9 +1,9 @@
 import React from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { Button, Card, Col, Row } from "react-bootstrap";
-import { actionCreators } from "../../../store/main/Main-actions";
-import { withTranslation } from "react-i18next";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {Button, Card, Col, Row} from "react-bootstrap";
+import {actionCreators} from "../../../store/main/Main-actions";
+import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";
 
 class PostListPage extends React.Component {
@@ -14,7 +14,8 @@ class PostListPage extends React.Component {
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
-  componentWillMount() {
+
+  componentDidMount() {
     window.addEventListener("scroll", this.handleScroll, true);
     const filter = this.props.category ? {
       entityName: "category",
@@ -24,14 +25,16 @@ class PostListPage extends React.Component {
     this.props.getItemsDates(this.props.type);
     this.props.getCategories(this.props.type);
   }
+
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.category !== nextProps.category) {
-      const filter = nextProps.category ? {
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.category !== this.props.category) {
+      const filter = this.props.category ? {
         entityName: "category",
-        value: nextProps.category
+        value: this.props.category
       } : undefined;
       this.toggleFilter(filter);
     }
@@ -46,6 +49,7 @@ class PostListPage extends React.Component {
       this.props.getItemsList(this.props.type, newPage, this.props.paginationConfig.size, true);
     }
   }
+
   toggleFilter(filter) {
     this.setState({filter: filter});
     if (filter) {
@@ -65,21 +69,21 @@ class PostListPage extends React.Component {
         monthVal: parseInt(date.substring(5, 7))
       }
       let result = (
-        <div key={date}>
-          {currentYear !== dateObj.year && <p className="m-0">&#9675; {dateObj.year}</p>}
-          {(currentYear !== dateObj.year || currentMonth !== dateObj.month) && <p className="m-0 pl-2">
-            <Button className="text-secondary" variant="link" size="sm"
-                    onClick={() => this.toggleFilter({
-                      entityName: "date",
-                      description: `${dateObj.month} ${dateObj.year}`,
-                      value: {
-                        month: dateObj.monthVal,
-                        year: dateObj.year
-                      }})}>
-              {dateObj.month}
-            </Button>
-          </p>}
-      </div>);
+        <>
+          {currentYear !== dateObj.year && <p key={date} className="m-0 pt-2">&#9675; {dateObj.year}</p>}
+          {(currentYear !== dateObj.year || currentMonth !== dateObj.month) &&
+          <Button key={date} className="text-secondary" variant="link" size="sm"
+                  onClick={() => this.toggleFilter({
+                    entityName: "date",
+                    description: `${dateObj.month} ${dateObj.year}`,
+                    value: {
+                      month: dateObj.monthVal,
+                      year: dateObj.year
+                    }
+                  })}>
+            {dateObj.month}
+          </Button>}
+        </>);
       currentMonth = dateObj.month;
       currentYear = dateObj.year;
       return result;
@@ -93,13 +97,16 @@ class PostListPage extends React.Component {
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left" style={{maxHeight: "180px"}}>
           <Card.Img style={{width: "25%", objectFit: "cover"}}
                     src={item.imageUri ? this.props.host + "/v2/api/image/" + item.imageUri :
-                      "../../assets/imgs/NW_post_placeholder.jpg"} />
+                      "../../assets/imgs/NW_post_placeholder.jpg"}/>
           <Card.Body className="justify-content-between flex-column d-flex w-75">
             <Card.Title>{item.title}</Card.Title>
             <div className="d-flex justify-content-between pb-3">
               <span className="text-secondary small">{new Date(item.date).toDateString()}</span>
               <Button className="text-secondary" variant="link" size="sm"
-                      onClick={() => this.props.type === "blog" && this.toggleFilter({entityName: "author", value: item.author})}>
+                      onClick={() => this.props.type === "blog" && this.toggleFilter({
+                        entityName: "author",
+                        value: item.author
+                      })}>
                 {item.author}
               </Button>
             </div>
@@ -120,7 +127,7 @@ class PostListPage extends React.Component {
     });
   };
 
-  render () {
+  render() {
     return (
       <Col className="text-center">
         <h2 className="p-3 text-secondary">{i18n.t("menu." + this.props.type)}</h2>
@@ -131,7 +138,8 @@ class PostListPage extends React.Component {
               return <Button key={key} className="text-secondary text-left" variant="link" size="sm"
                              onClick={() => this.toggleFilter({
                                entityName: "category",
-                               value: cat})}>{cat}</Button>;
+                               value: cat
+                             })}>{cat}</Button>;
             })}
             {this.getDates()}
           </Col>
@@ -143,13 +151,16 @@ class PostListPage extends React.Component {
                       onClick={() => this.toggleFilter(undefined)}>x</Button>
             </Row>}
             {this.getItemsList()}
-            <div ref={el => {this.endOfList = el;}}></div>
+            <div ref={el => {
+              this.endOfList = el;
+            }}></div>
           </Col>
         </Row>
       </Col>
     );
   }
 }
+
 export default connect(
   state => state.mainReducer,
   dispatch => bindActionCreators(actionCreators, dispatch)

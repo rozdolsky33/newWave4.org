@@ -28,9 +28,10 @@ export default function reducer (state, action) {
       };
     }
     case actionType.receivedItemType: {
+      const newItem = action.response;
       return {
         ...state,
-        selectedItem: action.response,
+        selectedItem: {...newItem, date: newItem.date.slice(0, -9)},
         isLoading: false
       };
     }
