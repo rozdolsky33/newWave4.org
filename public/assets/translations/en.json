@@ -183,6 +183,7 @@
     "donation-success": "We are very grateful for your contribution into Ukrainian New Wave life"
   },
   "common": {
+    "no-items": "No items yet",
     "btn-cancel": "Cancel",
     "btn-close": "Close",
     "btn-submit": "Submit",

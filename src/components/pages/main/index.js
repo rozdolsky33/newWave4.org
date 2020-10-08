@@ -16,6 +16,7 @@ function MainPage(props) {
   const getCard = (item, itemType) => {
     return (
       <Card className="mb-2" key={`${itemType}_${item.id}`}
+            style={{cursor: "pointer"}}
             onClick={() => {
               if (item.externalURL) {
                 window.open(item.externalURL, '_blank');

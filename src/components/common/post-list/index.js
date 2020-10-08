@@ -5,6 +5,7 @@ import {Button, Card, Col, Row} from "react-bootstrap";
 import {actionCreators} from "../../../store/main/Main-actions";
 import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";
+import {history} from "../../App";
 
 class PostListPage extends React.Component {
   constructor(props) {
@@ -94,7 +95,15 @@ class PostListPage extends React.Component {
     if (!this.props.items) return;
     return this.props.items.filter(i => i.active).map((item, key) => {
       return (
-        <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left" style={{maxHeight: "180px"}}>
+        <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left"
+              style={{maxHeight: "180px", cursor: "pointer"}}
+              onClick={() => {
+                if (item.externalURL) {
+                  window.open(item.externalURL, "_blank");
+                } else {
+                  history.push(`/item/${this.props.type}/${item.id}`);
+                }}
+              }>
           <Card.Img style={{width: "25%", objectFit: "cover"}}
                     src={item.imageUri ? this.props.host + "/v2/api/image/" + item.imageUri :
                       "../../assets/imgs/NW_post_placeholder.jpg"}/>
@@ -110,7 +119,7 @@ class PostListPage extends React.Component {
                 {item.author}
               </Button>
             </div>
-            <Card.Text>{item.preview}</Card.Text>
+            <Card.Text className="overflow-hidden">{item.preview}</Card.Text>
             <div className="d-flex justify-content-end">
               {item.externalURL ?
                 <Card.Link href={item.externalURL} target="_blank">
@@ -131,7 +140,7 @@ class PostListPage extends React.Component {
     return (
       <Col className="text-center">
         <h2 className="p-3 text-secondary">{i18n.t("menu." + this.props.type)}</h2>
-        <Row>
+        {!!this.props.items && this.props.items.length > 0 && <Row>
           <Col className="text-left pl-5" xs="12" md="2">
             <p className="mb-0 mt-3">{i18n.t("posts.categories")}</p>
             {this.props[`${this.props.type}Categories`].map((cat, key) => {
@@ -151,11 +160,17 @@ class PostListPage extends React.Component {
                       onClick={() => this.toggleFilter(undefined)}>x</Button>
             </Row>}
             {this.getItemsList()}
+
+
+
+
             <div ref={el => {
               this.endOfList = el;
             }}></div>
           </Col>
-        </Row>
+        </Row>}
+        {!this.props.items || this.props.items.length === 0 &&
+        <h5 className="p-3 text-secondary">{i18n.t("common.no-items")}</h5>}
       </Col>
     );
   }

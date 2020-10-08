@@ -50,10 +50,10 @@ class NavBarBlock extends React.Component {
             description: "menu.about-us.history",
             link: "/history"
           },
-          {
+/*          {
             description: "menu.about-us.reports",
             link: "/reports"
-          },
+          },*/
           {
             description: "menu.about-us.contact-us",
             link: "/contact-us"
@@ -89,16 +89,18 @@ class NavBarBlock extends React.Component {
 
   getAuthorizationBtn() {
     return (this.props.activeSession) ?
-      <Button variant="outline-secondary" onClick={(e) => this.props.logout()}>
+      <Button variant="outline-secondary" onClick={(e) => {
+        this.props.logout();
+        window.location.reload();
+      }}>
+      }
         <i className="fa fa-sign-out mr-1"></i>{i18n.t("menu.logout")}</Button> :
       <Button variant="outline-secondary" onClick={(e) => this.navigateTo("/login")}>
         <i className="fa fa-sign-in mr-1"></i>{i18n.t("menu.login")}</Button>;
   }
 
   render() {
-    this.props.history.listen((location, action) => {
-      this.props.clearErrors();
-    });
+    this.props.history.listen(() => this.props.clearErrors());
     return (
       <Navbar expand="sm" sticky="top" bg="light" variant="light" className="d-flex">
         <Navbar.Brand>
