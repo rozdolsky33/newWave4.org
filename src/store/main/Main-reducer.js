@@ -106,7 +106,8 @@ export default function reducer (state, action) {
     case actionType.receivedProjectsType: {
       return {
         ...state,
-        project: action.response.content.filter(project => project.active).forEach(i => {i.date = i.date.slice(0, -9)})
+        project: action.response.content && action.response.content.length > 0 ?
+          action.response.content.filter(project => project.active).forEach(i => {i.date = i.date.slice(0, -9)}) : []
       };
     }
     case actionType.receivedCategoriesType: {
@@ -116,7 +117,8 @@ export default function reducer (state, action) {
       };
     }
     case actionType.receivedItemsType: {
-      const newItems = action.response.content.filter(project => project.active);
+      const newItems = action.response.content && action.response.content.length > 0 ?
+        action.response.content.filter(project => project.active) : [];
       newItems.forEach(i => {i.date = i.date.slice(0, -9)});
       return {
         ...state,
