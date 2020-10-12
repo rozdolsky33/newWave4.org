@@ -93,7 +93,6 @@ class NavBarBlock extends React.Component {
         this.props.logout();
         window.location.reload();
       }}>
-      }
         <i className="fa fa-sign-out mr-1"></i>{i18n.t("menu.logout")}</Button> :
       <Button variant="outline-secondary" onClick={(e) => this.navigateTo("/login")}>
         <i className="fa fa-sign-in mr-1"></i>{i18n.t("menu.login")}</Button>;
