@@ -10,7 +10,10 @@ import "./main.scss";
 
 function MainPage(props) {
   const getRecentItems = (type) => {
-    const newItemsList = props[type].filter(i => i.active).slice(0, Math.min(3, props[type].length)).map(p => getCard(p, type));
+    let newItemsList = props[type] || [];
+    if (newItemsList.length > 0) {
+      newItemsList = newItemsList.filter(i => i.active).slice(0, Math.min(3, props[type].length)).map(p => getCard(p, type));
+    }
     return newItemsList.length > 0 ? newItemsList : undefined;
   };
   const getCard = (item, itemType) => {
