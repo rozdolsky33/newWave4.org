@@ -13,8 +13,10 @@ export const getParams = (methodType, useAuth) => {
   };
   const cookies = new Cookies();
   const token = cookies.get("token");
-  if (!!token && !!useAuth) {
-    params.headers.Authorization = token;
+  if (!!token) {
+    if (!!useAuth) {
+      params.headers.Authorization = token;
+    }
   } else {
     localStorage.removeItem('token');
     localStorage.removeItem('role');

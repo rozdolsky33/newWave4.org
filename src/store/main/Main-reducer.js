@@ -104,10 +104,12 @@ export default function reducer (state, action) {
       };
     }
     case actionType.receivedProjectsType: {
+      const project = action.response.content && action.response.content.length > 0 ?
+        action.response.content.filter(project => project.active) : [];
+      project.forEach(i => {i.date = i.date.slice(0, -9)})
       return {
         ...state,
-        project: action.response.content && action.response.content.length > 0 ?
-          action.response.content.filter(project => project.active).forEach(i => {i.date = i.date.slice(0, -9)}) : []
+        project
       };
     }
     case actionType.receivedCategoriesType: {

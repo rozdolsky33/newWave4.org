@@ -96,14 +96,7 @@ class PostListPage extends React.Component {
     return this.props.items.filter(i => i.active).map((item, key) => {
       return (
         <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left"
-              style={{maxHeight: "180px", cursor: "pointer"}}
-              onClick={() => {
-                if (item.externalURL) {
-                  window.open(item.externalURL, "_blank");
-                } else {
-                  history.push(`/item/${this.props.type}/${item.id}`);
-                }}
-              }>
+              style={{maxHeight: "180px"}}>
           <Card.Img style={{width: "25%", objectFit: "cover"}}
                     src={item.imageUri ? this.props.host + "/v2/api/image/" + item.imageUri :
                       "../../assets/imgs/NW_post_placeholder.jpg"}/>
@@ -119,7 +112,7 @@ class PostListPage extends React.Component {
                 {item.author}
               </Button>
             </div>
-            <Card.Text className="overflow-hidden">{item.preview}</Card.Text>
+            <Card.Text className="overflow-hidden m-0">{item.preview}</Card.Text>
             <div className="d-flex justify-content-end">
               {item.externalURL ?
                 <Card.Link href={item.externalURL} target="_blank">
@@ -160,10 +153,6 @@ class PostListPage extends React.Component {
                       onClick={() => this.toggleFilter(undefined)}>x</Button>
             </Row>}
             {this.getItemsList()}
-
-
-
-
             <div ref={el => {
               this.endOfList = el;
             }}></div>

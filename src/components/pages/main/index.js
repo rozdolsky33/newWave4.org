@@ -32,7 +32,7 @@ function MainPage(props) {
                     "../assets/imgs/NW_post_placeholder.jpg"} />
         <Card.Body>
           <Card.Title>{item.title}</Card.Title>
-          <Card.Text className="overflow-hidden" style={{height: "70px"}}>{item.preview}</Card.Text>
+          <Card.Text className="overflow-hidden m-0" style={{height: "70px"}}>{item.preview}</Card.Text>
         </Card.Body>
       </Card>
     );
