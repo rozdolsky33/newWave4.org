@@ -277,7 +277,7 @@ export const actionCreators = {
   donate: (fullName, email, amount, cardNumber, expMonth, expYear, cvc) => async (dispatch) => {
     const url = `${host}/v2/api/card-donation`;
     const params = getParams('POST');
-    params.body = JSON.stringify({ fullName, email, amount: Math.round((parseInt(amount) * 1.029 + 0.3) * 100),
+    params.body = JSON.stringify({ fullName, email, amount: Math.round(((parseFloat(amount) + 0.3) / (1 - 0.029)) * 100),
       cardNumber, expMonth, expYear, cvc });
 
     dispatch({ type: actionType.requestType });
