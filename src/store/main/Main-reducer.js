@@ -104,9 +104,8 @@ export default function reducer (state, action) {
       };
     }
     case actionType.receivedProjectsType: {
-      const project = action.response.content && action.response.content.length > 0 ?
-        action.response.content.filter(project => project.active) : [];
-      project.forEach(i => {i.date = i.date.slice(0, -9)})
+      let project = action.response.content;
+      project.forEach(i => {i.date = i.date.slice(0, -9)});
       return {
         ...state,
         project
@@ -119,9 +118,8 @@ export default function reducer (state, action) {
       };
     }
     case actionType.receivedItemsType: {
-      const newItems = action.response.content && action.response.content.length > 0 ?
-        action.response.content.filter(project => project.active) : [];
-      newItems.forEach(i => {i.date = i.date.slice(0, -9)});
+      const newItems = action.response.content;
+      newItems.forEach(i => {if (i.date) {i.date = i.date.slice(0, -9)}});
       return {
         ...state,
         paginationConfig: {
@@ -136,7 +134,7 @@ export default function reducer (state, action) {
       };
     }
     case actionType.receivedArticlesType: {
-      const newItems = action.response.content.filter(project => project.active);
+      const newItems = action.response.content;
       newItems.forEach(i => {i.date = i.date.slice(0, -9)});
       return {
         ...state,
