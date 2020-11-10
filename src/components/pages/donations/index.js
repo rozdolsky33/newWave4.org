@@ -136,7 +136,7 @@ class DonationsPage extends React.Component {
             {!!this.props.errorMessage && (<Alert variant="danger" className="mt-3">{i18n.t(this.props.errorMessage)}</Alert>)}
             <Form.Group className="pt-3 d-flex justify-content-between">
               <h2>{!!this.state.amount &&
-              (i18n.t("donation.full-amount") + ' ' + Math.round((parseInt(this.state.amount) * 1.029 + 0.3) * 100) / 100 + '$')}</h2>
+              (i18n.t("donation.full-amount") + ' ' + Number.parseFloat((parseFloat(100) + 0.3) / (1 - 0.029)).toFixed(2) + '$')}</h2>
               <Button variant="secondary" type="submit">{i18n.t("donation.btn-donate")}</Button>
             </Form.Group>
           </Form>
