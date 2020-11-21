@@ -11,6 +11,7 @@ export const receivedProjectsType = "RECEIVED_PROJECTS";
 export const receivedArticlesType = "RECEIVED_ARTICLES";
 export const receivedItemsType = "RECEIVED_ITEMS";
 export const receivedFilterDates = "RECEIVED_FILTER_DATES";
+export const clearFilterDates = "CLEAR_FILTER_DATES";
 export const receivedAuthor = "RECEIVED_AUTHOR";
 export const itemDeletedType = "ITEM_DELETED";
 export const changeActiveItemsType = "CHANGE_ACTIVE_ITEMS";

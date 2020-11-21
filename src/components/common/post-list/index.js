@@ -5,7 +5,6 @@ import {Button, Card, Col, Row} from "react-bootstrap";
 import {actionCreators} from "../../../store/main/Main-actions";
 import {withTranslation} from "react-i18next";
 import i18n from "../../../i18n";
-import {history} from "../../App";
 
 class PostListPage extends React.Component {
   constructor(props) {
@@ -28,6 +27,7 @@ class PostListPage extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.clearFilterDates();
     window.removeEventListener("scroll", this.handleScroll);
   }
 
@@ -61,19 +61,20 @@ class PostListPage extends React.Component {
   }
 
   getDates() {
+    if (!this.props.filterDates || !this.props.filterDates.length) return;
     let currentYear = 0;
     let currentMonth = "";
-    return this.props.filterDates.map((date) => {
+    return this.props.filterDates.map((date, key) => {
       const dateObj = {
         year: date.substring(0, 4),
         month: i18n.t("common.months." + date.substring(5, 7)),
         monthVal: parseInt(date.substring(5, 7))
       }
       let result = (
-        <>
-          {currentYear !== dateObj.year && <p key={date} className="m-0 pt-2">&#9675; {dateObj.year}</p>}
+        <div key={key}>
+          {currentYear !== dateObj.year && <p className="m-0 pt-2">&#9675; {dateObj.year}</p>}
           {(currentYear !== dateObj.year || currentMonth !== dateObj.month) &&
-          <Button key={date} className="text-secondary" variant="link" size="sm"
+          <Button className="text-secondary" variant="link" size="sm"
                   onClick={() => this.toggleFilter({
                     entityName: "date",
                     description: `${dateObj.month} ${dateObj.year}`,
@@ -84,7 +85,7 @@ class PostListPage extends React.Component {
                   })}>
             {dateObj.month}
           </Button>}
-        </>);
+        </div>);
       currentMonth = dateObj.month;
       currentYear = dateObj.year;
       return result;
@@ -95,8 +96,7 @@ class PostListPage extends React.Component {
     if (!this.props.items) return;
     return this.props.items.map((item, key) => {
       return (
-        <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left"
-              style={{maxHeight: "180px"}}>
+        <Card key={key} className="mb-2 d-flex flex-row justify-content-start text-left">
           <Card.Img style={{width: "25%", objectFit: "cover"}}
                     src={item.imageUri ? this.props.host + "/v2/api/image/" + item.imageUri :
                       "../../assets/imgs/NW_post_placeholder.jpg"}/>
@@ -134,7 +134,7 @@ class PostListPage extends React.Component {
       <Col className="text-center">
         <h2 className="p-3 text-secondary">{i18n.t("menu." + this.props.type)}</h2>
         {!!this.props.items && this.props.items.length > 0 && <Row>
-          <Col className="text-left pl-5" xs="12" md="2">
+          <Col className="text-left pl-5" xs="12" md="3">
             <p className="mb-0 mt-3">{i18n.t("posts.categories")}</p>
             {this.props[`${this.props.type}Categories`].map((cat, key) => {
               return <Button key={key} className="text-secondary text-left" variant="link" size="sm"
@@ -145,7 +145,7 @@ class PostListPage extends React.Component {
             })}
             {this.getDates()}
           </Col>
-          <Col className="text-center" xs="12" md="8">
+          <Col className="text-center" xs="12" md="9">
             {this.state.filter && <Row className="text-secondary p-3">
               {i18n.t("posts.filtered-by")}&nbsp;<span>{i18n.t("posts." + this.state.filter.entityName)}</span>:&nbsp;
               <span className="text-dark">{this.state.filter.description || this.state.filter.value}</span>&nbsp;

@@ -216,6 +216,9 @@ export const actionCreators = {
       dispatch({ type: actionType.receivedFilterDates, response });
     } else checkForFailure(response, dispatch);
   },
+  clearFilterDates: () => async (dispatch) => {
+    dispatch({ type: actionType.clearFilterDates });
+  },
   deleteItem: (activeItems, id) => async (dispatch) => {
     dispatch({ type: actionType.requestType });
     let url = `${host}/v1/api/${activeItems}/${id}`;

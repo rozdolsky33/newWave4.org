@@ -155,6 +155,12 @@ export default function reducer (state, action) {
         filterDates: action.response.map(d => d.slice(0, -9))
       };
     }
+    case actionType.clearFilterDates: {
+      return {
+        ...state,
+        filterDates: []
+      };
+    }
     case actionType.changeActiveItemsType: {
       let newState = {
         ...state,
